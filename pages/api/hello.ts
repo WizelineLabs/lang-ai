@@ -1,13 +1,21 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
+import { queryChatGPT } from '@/services/openai/test'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { CreateCompletionResponse } from 'openai'
 
 type Data = {
-  name: string
+  response?: CreateCompletionResponse
+  error?: any
 }
 
-export default function handler(
+export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Data>
 ) {
-  res.status(200).json({ name: 'John Doe' })
+  try {
+    const value = await queryChatGPT()
+    res.status(200).json({ response: value })
+  } catch (error) {
+    res.status(500).json({ error: error })
+  } 
 }
