@@ -7,11 +7,15 @@
 
 # testing
 /coverage
-*.lcov
+
+# database
+/prisma/db.sqlite
+/prisma/db.sqlite-journal
 
 # next.js
 /.next/
 /out/
+next-env.d.ts
 
 # production
 /build
@@ -27,6 +31,8 @@ yarn-error.log*
 .pnpm-debug.log*
 
 # local env files
+# do not commit any .env files to git, except for the .env.example file. https://create.t3.gg/en/usage/env-variables#using-environment-variables
+.env
 .env*.local
 
 # vercel
@@ -34,28 +40,3 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
-
-# Optional REPL history
-.node_repl_history
-
-# Output of 'npm pack'
-*.tgz
-
-# Runtime data
-pids
-*.pid
-*.seed
-*.pid.lock
