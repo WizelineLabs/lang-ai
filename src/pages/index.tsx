@@ -7,7 +7,10 @@ import NavBar from '~/components/NavBar'
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  const hello = api.example.hello.useQuery({ text: "from Diego Chuc" });
+  const { data: sessionData } = useSession();
+  const hello = api.example.hello.useQuery({
+    text: "from " + (sessionData?.user.name ?? "Anonymous"),
+  });
 
   return (
     <>
@@ -65,7 +68,7 @@ const AuthShowcase: React.FC = () => {
 
   const { data: secretMessage } = api.example.getSecretMessage.useQuery(
     undefined, // no input
-    { enabled: sessionData?.user !== undefined },
+    { enabled: sessionData?.user !== undefined }
   );
 
   return (
