@@ -8,7 +8,9 @@ interface PageTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
 function PageTitle(props: PageTitleProps) {
   return (
     <>
-      <Head>{props.editsTitle && <title>{props.children}</title>}</Head>
+      <Head>
+        {props.editsTitle && <title>{props.children} - LangAI</title>}
+      </Head>
       <h1
         {...props}
         className={`text-4xl font-bold text-slate-950 ${props.className ?? ""}`}
