@@ -7,11 +7,11 @@ import SegmentedPicker from "~/components/SegmentedPicker";
 import Section from "~/components/Section";
 import { Dropdown, DropdownButton } from "~/components/Dropdown";
 
-type PickerOptions = "One" | "Two" | "Three";
+type PickerOptions = "Learn" | "Evaluations";
 
-const UIExample: NextPage = () => {
+const Grades: NextPage = () => {
   const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("One");
+    useState<PickerOptions>("Learn");
 
   return (
     <>
@@ -41,147 +41,149 @@ const UIExample: NextPage = () => {
           </Dropdown>
         </div>
 
-
         <Section title="">
-          <br />
-          <br />
-
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                <tbody>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      className="px-6 py-4 dark:text-white ">
-                      <h1 className="inline-flex items-center justify-center bg-green-800 rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em]">100</h1>
-                    </th>
-                    <td className="px-6 py-4 ">
-                      <h1 className="dark:text-white">Lesson Title</h1>
-                      <p>Lesson Description</p>
-                    </td>
-                    <td className="px-6 py-4 dark:text">Completed on: Feb 21, 2023 6:45pm</td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        See details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th
-                      scope="row"
-                      className="px-6 py-4 dark:text-white ">
-                      <h1 className="inline-flex items-center justify-center bg-green-800 rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em]">95</h1>
-                    </th>
-                    <td className="px-6 py-4 ">
-                      <h1 className="dark:text-white">Lesson Title</h1>
-                      <p>Lesson Description</p>
-                    </td>
-                    <td className="px-6 py-4 dark:text">Completed on: Feb 21, 2023 6:45pm</td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        See details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th
-                      scope="row"
-                      className="px-6 py-4 dark:text-white ">
-                      <h1 className="inline-flex items-center justify-center bg-amber-400 rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em]">55</h1>
-                    </th>
-                    <td className="px-6 py-4 ">
-                      <h1 className="dark:text-white">Lesson Title</h1>
-                      <p>Lesson Description</p>
-                    </td>
-                    <td className="px-6 py-4 dark:text">Completed on: Feb 21, 2023 6:45pm</td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        See details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th
-                      scope="row"
-                      className="px-6 py-4 dark:text-white ">
-                      <h1 className="inline-flex items-center justify-center bg-red-500 rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em]">30</h1>
-                    </th>
-                    <td className="px-6 py-4 ">
-                      <h1 className="dark:text-white">Lesson Title</h1>
-                      <p>Lesson Description</p>
-                    </td>
-                    <td className="px-6 py-4 dark:text">Completed on: Feb 21, 2023 6:45pm</td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        See details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th
-                      scope="row"
-                      className="px-6 py-4 dark:text-white ">
-                      <h1 className="inline-flex items-center justify-center bg-amber-400 rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em]">69</h1>
-                    </th>
-                    <td className="px-6 py-4 ">
-                      <h1 className="dark:text-white">Lesson Title</h1>
-                      <p>Lesson Description</p>
-                    </td>
-                    <td className="px-6 py-4 dark:text">Completed on: Feb 21, 2023 6:45pm</td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        See details
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th
-                      scope="row"
-                      className="px-6 py-4 dark:text-white ">
-                      <h1 className="inline-flex items-center justify-center bg-green-800 rounded-full px-[0.65em] pb-[0.25em] pt-[0.35em]">100</h1>
-                    </th>
-                    <td className="px-6 py-4 ">
-                      <h1 className="dark:text-white">Lesson Title</h1>
-                      <p>Lesson Description</p>
-                    </td>
-                    <td className="px-6 py-4 dark:text">Completed on: Feb 21, 2023 6:45pm</td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        See details
-                      </a>
-                    </td>
-                  </tr>
-                  
-                  
-              
-
-
-
-                </tbody>
-              </table>
-            </div>
+          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
+              <tbody>
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 dark:text-white ">
+                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
+                      100
+                    </h1>
+                  </th>
+                  <td className="px-6 py-4 ">
+                    <h1 className="dark:text-white">Lesson Title</h1>
+                    <p>Lesson Description</p>
+                  </td>
+                  <td className="dark:text px-6 py-4">
+                    Completed on: Feb 21, 2023 6:45pm
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      See details
+                    </a>
+                  </td>
+                </tr>
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 dark:text-white ">
+                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
+                      95
+                    </h1>
+                  </th>
+                  <td className="px-6 py-4 ">
+                    <h1 className="dark:text-white">Lesson Title</h1>
+                    <p>Lesson Description</p>
+                  </td>
+                  <td className="dark:text px-6 py-4">
+                    Completed on: Feb 21, 2023 6:45pm
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      See details
+                    </a>
+                  </td>
+                </tr>
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 dark:text-white ">
+                    <h1 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
+                      55
+                    </h1>
+                  </th>
+                  <td className="px-6 py-4 ">
+                    <h1 className="dark:text-white">Lesson Title</h1>
+                    <p>Lesson Description</p>
+                  </td>
+                  <td className="dark:text px-6 py-4">
+                    Completed on: Feb 21, 2023 6:45pm
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      See details
+                    </a>
+                  </td>
+                </tr>
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 dark:text-white ">
+                    <h1 className="inline-flex items-center justify-center rounded-full bg-red-500 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
+                      30
+                    </h1>
+                  </th>
+                  <td className="px-6 py-4 ">
+                    <h1 className="dark:text-white">Lesson Title</h1>
+                    <p>Lesson Description</p>
+                  </td>
+                  <td className="dark:text px-6 py-4">
+                    Completed on: Feb 21, 2023 6:45pm
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      See details
+                    </a>
+                  </td>
+                </tr>
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 dark:text-white ">
+                    <h1 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
+                      69
+                    </h1>
+                  </th>
+                  <td className="px-6 py-4 ">
+                    <h1 className="dark:text-white">Lesson Title</h1>
+                    <p>Lesson Description</p>
+                  </td>
+                  <td className="dark:text px-6 py-4">
+                    Completed on: Feb 21, 2023 6:45pm
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      See details
+                    </a>
+                  </td>
+                </tr>
+                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
+                  <th scope="row" className="px-6 py-4 dark:text-white ">
+                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
+                      100
+                    </h1>
+                  </th>
+                  <td className="px-6 py-4 ">
+                    <h1 className="dark:text-white">Lesson Title</h1>
+                    <p>Lesson Description</p>
+                  </td>
+                  <td className="dark:text px-6 py-4">
+                    Completed on: Feb 21, 2023 6:45pm
+                  </td>
+                  <td className="px-6 py-4 text-right">
+                    <a
+                      href="#"
+                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
+                    >
+                      See details
+                    </a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </Section>
       </PageWrapper>
     </>
   );
 };
 
-export default UIExample;
+export default Grades;
