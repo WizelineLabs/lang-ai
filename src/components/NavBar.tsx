@@ -63,8 +63,8 @@ function NavBar() {
           <Menu.Button
             type="button"
             className="flex flex-row justify-center text-base font-medium text-slate-500 hover:opacity-50"
-            id="dropdownDefaultButton"
-            data-dropdown-toggle="dropdown"
+            id="dropdownNavBarUser"
+            data-dropdown-toggle="dropdownUser"
           >
             <Image
               className="mr-2 rounded-full"

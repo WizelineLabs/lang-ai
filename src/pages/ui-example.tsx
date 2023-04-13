@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
 import Button from "~/components/Button";
 import PageTitle from "~/components/PageTitle";
 import PageWrapper from "~/components/PageWrapper";
 import SegmentedPicker from "~/components/SegmentedPicker";
 import Section from "~/components/Section";
+import { Dropdown, DropdownButton } from "~/components/Dropdown";
 
 type PickerOptions = "One" | "Two" | "Three";
 
@@ -16,12 +17,28 @@ const UIExample: NextPage = () => {
     <>
       <PageWrapper>
         <PageTitle editsTitle>Page Title</PageTitle>
-        <SegmentedPicker
-          title="Choose category:"
-          selectedOption={selectedCategory}
-          options={["One", "Two", "Three"]}
-          didSelectOption={(o) => setSelectedCategory(o)}
-        />
+        <div className="flex flex-row place-content-between">
+          <SegmentedPicker
+            title="Choose category:"
+            selectedOption={selectedCategory}
+            options={["One", "Two", "Three"]}
+            didSelectOption={(o) => setSelectedCategory(o)}
+          />
+          <Dropdown
+            id={"example-dropdown"}
+            dataDropdownToggle={"example-dropdown"}
+            menuButtonClassName="text-slate-500 hover:opacity-50"
+            menuButtonContent={
+              <span className="text-slate-700">
+                Order by: <span className="text-slate-500">Date</span>
+              </span>
+            }
+          >
+            <DropdownButton title="Date" onClick={() => console.log("1")} />
+            <DropdownButton title="Level" onClick={() => console.log("2")} />
+            <DropdownButton title="User" onClick={() => console.log("3")} />
+          </Dropdown>
+        </div>
         <Button>Next</Button>
         <Section title="Part 1. Part title...">
           <div className="flex flex-col space-y-0 divide-y">
