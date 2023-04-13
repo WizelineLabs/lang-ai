@@ -27,12 +27,14 @@ const UIExample: NextPage = () => {
           <Dropdown
             id={"example-dropdown"}
             dataDropdownToggle={"example-dropdown"}
-            menuButtonClassName="text-slate-500 hover:opacity-50"
-            menuButtonContent={
+            menuButtonContent={(ChevronIcon) => (
               <span className="text-slate-700">
-                Order by: <span className="text-slate-500">Date</span>
+                Order by:
+                <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
+                  Date{ChevronIcon}
+                </span>
               </span>
-            }
+            )}
           >
             <DropdownButton title="Date" onClick={() => console.log("1")} />
             <DropdownButton title="Level" onClick={() => console.log("2")} />

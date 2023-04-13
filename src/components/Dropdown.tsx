@@ -1,23 +1,18 @@
 import * as React from "react";
 import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
-import {
-  ChevronDownIcon,
-  ArrowLeftOnRectangleIcon,
-} from "@heroicons/react/20/solid";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
 export interface DropdownProps {
   id: string;
   dataDropdownToggle: string;
-  menuButtonClassName?: string;
-  menuButtonContent: React.ReactNode;
+  menuButtonContent: (ChevronIcon: JSX.Element) => React.ReactNode;
   children: React.ReactNode;
 }
 
 export function Dropdown({
   id,
   dataDropdownToggle,
-  menuButtonClassName,
   menuButtonContent,
   children,
 }: DropdownProps) {
@@ -25,15 +20,13 @@ export function Dropdown({
     <Menu as="div" className="relative self-center">
       <Menu.Button
         type="button"
-        className={
-          "inline-flex flex-row justify-center " +
-          (menuButtonClassName ?? "hover:opacity-50")
-        }
+        className={"inline-flex flex-row justify-center "}
         id={id}
         data-dropdown-toggle={dataDropdownToggle}
       >
-        {menuButtonContent}
-        <ChevronDownIcon className="-mr-1 h-6 w-6" aria-hidden="true" />
+        {menuButtonContent(
+          <ChevronDownIcon className="-mr-2 h-6 w-6" aria-hidden="true" />
+        )}
       </Menu.Button>
       <Transition
         as={Fragment}
