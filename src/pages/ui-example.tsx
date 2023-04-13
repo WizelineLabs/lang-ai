@@ -24,8 +24,16 @@ const UIExample: NextPage = () => {
         />
         <Button>Next</Button>
         <Section title="Part 1. Part title...">
-          <div className="flex flex-col space-y-0">
-            <span className="mx-auto my-8">Rows go here...</span>
+          <div className="flex flex-col space-y-0 divide-y">
+            <div className="flex content-center py-6">
+              <span className="mx-auto">Row Placeholder 1...</span>
+            </div>
+            <div className="flex content-center py-6">
+              <span className="mx-auto">Row Placeholder 2...</span>
+            </div>
+            <div className="flex content-center py-6">
+              <span className="mx-auto">Row Placeholder 3...</span>
+            </div>
           </div>
         </Section>
       </PageWrapper>
