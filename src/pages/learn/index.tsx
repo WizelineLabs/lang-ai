@@ -6,6 +6,7 @@ import PageTitle from "~/components/PageTitle";
 import PageWrapper from "~/components/PageWrapper";
 import Section from "~/components/Section";
 import SegmentedPicker from "~/components/SegmentedPicker";
+import { Dropdown, DropdownButton } from "~/components/Dropdown";
 
 import { api } from "~/utils/api";
 
@@ -20,12 +21,33 @@ const Learn: NextPage = () => {
       <PageWrapper>
         <main>
           <PageTitle>Learn</PageTitle>
+          <div className="flex flex-row place-content-between">
+
+          
           <SegmentedPicker
             title="Choose category:"
             selectedOption={selectedCategory}
             options={["Basic", "Conversational", "Technical"]}
             didSelectOption={(o) => setSelectedCategory(o)}
           />
+          <Dropdown
+            id={"example-dropdown"}
+            dataDropdownToggle={"example-dropdown"}
+            menuButtonContent={(ChevronIcon) => (
+              <span className="text-slate-700">
+                Order by:
+                <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
+                  Date{ChevronIcon}
+                </span>
+              </span>
+            )}
+          >
+            <DropdownButton title="Date" onClick={() => console.log("1")} />
+            <DropdownButton title="Level" onClick={() => console.log("2")} />
+            <DropdownButton title="User" onClick={() => console.log("3")} />
+          </Dropdown>
+
+          </div>
           <Section title="Part 1. Part title...">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
               <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
