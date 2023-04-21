@@ -22,31 +22,28 @@ const Learn: NextPage = () => {
         <main>
           <PageTitle>Learn</PageTitle>
           <div className="flex flex-row place-content-between">
-
-          
-          <SegmentedPicker
-            title="Choose category:"
-            selectedOption={selectedCategory}
-            options={["Basic", "Conversational", "Technical"]}
-            didSelectOption={(o) => setSelectedCategory(o)}
-          />
-          <Dropdown
-            id={"example-dropdown"}
-            dataDropdownToggle={"example-dropdown"}
-            menuButtonContent={(ChevronIcon) => (
-              <span className="text-slate-700">
-                Order by:
-                <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
-                  Date{ChevronIcon}
+            <SegmentedPicker
+              title="Choose category:"
+              selectedOption={selectedCategory}
+              options={["Basic", "Conversational", "Technical"]}
+              didSelectOption={(o) => setSelectedCategory(o)}
+            />
+            <Dropdown
+              id={"example-dropdown"}
+              dataDropdownToggle={"example-dropdown"}
+              menuButtonContent={(ChevronIcon) => (
+                <span className="text-slate-700">
+                  Order by:
+                  <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
+                    Date{ChevronIcon}
+                  </span>
                 </span>
-              </span>
-            )}
-          >
-            <DropdownButton title="Date" onClick={() => console.log("1")} />
-            <DropdownButton title="Level" onClick={() => console.log("2")} />
-            <DropdownButton title="User" onClick={() => console.log("3")} />
-          </Dropdown>
-
+              )}
+            >
+              <DropdownButton title="Date" onClick={() => console.log("1")} />
+              <DropdownButton title="Level" onClick={() => console.log("2")} />
+              <DropdownButton title="User" onClick={() => console.log("3")} />
+            </Dropdown>
           </div>
           <Section title="Part 1. Part title...">
             <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
@@ -76,7 +73,9 @@ const Learn: NextPage = () => {
                       Lesson Title
                     </th>
                     <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{color: "green"}}>Easy</td>
+                    <td className="px-6 py-4" style={{ color: "green" }}>
+                      Easy
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <a
                         href="#"
@@ -94,7 +93,9 @@ const Learn: NextPage = () => {
                       Lesson Title
                     </th>
                     <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{color: "green"}}>Easy</td>
+                    <td className="px-6 py-4" style={{ color: "green" }}>
+                      Easy
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <a
                         href="#"
@@ -112,7 +113,9 @@ const Learn: NextPage = () => {
                       Lesson Title
                     </th>
                     <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{color: "green"}}>Easy</td>
+                    <td className="px-6 py-4" style={{ color: "green" }}>
+                      Easy
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <a
                         href="#"
@@ -154,7 +157,9 @@ const Learn: NextPage = () => {
                       Lesson Title
                     </th>
                     <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{color: "#FFC300"}}>Medium</td>
+                    <td className="px-6 py-4" style={{ color: "#FFC300" }}>
+                      Medium
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <a
                         href="#"
@@ -172,7 +177,9 @@ const Learn: NextPage = () => {
                       Lesson Title
                     </th>
                     <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{color: "#FFC300"}}>Medium</td>
+                    <td className="px-6 py-4" style={{ color: "#FFC300" }}>
+                      Medium
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <a
                         href="#"
@@ -190,7 +197,9 @@ const Learn: NextPage = () => {
                       Lesson Title
                     </th>
                     <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{color: "red"}}>Hard</td>
+                    <td className="px-6 py-4" style={{ color: "red" }}>
+                      Hard
+                    </td>
                     <td className="px-6 py-4 text-right">
                       <a
                         href="#"
