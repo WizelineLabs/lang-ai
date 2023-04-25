@@ -171,7 +171,12 @@ const Camtest: NextPage = () => {
                 Download
               </a>
             </div>
-          </Section>
+          </Section>  
+          {recordedVideoUrl && (
+            <video className="w-full" controls>
+              <source src={recordedVideoUrl} type={videoFormat?.mimeType} />
+            </video>
+      )}        
         </div>
       </PageWrapper>
     </>
