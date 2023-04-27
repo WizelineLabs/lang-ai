@@ -1,10 +1,12 @@
 import { type NextPage } from "next";
 import Head from "next/head";
-import NavBar from "~/components/NavBar";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
-import Button from "~/components/Button";
-import Section from "~/components/Section";
+import {
+  Button,
+  LinkButton,
+  PageTitle,
+  PageWrapper,
+  Section,
+} from "~/components";
 
 import { api } from "~/utils/api";
 
@@ -35,7 +37,7 @@ const Dashboard: NextPage = () => {
                 }}
               >
                 <br />
-                <Button>Go to Evaluations</Button>
+                <LinkButton href="evaluations/">Go to Evaluations</LinkButton>
               </div>
             </Section>
           </div>

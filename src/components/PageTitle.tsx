@@ -1,11 +1,12 @@
 import * as React from "react";
 import Head from "next/head";
 
-interface PageTitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
+export interface PageTitleProps
+  extends React.HTMLAttributes<HTMLHeadingElement> {
   editsTitle?: boolean;
 }
 
-function PageTitle(props: PageTitleProps) {
+export function PageTitle(props: PageTitleProps) {
   return (
     <>
       <Head>
