@@ -1,11 +1,11 @@
 import * as React from "react";
 import NavBar from "./NavBar";
 
-interface PageWrapperProps {
+export interface PageWrapperProps {
   children: React.ReactNode;
 }
 
-function PageWrapper(props: PageWrapperProps) {
+export function PageWrapper(props: PageWrapperProps) {
   return (
     <div className="flex h-screen w-screen flex-col items-center bg-slate-50">
       <div className="w-screen shrink">
