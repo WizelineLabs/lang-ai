@@ -6,8 +6,10 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
+    "prisma": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "echo V1 && next start",
+    "docker:prod": "docker compose -f docker-compose.yml build && docker tag langai-next-app erickdepavo/langai && docker push erickdepavo/langai"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
