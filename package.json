@@ -23,6 +23,7 @@
     "@trpc/next": "^10.18.0",
     "@trpc/react-query": "^10.18.0",
     "@trpc/server": "^10.18.0",
+    "aws-sdk": "^2.1370.0",
     "next": "^13.2.4",
     "next-auth": "^4.20.1",
     "openai": "^3.2.1",
