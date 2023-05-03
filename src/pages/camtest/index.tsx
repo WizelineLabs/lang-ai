@@ -1,13 +1,14 @@
 import { type NextPage } from "next";
-import React from "react";
+import React, { useRef, useState, useCallback } from "react";
 import PageTitle from "~/components/PageTitle";
 import PageWrapper from "~/components/PageWrapper";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
 import Webcam from "react-webcam";
-import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
-//import { MediaRecorderErrorEvent, MediaRecorderDataAvailableEvent } from 'dom-mediacapture-record';
+import { convertFileToBase64String } from "~/utils/fileToString";
+
+import { api } from "~/utils/api";
 
 const videoConstraints = {
   audio: true,
@@ -52,6 +53,8 @@ const Camtest: NextPage = () => {
   const [mediaRecorder, setMediaRecorder] = useState<MediaRecorder | null>(
     null
   );
+
+  const uploadVideo = api.files.saveFile.useMutation();
 
   const webcamRef = useRef<Webcam>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
@@ -119,6 +122,30 @@ const Camtest: NextPage = () => {
     setRecordedChunks([]);
   };
 
+  const uploadToS3 = async () => {
+    if (!videoFormat) {
+      console.error("No video format, can't upload to S3");
+      return;
+    }
+    const recordedBlob = new Blob(recordedChunks, {
+      type: videoFormat.mimeType,
+    });
+    console.log("Created file for S3");
+    const base64 = (await convertFileToBase64String(recordedBlob)) as string;
+    await uploadVideo.mutateAsync({
+      base64String: base64,
+      extension: videoFormat.ext,
+      mimeType: videoFormat.mimeType,
+    });
+    console.log("Uploaded file to S3");
+  };
+
+  const didTapUpload = () => {
+    uploadToS3()
+      .then(() => console.log("Upload successful"))
+      .catch((error) => console.error("Upload error:", error));
+  };
+
   return (
     <>
       <PageWrapper>
@@ -170,13 +197,23 @@ const Camtest: NextPage = () => {
               >
                 Download
               </a>
+              <Button
+                onClick={() => didTapUpload()}
+                hidden={
+                  !!mediaRecorder ||
+                  !!recordedVideoUrl ||
+                  recordedChunks.length === 0
+                }
+              >
+                Upload to S3
+              </Button>
             </div>
-          </Section>  
+          </Section>
           {recordedVideoUrl && (
             <video className="w-full" controls>
               <source src={recordedVideoUrl} type={videoFormat?.mimeType} />
             </video>
-      )}        
+          )}
         </div>
       </PageWrapper>
     </>
