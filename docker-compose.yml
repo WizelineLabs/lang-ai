@@ -1,0 +1,67 @@
+version: "3.9"
+
+services:
+  # Production service (will be run by Lightsail instance)
+  prod:
+    container_name: LangAI-prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        NEXTAUTH_URL: ${NEXTAUTH_URL}
+    restart: always
+    ports:
+      - 3000:3000
+  # Production service w/DB (useful to test prod locally)
+  prod-db:
+    container_name: LangAI-prod-db
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        DATABASE_URL: ${DATABASE_URL}
+        OPENAI_API_KEY: ${OPENAI_API_KEY}
+        NEXTAUTH_URL: ${NEXTAUTH_URL}
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/langai
+    depends_on:
+      - db
+    restart: always
+    ports:
+      - 3000:3000
+  # Dev service w/DB (syncs with local folder, for local development only)
+  dev:
+    container_name: LangAI-dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    environment:
+      - DATABASE_URL=postgres://user:password@db:5432/langai
+    depends_on:
+      - db
+    restart: no
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app # Bind directory to container
+      - /usr/src/app/node_modules # Separate node_modules/ from local machine
+      - /usr/src/app/prisma # Separate prisma/ from local machine
+  # Database service (this will only be run locally, prod database is on RDS)
+  db:
+    container_name: LangAI-db
+    image: postgres:latest
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=langai
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db_data:/var/lib/postgresql/data # Bind data to local folder in repo
+# Define a network, which allows containers to communicate
+# with each other, by using their container name as a hostname
+#networks:
+#  my_network:
+#    external: true

@@ -6,8 +6,12 @@
     "build": "next build",
     "dev": "next dev",
     "postinstall": "prisma generate",
+    "prisma": "prisma generate",
     "lint": "next lint",
-    "start": "next start"
+    "start": "next start",
+    "docker:dev": "docker image prune -f && docker compose up dev --build --remove-orphans",
+    "docker:prod": "docker image prune -f && docker compose up prod-db --build --remove-orphans",
+    "docker:push": "docker compose build prod && docker tag langai-prod erickdepavo/langai && docker push erickdepavo/langai"
   },
   "dependencies": {
     "@headlessui/react": "^1.7.14",
