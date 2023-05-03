@@ -4,6 +4,7 @@ services:
   # Production service (will be run by Lightsail instance)
   prod:
     container_name: LangAI-prod
+    image: langai-prod
     build:
       context: .
       dockerfile: Dockerfile
@@ -15,6 +16,7 @@ services:
   # Production service w/DB (useful to test prod locally)
   prod-db:
     container_name: LangAI-prod-db
+    image: langai-prod-db
     build:
       context: .
       dockerfile: Dockerfile
@@ -32,6 +34,7 @@ services:
   # Dev service w/DB (syncs with local folder, for local development only)
   dev:
     container_name: LangAI-dev
+    image: langai-dev
     build:
       context: .
       dockerfile: Dockerfile.dev
