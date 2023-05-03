@@ -21,4 +21,4 @@ RUN npm run build
 EXPOSE 3000
 
 # Runs the production npm script to start the server
-CMD ["npm", "run", "start"]
+CMD ["npm", "start"]

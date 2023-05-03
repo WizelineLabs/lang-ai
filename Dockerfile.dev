@@ -1,0 +1,23 @@
+# Installs Node.js image
+# Architecture doesn't need to be specified (allow building for Apple M1)
+FROM --platform=linux node:20
+
+# sets the working directory for any RUN, CMD, COPY command
+# this directory is bound to the machine's project directory.
+WORKDIR /usr/src/app
+
+# Copy only the package*.json files to install deps
+COPY package*.json ./
+
+# Copy the prisma folder so `prisma generate` can see the schema
+COPY ./prisma ./prisma
+
+# Installs all packages (clean install is not neccesary on dev envronment)
+# NOTE: This also runs `prisma generate` afterwards
+RUN npm i
+
+# Expose port 3000
+EXPOSE 3000
+
+# Runs the dev npm script to build & start the server
+CMD ["npm", "run", "dev"]
