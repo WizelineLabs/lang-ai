@@ -30,7 +30,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker Compose service
-        run: docker compose build prod
+        run: docker compose -f "${{ github.workspace }}/docker-compose.yml" build prod
 
       - name: Tag Docker Image
         run: docker tag langai-prod ${{ env.DOCKER_IMAGE_NAME }}
