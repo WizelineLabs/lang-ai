@@ -5,6 +5,7 @@ FROM --platform=linux/amd64 node:20
 # (Docker image should not contain .env in prod)
 ARG SKIP_ENV_VALIDATION
 ENV SKIP_ENV_VALIDATION=${SKIP_ENV_VALIDATION}
+ENV SKIP_ENV_VALIDATION="true"
 
 # sets the working directory for any RUN, CMD, COPY command
 # all files we put in the Docker container running the server will be in /usr/src/app (e.g. /usr/src/app/package.json)
