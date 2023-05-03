@@ -103,6 +103,19 @@ jobs:
                   "3000": "HTTP"
                 }
               }
+            }' \
+            --public-endpoint '
+            {
+              "containerName": "langai",
+              "containerPort": 3000,
+              "healthCheck": {
+                "healthyThreshold": 2,
+                "unhealthyThreshold": 2,
+                "timeoutSeconds": 5,
+                "intervalSeconds": 10,
+                "path": "/",
+                "successCodes": "200-499"
+              }
             }'
       # - name: Push and Deploy
       #   run: |
