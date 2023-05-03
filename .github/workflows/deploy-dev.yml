@@ -82,27 +82,27 @@ jobs:
 
       - name: Create Lightsail Deployment
         run: |
-          service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
           aws lightsail create-container-service-deployment \
-            --service-name ${service_name} \
-            --containers '"langai": { \
-              "image": "${{ env.DOCKER_IMAGE_NAME }}", \
-              "environment": { \
-                "APP_ENV": "release", \
-                "AWS_S3_BUCKET": "${{ secrets.AWS_S3_BUCKET }}", \
-                "AWS_ACCESS_KEY_ID": "${{ secrets.AWS_ACCESS_KEY_ID }}", \
-                "AWS_SECRET_ACCESS_KEY": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", \
-                "DATABASE_URL": "${{ secrets.DATABASE_URL }}", \
-                "NEXTAUTH_SECRET": "${{ secrets.NEXTAUTH_SECRET }}", \
-                "NEXTAUTH_URL": "${{ secrets.NEXTAUTH_URL }}", \
-                "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}", \
-                "AWS_DEFAULT_REGION": "${{ env.AWS_DEFAULT_REGION }}" \
-              }, \
-              "ports": { \
-                "3000": "HTTP" \
+            --service-name ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }} \
+            --containers '{ \
+              "langai": { \
+                "image": "${{ env.DOCKER_IMAGE_NAME }}", \
+                "environment": { \
+                  "APP_ENV": "release", \
+                  "AWS_S3_BUCKET": "${{ secrets.AWS_S3_BUCKET }}", \
+                  "AWS_ACCESS_KEY_ID": "${{ secrets.AWS_ACCESS_KEY_ID }}", \
+                  "AWS_SECRET_ACCESS_KEY": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", \
+                  "DATABASE_URL": "${{ secrets.DATABASE_URL }}", \
+                  "NEXTAUTH_SECRET": "${{ secrets.NEXTAUTH_SECRET }}", \
+                  "NEXTAUTH_URL": "${{ secrets.NEXTAUTH_URL }}", \
+                  "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}", \
+                  "AWS_DEFAULT_REGION": "${{ env.AWS_DEFAULT_REGION }}" \
+                }, \
+                "ports": { \
+                  "3000": "HTTP" \
+                } \
               } \
             }'
-
       # - name: Push and Deploy
       #   run: |
       #     service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
