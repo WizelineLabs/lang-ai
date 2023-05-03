@@ -1,4 +1,3 @@
-import { type S3 } from "aws-sdk";
 import { s3 } from "./sdk";
 
 // TODO: Cambiar dependiendo del ambiente
@@ -17,7 +16,7 @@ export async function getFile(filePath: string) {
   throw Error("File was found but had no body");
 }
 
-export async function uploadFile(file: S3.Body, path: string) {
+export async function uploadFile(file: Buffer, path: string) {
   await s3
     .upload({
       Bucket: bucketName,
