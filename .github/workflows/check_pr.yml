@@ -6,6 +6,8 @@ on:
       - main
       - dev
 
+env:
+  SKIP_ENV_VALIDATION: "true"
 jobs:
   build_and_test:
     name: Build and Test
@@ -22,6 +24,10 @@ jobs:
       - name: Create .env file for build
         uses: SpicyPizza/create-envfile@v1.3
         with:
+<<<<<<< HEAD
+=======
+          directory: .
+>>>>>>> 303a8a1 (Added .env creation to PR check script)
           SKIP_ENV_VALIDATION: "true"
 
       - name: Install dependencies
