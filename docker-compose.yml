@@ -8,9 +8,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        DATABASE_URL: ${DATABASE_URL}
-        OPENAI_API_KEY: ${OPENAI_API_KEY}
-        NEXTAUTH_URL: ${NEXTAUTH_URL}
+        SKIP_ENV_VALIDATION: "true"
     restart: always
     ports:
       - 3000:3000
@@ -21,11 +19,11 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        DATABASE_URL: ${DATABASE_URL}
-        OPENAI_API_KEY: ${OPENAI_API_KEY}
-        NEXTAUTH_URL: ${NEXTAUTH_URL}
+        SKIP_ENV_VALIDATION: "true"
     environment:
       - DATABASE_URL=postgres://user:password@db:5432/langai
+    env_file:
+      - .env
     depends_on:
       - db
     restart: always

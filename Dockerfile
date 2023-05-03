@@ -1,14 +1,16 @@
 # Installs Node.js image
 FROM --platform=linux/amd64 node:20
 
+# Skip env validation to prevent crash on build
+# (Docker image should not contain .env in prod)
+ARG SKIP_ENV_VALIDATION
+ENV SKIP_ENV_VALIDATION=${SKIP_ENV_VALIDATION}
+
 # sets the working directory for any RUN, CMD, COPY command
 # all files we put in the Docker container running the server will be in /usr/src/app (e.g. /usr/src/app/package.json)
 WORKDIR /usr/src/app
 
-# Copies package.json, package-lock.json, tsconfig.json, .env to the root of WORKDIR
-COPY ["package.json", "package-lock.json", "tsconfig.json", ".env", "./"]
-
-# Copies everything in the src directory to WORKDIR/src
+# Copies everything in the local root directory to WORKDIR
 COPY / .
 
 # Installs all packages
