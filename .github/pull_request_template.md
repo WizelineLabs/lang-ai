@@ -10,7 +10,7 @@
 >
 > ### Configura tu PR
 >
-> Si estás mergeando a `dev`, puedes ponerte de reviewer sólo a ti mismo si quieres.
+> Si estás mergeando a `dev`, no ocupas poner reviewers, puedes mergear tú mismo si quieres.
 > Si estás mergeando a `main`, tienes que poner a fuerzas a dos personas más que NO sean tú.
 >
 > Puse a `dev` como default branch del repo para que todos los PR nuevos por defecto vayan a esa.
