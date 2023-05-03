@@ -35,6 +35,12 @@ jobs:
       - name: Set current directory
         run: cd ${{ github.workspace }}
 
+      - name: Create .env file for build
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          directory: ${{ github.workspace }}
+          SKIP_ENV_VALIDATION: "true"
+
       - name: Read current directory
         run: ls
 
