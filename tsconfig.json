@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": ["dom", "dom.iterable", "esnext", "ScriptHost"],
     "allowJs": true,
     "checkJs": true,
     "skipLibCheck": true,
@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-  ],
+, "src/components/WebcamVideo.js"  ],
   "exclude": ["node_modules"]
 }

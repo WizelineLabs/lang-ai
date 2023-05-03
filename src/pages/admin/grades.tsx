@@ -1,21 +1,57 @@
 import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
-import Button from "~/components/Button";
+import Head from "next/head";
+import NavBar from "~/components/NavBar";
 import PageTitle from "~/components/PageTitle";
 import PageWrapper from "~/components/PageWrapper";
-import SegmentedPicker from "~/components/SegmentedPicker";
+import Button from "~/components/Button";
 import Section from "~/components/Section";
+import Image from "next/image";
+import SegmentedPicker from "~/components/SegmentedPicker";
 import { Dropdown, DropdownButton } from "~/components/Dropdown";
+
+import { api } from "~/utils/api";
 
 type PickerOptions = "Learn" | "Evaluations";
 
 const Grades: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("Learn");
-
+    const [selectedCategory, setSelectedCategory] =
+        useState<PickerOptions>("Learn");
   return (
     <>
       <PageWrapper>
+        <main>
+          <div>
+            <Section>
+                <div className="flex flex-row">
+                    <div className="basis-1/3">
+                        <Image
+                        className="ml-4 my-3 rounded-full"
+                        src="/bismarck.jpg"
+                        alt="Profile Picture"
+                        width={180}
+                        height={180}
+                        /> 
+                    </div>                    
+                    <div className="basis-2/3 flex items-center">
+                        <h2 className="dark:text-dark text-2xl font-bold tracking-tight text-gray-900 pl-3">
+                            Bismarck Lepe
+                        </h2>
+                        <h3 className="font-normal text-gray-700 dark:text-gray-400 pl-4">
+                            Founder of Wizeline
+                        </h3>
+
+                        <br />
+                        <h3 className="dark:text-dark text-2x1 font-bold tracking-tight text-gray-900">Current English level:{""}</h3>
+                        <h3 className="text-2x1 font-bold tracking-tight text-gray-900 dark:text-green-900">C2</h3>
+                    </div>
+                </div>
+            </Section>
+          </div>
+
+          <div>
+            
+        <br />
         <PageTitle editsTitle>Grades</PageTitle>
         <div className="flex flex-row place-content-between">
           <SegmentedPicker
@@ -41,7 +77,7 @@ const Grades: NextPage = () => {
           </Dropdown>
         </div>
 
-        <Section title="">
+        <Section>
           <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
             <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
               <tbody>
@@ -60,7 +96,7 @@ const Grades: NextPage = () => {
                   </td>
                   <td className="px-6 py-4 text-right">
                     <a
-                      href="#"
+                      href="/admin/evaluation"
                       className="font-medium text-blue-600 hover:underline dark:text-blue-500"
                     >
                       See details
@@ -180,7 +216,9 @@ const Grades: NextPage = () => {
               </tbody>
             </table>
           </div>
-        </Section>
+            </Section>
+          </div>
+          </main>
       </PageWrapper>
     </>
   );

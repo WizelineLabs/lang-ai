@@ -12,38 +12,11 @@ const Dashboard: NextPage = () => {
   return (
     <>
       <PageWrapper>
-        <PageTitle>Welcome back, Bismarck</PageTitle>
+        <PageTitle>Welcome back, Administrator</PageTitle>
         <main>
-          <div>
-            <Section>
-              <div style={{ width: "75%", float: "left", padding: 20 }}>
-                <a href="#">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black">
-                    Current English level: C2
-                  </h5>
-                </a>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  You need a level of at least C1 to be admitted into Wizeline
-                </p>
-              </div>
-              <div
-                style={{
-                  margin: "auto",
-                  width: "25%",
-                  float: "right",
-                  padding: 10,
-                }}
-              >
-                <br />
-                <Button>Go to Evaluations</Button>
-              </div>
-            </Section>
-          </div>
-
           <Section title="Latest feedback">
             <p
-              className="font-normal text-gray-700 dark:text-gray-500"
-              style={{ padding: "20px" }}
+              className="font-normal text-gray-700 dark:text-gray-500 p-5"
             >
               Your C2 English is impressive, but diversifying vocabulary and
               sentence structures can further enhance communication skills. Keep
@@ -51,7 +24,7 @@ const Dashboard: NextPage = () => {
             </p>
           </Section>
 
-          <Section title="Exercises awaiting for completion">
+          <Section title="Exercises awaiting for review">
             <div className="mb-8 grid rounded-lg border border-gray-200 shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
               <figure className="flex flex-col items-center justify-center rounded-t-lg border-b border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800 md:rounded-t-none md:rounded-tl-lg md:border-r">
                 <blockquote className="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400 lg:mb-8">
@@ -64,7 +37,7 @@ const Dashboard: NextPage = () => {
                   href="#"
                   className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Resume
+                  Review
                   <svg
                     aria-hidden="true"
                     className="-mr-1 ml-2 h-4 w-4"
@@ -91,7 +64,7 @@ const Dashboard: NextPage = () => {
                   href="#"
                   className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Start
+                  Review
                   <svg
                     aria-hidden="true"
                     className="-mr-1 ml-2 h-4 w-4"
@@ -118,7 +91,7 @@ const Dashboard: NextPage = () => {
                   href="#"
                   className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Start
+                  Review
                   <svg
                     aria-hidden="true"
                     className="-mr-1 ml-2 h-4 w-4"
@@ -145,7 +118,7 @@ const Dashboard: NextPage = () => {
                   href="#"
                   className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
-                  Start
+                  Review
                   <svg
                     aria-hidden="true"
                     className="-mr-1 ml-2 h-4 w-4"
