@@ -19,17 +19,13 @@
 ## Título
 
 ### Tipo de branch
-
 –
 
 ### Descripción
-
 –
 
 ### ¿Qué revisar?
-
 –
 
 ### Notas adicionales
-
 –
