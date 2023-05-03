@@ -8,14 +8,41 @@ on:
 env:
   AWS_REGION: us-east-1
   AWS_LIGHTSAIL_SERVICE_NAME: dev-langai
+  DOCKER_IMAGE_NAME: erickdepavo/langai:latest-dev
 jobs:
-  build_and_deploy:
-    name: Build and Deploy
+  build_and_push:
+    name: Build and Push
     runs-on: ubuntu-latest
     steps:
       - name: Checkout branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build Docker Compose service
+        run: docker compose build prod
+
+      - name: Tag Docker Image
+        run: docker tag langai-prod ${{ env.DOCKER_IMAGE_NAME }}
+
+      - name: Push Docker Image
+        run: docker push ${{ env.DOCKER_IMAGE_NAME }}
+
+  deploy:
+    name: Deploy
+    needs: build_and_push
+    runs-on: ubuntu-latest
+    steps:
       - name: Install Utilities
         run: |
           sudo apt-get update
@@ -38,17 +65,37 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
-      - name: Build Docker Image
-        run: docker build -t ${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}:release .
-
-      - name: Push and Deploy
+      - name: Create Lightsail Deployment
         run: |
           service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
-          aws lightsail push-container-image \
-            --region ${{ env.AWS_REGION }} \
+          aws lightsail create-container-service-deployment \
             --service-name ${service_name} \
-            --label ${service_name} \
-            --image ${service_name}:release
-          aws lightsail get-container-images --service-name ${service_name} | jq --raw-output ".containerImages[0].image" > image.txt
-          jq --arg image $(cat image.txt) '.containers.app.image = $image' container.template.json > container.json
-          aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json file://$(pwd)/container.json
+            --containers '"langai": { \
+              "image": "${{ env.DOCKER_IMAGE_NAME }}", \
+              "environment": { \
+                "APP_ENV": "release", \
+                "AWS_S3_BUCKET": "${{ secrets.AWS_S3_BUCKET }}", \
+                "AWS_ACCESS_KEY_ID": "${{ secrets.AWS_ACCESS_KEY_ID }}", \
+                "AWS_SECRET_ACCESS_KEY": "${{ secrets.AWS_SECRET_ACCESS_KEY }}", \
+                "DATABASE_URL": "${{ secrets.DATABASE_URL }}", \
+                "NEXTAUTH_SECRET": "${{ secrets.NEXTAUTH_SECRET }}", \
+                "NEXTAUTH_URL": "${{ secrets.NEXTAUTH_URL }}", \
+                "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}", \
+                "AWS_DEFAULT_REGION": "${{ env.AWS_DEFAULT_REGION }}" \
+              }, \
+              "ports": { \
+                "3000": "HTTP" \
+              } \
+            }'
+
+      # - name: Push and Deploy
+      #   run: |
+      #     service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
+      #     aws lightsail push-container-image \
+      #       --region ${{ env.AWS_REGION }} \
+      #       --service-name ${service_name} \
+      #       --label ${service_name} \
+      #       --image ${{ env.DOCKER_IMAGE_NAME }}
+      #     aws lightsail get-container-images --service-name ${service_name} | jq --raw-output ".containerImages[0].image" > image.txt
+      #     jq --arg image $(cat image.txt) '.containers.app.image = $image' container.template.json > container.json
+      #     aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json file://$(pwd)/container.json
