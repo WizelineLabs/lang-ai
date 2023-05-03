@@ -8,8 +8,6 @@ export default async function handler(
 ) {
   try {
     const path = req.query.path as string;
-    const mimeType = req.query.mimeType as string | undefined;
-
     const buffer = await readFile(path);
     await uploadFile(buffer, "test/hello.m4a");
     res.status(200).json({ done: true });
