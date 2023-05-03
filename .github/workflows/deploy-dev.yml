@@ -32,6 +32,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set current directory
+        run: cd ${{ github.workspace }}
+
+      - name: Read current directory
+        run: ls
+
       - name: Build Docker Compose service
         run: docker compose -f "${{ github.workspace }}/docker-compose.yml" build prod
 
