@@ -1,11 +1,13 @@
 import { type NextPage } from "next";
-import React from "react";
+import React, { useRef, useState, useCallback } from "react";
 import PageTitle from "~/components/PageTitle";
 import PageWrapper from "~/components/PageWrapper";
 import Button from "~/components/Button";
 import ResponseVideo from "~/components/test/ResponseVideo";
 import Link from "next/link";
-//import { MediaRecorderErrorEvent, MediaRecorderDataAvailableEvent } from 'dom-mediacapture-record';
+import { convertFileToBase64String } from "~/utils/fileToString";
+
+import { api } from "~/utils/api";
 
 const Camtest: NextPage = () => {
   return (
@@ -26,7 +28,6 @@ const Camtest: NextPage = () => {
               </Link>
             </div>
           </div>
-
           <ResponseVideo></ResponseVideo>
         </div>
       </PageWrapper>
