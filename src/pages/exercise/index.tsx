@@ -3,8 +3,13 @@ import PageTitle from "~/components/PageTitle";
 import PageWrapper from "~/components/PageWrapper";
 import Button from "~/components/Button";
 import Section from "~/components/Section";
+import Webcam from "react-webcam";
+import ResponseVideo from "~/components/test/ResponseVideo";
+import { useRef, useState, useCallback } from "react";
+import Link from "next/link";
 
 import { api } from "~/utils/api";
+import InstructionText from "~/components/test/InstructionTextProps";
 
 const Exercise: NextPage = () => {
   return (
@@ -14,9 +19,6 @@ const Exercise: NextPage = () => {
           <div className="flex flex-row justify-between">
             <div className="flex flex-col">
               <PageTitle editsTitle>Lesson Title</PageTitle>
-              <h2 className="py-2 font-sans text-gray-500">
-                Read the following text
-              </h2>
             </div>
 
             <div className="my-auto flex flex-row space-x-5">
@@ -28,7 +30,7 @@ const Exercise: NextPage = () => {
           </div>
           <Section>
             <div className="px-4 py-3">
-              <h1>
+              <InstructionText>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
                 eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
                 enim ad minim veniam, quis nostrud exercitation ullamco laboris
@@ -36,34 +38,11 @@ const Exercise: NextPage = () => {
                 in reprehenderit in voluptate velit esse cillum dolore eu fugiat
                 nulla pariatur. Excepteur sint occaecat cupidatat non proident,
                 sunt in culpa qui officia deserunt mollit anim id est laborum.
-              </h1>
+              </InstructionText>
             </div>
           </Section>
           <br />
-          <div
-            className="flex flex-col p-5"
-            style={{
-              margin: "auto",
-              width: 400,
-              height: 300,
-              background: "black",
-            }}
-          ></div>
-          {/* Remplazar este div con la webcam */}
-          <Section>
-            <div style={{ width: "75%", float: "left" }}>
-              <div style={{ width: "50%", float: "left", padding: 20 }}>
-                <Button>Record</Button> {/* Remplazar boton por icono record*/}
-              </div>
-              <div style={{ width: "45%", float: "right", padding: 20 }}>
-                <Button>Volumen</Button>
-              </div>
-            </div>
-            <div style={{ width: "15%", float: "right", padding: 20 }}>
-              <Button>Redo</Button>
-              {/* Remplazar boton por icono redo*/}
-            </div>
-          </Section>
+          <ResponseVideo />
         </div>
       </PageWrapper>
     </>
