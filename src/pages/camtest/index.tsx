@@ -56,6 +56,8 @@ const Camtest: NextPage = () => {
   const webcamRef = useRef<Webcam>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
+  const [recordedAudioChunks, setRecordedAudioChunks] = useState<Blob[]>([]);
+
 
   const handleRecord = () => {
     if (!mediaRecorder) {
@@ -81,20 +83,25 @@ const Camtest: NextPage = () => {
       setMediaRecorder(mediaRecorder);
 
       // Register event listener for the MediaRecorder object
-      mediaRecorder.ondataavailable = (event) => {
+      mediaRecorder.ondataavailable = (event: BlobEvent) => {
         console.log("MediaRecorder has new data available");
         if (event.data.size > 0) {
-          // Create a Uint8Array buffer from the Blob data
           const reader = new FileReader();
           reader.onload = () => {
             const buffer = new Uint8Array(reader.result as ArrayBuffer);
             const blob = new Blob([buffer], {
-              type: videoCodec,
+              type: event.data.type,
             });
-
-            // Add the recorded data to the recordedChunks state variable
-            setRecordedChunks((prevChunks) => [...prevChunks, blob]);
-            console.log("Added chunk to video");
+      
+            const isAudio = event.data.type.startsWith("audio/");
+            
+            if (isAudio) {
+              setRecordedAudioChunks((prevChunks) => [...prevChunks, blob]);
+              console.log("Added chunk to audio");
+            } else {
+              setRecordedChunks((prevChunks) => [...prevChunks, blob]);
+              console.log("Added chunk to video");
+            }
           };
           reader.readAsArrayBuffer(event.data);
         }
@@ -111,12 +118,20 @@ const Camtest: NextPage = () => {
   };
 
   const concatenateRecordedChunks = () => {
-    const recordedBlob = new Blob(recordedChunks, {
+    const recordedVideoBlob = new Blob(recordedChunks, {
       type: videoFormat?.mimeType,
     });
-    console.log("Created file");
-    setRecordedVideoUrl(URL.createObjectURL(recordedBlob));
+    const recordedAudioBlob = new Blob(recordedAudioChunks, {
+      type: mediaRecorder?.mimeType || 'audio/webm', 
+    });
+  
+    console.log("Created files");
+  
+    setRecordedVideoUrl(URL.createObjectURL(recordedVideoBlob));
+    const recordedAudioUrl = URL.createObjectURL(recordedAudioBlob);
+  
     setRecordedChunks([]);
+    setRecordedAudioChunks([]);
   };
 
   return (
