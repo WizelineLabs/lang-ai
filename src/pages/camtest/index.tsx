@@ -56,6 +56,7 @@ const Camtest: NextPage = () => {
   const webcamRef = useRef<Webcam>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
+  const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
   const [recordedAudioChunks, setRecordedAudioChunks] = useState<Blob[]>([]);
 
 
@@ -128,7 +129,7 @@ const Camtest: NextPage = () => {
     console.log("Created files");
   
     setRecordedVideoUrl(URL.createObjectURL(recordedVideoBlob));
-    const recordedAudioUrl = URL.createObjectURL(recordedAudioBlob);
+    setRecordedAudioUrl(URL.createObjectURL(recordedAudioBlob));
   
     setRecordedChunks([]);
     setRecordedAudioChunks([]);
