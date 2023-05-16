@@ -13,6 +13,7 @@ jobs:
   build_and_push:
     name: Build and Push
     runs-on: ubuntu-latest
+    environment: Dev
     steps:
       - name: Checkout branch
         uses: actions/checkout@v3
@@ -45,7 +46,7 @@ jobs:
         run: ls
 
       - name: Build Docker Compose service
-        run: docker compose -f "${{ github.workspace }}/docker-compose.yml" build prod
+        run: docker compose -f "${{ github.workspace }}/docker-compose.yml" build prod --progress plain
 
       - name: Tag Docker Image
         run: docker tag langai-prod ${{ env.DOCKER_IMAGE_NAME }}
@@ -57,6 +58,7 @@ jobs:
     name: Deploy
     needs: build_and_push
     runs-on: ubuntu-latest
+    environment: Dev
     steps:
       - name: Install Utilities
         run: |
@@ -90,12 +92,18 @@ jobs:
                 "image": "${{ env.DOCKER_IMAGE_NAME }}",
                 "environment": {
                   "APP_ENV": "release",
-                  "AWS_S3_BUCKET": "${{ secrets.AWS_S3_BUCKET }}",
-                  "AWS_ACCESS_KEY_ID": "${{ secrets.AWS_ACCESS_KEY_ID }}",
-                  "AWS_SECRET_ACCESS_KEY": "${{ secrets.AWS_SECRET_ACCESS_KEY }}",
                   "DATABASE_URL": "${{ secrets.DATABASE_URL }}",
                   "NEXTAUTH_SECRET": "${{ secrets.NEXTAUTH_SECRET }}",
                   "NEXTAUTH_URL": "${{ secrets.NEXTAUTH_URL }}",
+                  "AWS_S3_BUCKET": "${{ secrets.AWS_S3_BUCKET }}",
+                  "AWS_ACCESS_KEY_ID": "${{ secrets.AWS_ACCESS_KEY_ID }}",
+                  "AWS_SECRET_ACCESS_KEY": "${{ secrets.AWS_SECRET_ACCESS_KEY }}",
+                  "GOOGLE_CLIENT_ID": "${{ secrets.GOOGLE_CLIENT_ID }}",
+                  "GOOGLE_CLIENT_SECRET": "${{ secrets.GOOGLE_CLIENT_SECRET }}",
+                  "AUTH0_BASE_URL": "${{ secrets.AUTH0_BASE_URL }}",
+                  "AUTH0_ISSUER": "${{ secrets.AUTH0_ISSUER }}",
+                  "AUTH0_CLIENT_ID": "${{ secrets.AUTH0_CLIENT_ID }}",
+                  "AUTH0_CLIENT_SECRET": "${{ secrets.AUTH0_CLIENT_SECRET }}",
                   "OPENAI_API_KEY": "${{ secrets.OPENAI_API_KEY }}",
                   "AWS_DEFAULT_REGION": "${{ env.AWS_DEFAULT_REGION }}"
                 },
@@ -117,14 +125,3 @@ jobs:
                 "successCodes": "200-499"
               }
             }'
-      # - name: Push and Deploy
-      #   run: |
-      #     service_name=${{ env.AWS_LIGHTSAIL_SERVICE_NAME }}
-      #     aws lightsail push-container-image \
-      #       --region ${{ env.AWS_REGION }} \
-      #       --service-name ${service_name} \
-      #       --label ${service_name} \
-      #       --image ${{ env.DOCKER_IMAGE_NAME }}
-      #     aws lightsail get-container-images --service-name ${service_name} | jq --raw-output ".containerImages[0].image" > image.txt
-      #     jq --arg image $(cat image.txt) '.containers.app.image = $image' container.template.json > container.json
-      #     aws lightsail create-container-service-deployment --service-name ${service_name} --cli-input-json file://$(pwd)/container.json

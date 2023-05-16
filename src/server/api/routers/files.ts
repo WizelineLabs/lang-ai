@@ -8,8 +8,6 @@ import {
   // protectedProcedure,
 } from "~/server/api/trpc";
 
-import { uploadFile } from "~/services/aws/s3";
-
 export const filesRouter = createTRPCRouter({
   saveFile: publicProcedure
     .input(
@@ -20,6 +18,8 @@ export const filesRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input }) => {
+      const { uploadFile } = await import("~/services/aws/s3");
+
       const fileName = randomUUID() + "." + input.extension;
       const filePath = path.join("test", fileName);
 
