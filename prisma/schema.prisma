@@ -8,41 +8,42 @@ datasource db {
 }
 
 model Account {
-  id                  String  @id @default(cuid())
-  user_id             String
-  type                String
-  provider            String
-  provider_account_id String
-  refresh_token       String?
-  access_token        String?
-  expires_at          Int?
-  token_type          String?
-  scope               String?
-  id_token            String?
-  session_state       String?
-  user                User    @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-  @@unique([provider, provider_account_id])
+  @@unique([provider, providerAccountId])
 }
 
 model User {
-  id             String     @id @default(cuid())
-  first_name     String?
-  last_name      String?
-  email          String?    @unique
-  email_verified DateTime?
-  image          String?
-  accounts       Account[]
-  sessions       Session[]
-  UserTest       UserTest[]
+  id            String     @id @default(cuid())
+  name          String?
+  firstName     String?    @map("first_name")
+  lastName      String?    @map("last_name")
+  email         String     @unique
+  emailVerified DateTime?  @map("email_verified")
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+  UserTest      UserTest[]
 }
 
 model Session {
-  id            String   @id @default(cuid())
-  session_token String   @unique
-  user_id       String
-  expires       DateTime
-  user          User     @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model VerificationToken {
