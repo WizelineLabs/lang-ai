@@ -7,7 +7,6 @@ import {
   PageWrapper,
   Section,
 } from "~/components";
-import Link from "next/link";
 
 const Evaluations: NextPage = () => {
   return (
@@ -40,7 +39,7 @@ const Evaluations: NextPage = () => {
             theme="secondary"
             icon={<ChevronIcon className="h-6" />}
             iconInRight
-            href="/grades/"
+            href="/grades?category=evaluations"
           >
             <div className="py-16">
               <span className="text-2xl">See previous results</span>

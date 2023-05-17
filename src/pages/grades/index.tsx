@@ -1,18 +1,37 @@
-import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
-import Button from "~/components/Button";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
-import SegmentedPicker from "~/components/SegmentedPicker";
-import Section from "~/components/Section";
-import { Dropdown, DropdownButton } from "~/components/Dropdown";
+import { useEffect, useState } from "react";
+import { useQueryStatePicker } from "~/hooks";
+import {
+  Dropdown,
+  DropdownButton,
+  PageTitle,
+  PageWrapper,
+  Section,
+  SegmentedPicker,
+} from "~/components";
 import { GradesRow } from "~/components/tables";
 
 type PickerOptions = "Learn" | "Evaluations";
 
+function getPickerOption(string: string): PickerOptions {
+  if (string == "learn") {
+    return "Learn";
+  } else if (string == "evaluations") {
+    return "Evaluations";
+  } else {
+    return "Learn";
+  }
+}
+
 const Grades: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("Learn");
+  const [selectedCategory, setSelectedCategory] = useQueryStatePicker(
+    "category",
+    { defaultValue: "learn", allowedValues: new Set(["learn", "evaluations"]) }
+  );
+
+  function didSelectInPicker(category: PickerOptions) {
+    setSelectedCategory(category.toLowerCase());
+  }
 
   return (
     <>
@@ -21,9 +40,9 @@ const Grades: NextPage = () => {
         <div className="flex flex-row place-content-between">
           <SegmentedPicker
             title="Choose category:"
-            selectedOption={selectedCategory}
+            selectedOption={getPickerOption(selectedCategory)}
             options={["Learn", "Evaluations"]}
-            didSelectOption={(o) => setSelectedCategory(o)}
+            didSelectOption={(o) => didSelectInPicker(o)}
           />
           <Dropdown
             id={"date-dropdown"}
@@ -46,33 +65,33 @@ const Grades: NextPage = () => {
           <div className="space-0 flex flex-col divide-y">
             <GradesRow
               title={
-                selectedCategory === "Learn"
+                selectedCategory === "learn"
                   ? "Lesson 1"
                   : "Untitled Evaluation"
               }
-              description={selectedCategory === "Learn" ? "Description." : ""}
+              description={selectedCategory === "learn" ? "Description." : ""}
               date={new Date()}
-              grade={selectedCategory === "Learn" ? 74 : "C1"}
+              grade={selectedCategory === "learn" ? 74 : "C1"}
             />
             <GradesRow
               title={
-                selectedCategory === "Learn"
+                selectedCategory === "learn"
                   ? "Lesson 2"
                   : "Untitled Evaluation"
               }
-              description={selectedCategory === "Learn" ? "Description." : ""}
+              description={selectedCategory === "learn" ? "Description." : ""}
               date={new Date()}
-              grade={selectedCategory === "Learn" ? 39 : "B2"}
+              grade={selectedCategory === "learn" ? 39 : "B2"}
             />
             <GradesRow
               title={
-                selectedCategory === "Learn"
+                selectedCategory === "learn"
                   ? "Lesson 3"
                   : "Untitled Evaluation"
               }
-              description={selectedCategory === "Learn" ? "Description." : ""}
+              description={selectedCategory === "learn" ? "Description." : ""}
               date={new Date()}
-              grade={selectedCategory === "Learn" ? 65 : "A2"}
+              grade={selectedCategory === "learn" ? 65 : "A2"}
             />
           </div>
         </Section>
