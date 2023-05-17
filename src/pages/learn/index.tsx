@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   PageTitle,
   PageWrapper,
@@ -7,6 +7,7 @@ import {
   SegmentedPicker,
   Dropdown,
   DropdownButton,
+  Spinner,
 } from "~/components";
 import { LessonRow } from "~/components/tables";
 
@@ -17,6 +18,8 @@ type PickerOptions = "Basic" | "Conversational" | "Technical";
 const Learn: NextPage = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<PickerOptions>("Basic");
+
+  const { data: tests, isLoading, error } = api.learn.getTests.useQuery();
 
   return (
     <>
@@ -47,7 +50,34 @@ const Learn: NextPage = () => {
               <DropdownButton title="User" onClick={() => console.log("3")} />
             </Dropdown>
           </div>
-          <Section title="Part 1. Part title...">
+          {tests && tests.length > 0 ? (
+            <Section title="Part 1. Part title...">
+              <div className="space-0 flex flex-col divide-y">
+                {tests.map((test) => (
+                  <LessonRow
+                    key={test.id}
+                    title={test.name}
+                    description={test.description ?? ""}
+                    difficulty={test.difficulty}
+                    state="pending"
+                  />
+                ))}
+              </div>
+            </Section>
+          ) : (
+            <div className="mt-8 grid w-full justify-center py-16">
+              <div hidden={!isLoading} className="mx-auto text-secondary">
+                <Spinner />
+              </div>
+              <p
+                hidden={isLoading}
+                className="text-center text-sm text-secondary"
+              >
+                {error ? error.message : "No data to show."}
+              </p>
+            </div>
+          )}
+          {/* <Section title="Part 2. Part title...">
             <div className="space-0 flex flex-col divide-y">
               <LessonRow
                 title="Lesson 1"
@@ -68,29 +98,7 @@ const Learn: NextPage = () => {
                 state="pending"
               />
             </div>
-          </Section>
-          <Section title="Part 2. Part title...">
-            <div className="space-0 flex flex-col divide-y">
-              <LessonRow
-                title="Lesson 1"
-                description="Description."
-                difficulty={0}
-                state="done"
-              />
-              <LessonRow
-                title="Lesson 2"
-                description="Description."
-                difficulty={1}
-                state="inProgress"
-              />
-              <LessonRow
-                title="Lesson 3"
-                description="Description."
-                difficulty={2}
-                state="pending"
-              />
-            </div>
-          </Section>
+          </Section> */}
         </main>
       </PageWrapper>
     </>

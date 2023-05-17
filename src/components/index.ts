@@ -4,3 +4,4 @@ export * from "./PageTitle";
 export * from "./PageWrapper";
 export * from "./Section";
 export * from "./SegmentedPicker";
+export * from "./Spinner";
