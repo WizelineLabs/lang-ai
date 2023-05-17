@@ -26,9 +26,9 @@ export function LessonRow(props: LessonRowProps) {
   function getDifficultyColor(number: number) {
     switch (number) {
       case 0:
-        return "text-green-600";
+        return "text-emerald-600";
       case 1:
-        return "text-yellow-500";
+        return "text-yellow-400";
       case 2:
         return "text-red-600";
       default:
@@ -56,7 +56,7 @@ export function LessonRow(props: LessonRowProps) {
     }
   }
   return (
-    <div className="flex flex-row justify-between px-5 py-3">
+    <div className="flex flex-row justify-between py-3 pl-5 pr-4">
       <div className="flex grow flex-col space-y-2">
         <span className="text-base font-semibold leading-5 text-primary">
           {title}.{" "}

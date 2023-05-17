@@ -50,107 +50,45 @@ const Learn: NextPage = () => {
           <Section title="Part 1. Part title...">
             <div className="space-0 flex flex-col divide-y">
               <LessonRow
-                title="Test"
-                description="Hola"
+                title="Lesson 1"
+                description="Description."
                 difficulty={0}
                 state="done"
               />
               <LessonRow
-                title="Test"
-                description="Hola"
+                title="Lesson 2"
+                description="Description."
                 difficulty={1}
                 state="inProgress"
               />
               <LessonRow
-                title="Test"
-                description="Hola"
+                title="Lesson 3"
+                description="Description."
                 difficulty={2}
                 state="pending"
               />
             </div>
           </Section>
           <Section title="Part 2. Part title...">
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-              <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      Title
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Description
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      Difficulty
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <span className="sr-only">Start</span>
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                      Lesson Title
-                    </th>
-                    <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{ color: "#FFC300" }}>
-                      Medium
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        Start
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                      Lesson Title
-                    </th>
-                    <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{ color: "#FFC300" }}>
-                      Medium
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        Start
-                      </a>
-                    </td>
-                  </tr>
-                  <tr className="bg-white hover:bg-gray-50 dark:bg-gray-800 dark:hover:bg-gray-600">
-                    <th
-                      scope="row"
-                      className="whitespace-nowrap px-6 py-4 font-medium text-gray-900 dark:text-white"
-                    >
-                      Lesson Title
-                    </th>
-                    <td className="px-6 py-4">Lesson Description</td>
-                    <td className="px-6 py-4" style={{ color: "red" }}>
-                      Hard
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <a
-                        href="#"
-                        className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                      >
-                        Start
-                      </a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+            <div className="space-0 flex flex-col divide-y">
+              <LessonRow
+                title="Lesson 1"
+                description="Description."
+                difficulty={0}
+                state="done"
+              />
+              <LessonRow
+                title="Lesson 2"
+                description="Description."
+                difficulty={1}
+                state="inProgress"
+              />
+              <LessonRow
+                title="Lesson 3"
+                description="Description."
+                difficulty={2}
+                state="pending"
+              />
             </div>
           </Section>
         </main>

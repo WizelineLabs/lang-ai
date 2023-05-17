@@ -6,6 +6,7 @@ import PageWrapper from "~/components/PageWrapper";
 import SegmentedPicker from "~/components/SegmentedPicker";
 import Section from "~/components/Section";
 import { Dropdown, DropdownButton } from "~/components/Dropdown";
+import { GradesRow } from "~/components/tables";
 
 type PickerOptions = "Learn" | "Evaluations";
 
@@ -41,144 +42,38 @@ const Grades: NextPage = () => {
           </Dropdown>
         </div>
 
-        <Section title="">
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <tbody>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      100
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      95
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      55
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-red-500 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      30
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      69
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      100
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        <Section>
+          <div className="space-0 flex flex-col divide-y">
+            <GradesRow
+              title={
+                selectedCategory === "Learn"
+                  ? "Lesson 1"
+                  : "Untitled Evaluation"
+              }
+              description={selectedCategory === "Learn" ? "Description." : ""}
+              date={new Date()}
+              grade={selectedCategory === "Learn" ? 74 : "C1"}
+            />
+            <GradesRow
+              title={
+                selectedCategory === "Learn"
+                  ? "Lesson 2"
+                  : "Untitled Evaluation"
+              }
+              description={selectedCategory === "Learn" ? "Description." : ""}
+              date={new Date()}
+              grade={selectedCategory === "Learn" ? 39 : "B2"}
+            />
+            <GradesRow
+              title={
+                selectedCategory === "Learn"
+                  ? "Lesson 3"
+                  : "Untitled Evaluation"
+              }
+              description={selectedCategory === "Learn" ? "Description." : ""}
+              date={new Date()}
+              grade={selectedCategory === "Learn" ? 65 : "A2"}
+            />
           </div>
         </Section>
       </PageWrapper>
