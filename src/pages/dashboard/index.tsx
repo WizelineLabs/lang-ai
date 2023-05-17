@@ -7,12 +7,16 @@ import {
   PageTitle,
   PageWrapper,
   Section,
+  Spinner,
 } from "~/components";
 import { LessonRow } from "~/components/tables";
 
 import { api } from "~/utils/api";
 
 const Dashboard: NextPage = () => {
+
+  const { data: tests, isLoading, error } = api.learn.getTests.useQuery();
+
   return (
     <>
       <PageWrapper>
@@ -59,28 +63,37 @@ const Dashboard: NextPage = () => {
             </div>
           </Section>
 
+
+
+          {tests && tests.length > 0 ? (
           <Section title="Exercises awaiting for completion">
             <div className="space-0 flex flex-col divide-y">
+              {tests.map((test) => (
+              
               <LessonRow
-                title="Lesson 1"
-                description="Description."
-                difficulty={0}
-                state="inProgress"
-              />
-              <LessonRow
-                title="Lesson 2"
-                description="Description."
-                difficulty={1}
-                state="inProgress"
-              />
-              <LessonRow
-                title="Lesson 3"
-                description="Description."
-                difficulty={2}
+                key={test.id}
+                title={test.name}
+                description={test.description ?? ""}
+                difficulty={test.difficulty}
                 state="pending"
               />
+              
+              ))}
             </div>
           </Section>
+          ) : (
+            <div className="mt-8 grid w-full justify-center py-16">
+              <div hidden={!isLoading} className="mx-auto text-secondary">
+                <Spinner />
+              </div>
+              <p
+                hidden={isLoading}
+                className="text-center text-sm text-secondary"
+              >
+                {error ? error.message : "No data to show."}
+              </p>
+            </div>
+          )}
         </main>
       </PageWrapper>
     </>
