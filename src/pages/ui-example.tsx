@@ -1,11 +1,14 @@
 import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
-import Button from "~/components/Button";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
-import SegmentedPicker from "~/components/SegmentedPicker";
-import Section from "~/components/Section";
-import { Dropdown, DropdownButton } from "~/components/Dropdown";
+import {
+  Button,
+  Dropdown,
+  DropdownButton,
+  PageTitle,
+  PageWrapper,
+  Section,
+  SegmentedPicker,
+} from "~/components";
 
 type PickerOptions = "One" | "Two" | "Three";
 

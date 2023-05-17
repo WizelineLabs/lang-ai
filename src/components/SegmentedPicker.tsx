@@ -1,11 +1,11 @@
-interface SegmentedPickerProps<Option extends string> {
+export interface SegmentedPickerProps<Option extends string> {
   title: string;
   selectedOption: Option;
   options: Option[];
   didSelectOption: (o: Option) => void;
 }
 
-function SegmentedPicker<O extends string>({
+export function SegmentedPicker<O extends string>({
   title,
   selectedOption,
   options,

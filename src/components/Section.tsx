@@ -1,11 +1,11 @@
 import * as React from "react";
 
-interface SectionProps {
+export interface SectionProps {
   title?: string;
   children: React.ReactNode;
 }
 
-function Section({ title, children }: SectionProps) {
+export function Section({ title, children }: SectionProps) {
   return (
     <div className="mt-8 flex flex-col space-y-2">
       {title && (
