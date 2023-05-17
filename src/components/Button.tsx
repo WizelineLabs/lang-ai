@@ -13,7 +13,7 @@ function getClassNameForTheme(theme: ButtonTheme) {
     case "primary-inverted":
       return `${buttonClassName} bg-white hover:bg-slate-50 text-red-600 hover:text-red-700 font-regular focus:ring-red-600/50 border border-slate-200 focus:border-red-600`;
     case "secondary":
-      return `${buttonClassName} bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-regular focus:ring-slate-700/50 border border-slate-200`;
+      return `${buttonClassName} bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-regular focus:ring-slate-700/50 border border-slate-200 focus:border-slate-700`;
   }
 }
 
@@ -92,6 +92,16 @@ export function LinkButton(props: LinkButtonProps) {
 
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
-export function ChevronIcon() {
-  return <ChevronRightIcon className="-mx-1 h-5" strokeWidth={2} aria-hidden />;
+interface ChevronIconProps {
+  className?: string;
+}
+
+export function ChevronIcon(props: ChevronIconProps) {
+  return (
+    <ChevronRightIcon
+      className={props.className ?? "-mx-1 h-5"}
+      strokeWidth={2}
+      aria-hidden
+    />
+  );
 }
