@@ -7,10 +7,11 @@ export interface LessonRowProps {
   description: string;
   difficulty: number;
   state: LessonState;
+  buttonOnClick?: () => void;
 }
 
 export function LessonRow(props: LessonRowProps) {
-  const { title, description, difficulty, state } = props;
+  const { title, description, difficulty, state, buttonOnClick } = props;
   function getDifficultyText(number: number) {
     switch (number) {
       case 0:
@@ -74,6 +75,7 @@ export function LessonRow(props: LessonRowProps) {
         theme={getStateButtonTheme(state)}
         icon={<ChevronIcon />}
         iconInRight
+        onClick={buttonOnClick}
       >
         {getStateText(state)}
       </Button>

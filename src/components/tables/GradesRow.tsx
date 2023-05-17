@@ -9,10 +9,11 @@ export interface GradesRowProps {
   description: string;
   date: Date;
   grade?: TestGrade;
+  buttonOnClick?: () => void;
 }
 
 export function GradesRow(props: GradesRowProps) {
-  const { title, description, date, grade } = props;
+  const { title, description, date, grade, buttonOnClick } = props;
   const formattedDate = date.toLocaleString("en-US", {
     dateStyle: "long",
     timeStyle: "short",
@@ -35,6 +36,7 @@ export function GradesRow(props: GradesRowProps) {
         theme="secondary"
         icon={<ChevronIcon />}
         iconInRight
+        onClick={buttonOnClick}
       >
         See details
       </Button>
