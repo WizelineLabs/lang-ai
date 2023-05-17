@@ -43,6 +43,13 @@ export function Button(props: ButtonProps) {
   );
 }
 
+export interface LinkButtonProps
+  extends LinkProps,
+    React.AnchorHTMLAttributes<HTMLAnchorElement> {
+  href: string;
+  asAnchor?: boolean;
+}
+
 export default Button;
 
 export interface LinkButtonProps
