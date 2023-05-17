@@ -8,8 +8,11 @@ import {
   PageWrapper,
   Section,
   SegmentedPicker,
+  Spinner,
 } from "~/components";
 import { GradesRow } from "~/components/tables";
+
+import { api } from "~/utils/api";
 
 type PickerOptions = "Learn" | "Evaluations";
 
@@ -32,6 +35,12 @@ const Grades: NextPage = () => {
   function didSelectInPicker(category: PickerOptions) {
     setSelectedCategory(category.toLowerCase());
   }
+
+  const {
+    data: grades,
+    isLoading,
+    error,
+  } = api.grades.getGrades.useQuery({ category: selectedCategory });
 
   return (
     <>
@@ -60,41 +69,32 @@ const Grades: NextPage = () => {
             <DropdownButton title="Level" onClick={() => console.log("2")} />
           </Dropdown>
         </div>
-
-        <Section>
-          <div className="space-0 flex flex-col divide-y">
-            <GradesRow
-              title={
-                selectedCategory === "learn"
-                  ? "Lesson 1"
-                  : "Untitled Evaluation"
-              }
-              description={selectedCategory === "learn" ? "Description." : ""}
-              date={new Date()}
-              grade={selectedCategory === "learn" ? 74 : "C1"}
-            />
-            <GradesRow
-              title={
-                selectedCategory === "learn"
-                  ? "Lesson 2"
-                  : "Untitled Evaluation"
-              }
-              description={selectedCategory === "learn" ? "Description." : ""}
-              date={new Date()}
-              grade={selectedCategory === "learn" ? 39 : "B2"}
-            />
-            <GradesRow
-              title={
-                selectedCategory === "learn"
-                  ? "Lesson 3"
-                  : "Untitled Evaluation"
-              }
-              description={selectedCategory === "learn" ? "Description." : ""}
-              date={new Date()}
-              grade={selectedCategory === "learn" ? 65 : "A2"}
-            />
+        {grades && grades.length > 0 ? (
+          <Section>
+            <div className="space-0 flex flex-col divide-y">
+              {grades.map((userTest) => (
+                <GradesRow
+                  title={userTest?.test.name ?? "Untitled"}
+                  description={userTest?.test.description ?? ""}
+                  date={userTest?.submissionDate ?? new Date()}
+                  grade={Number(userTest?.score)}
+                />
+              ))}
+            </div>
+          </Section>
+        ) : (
+          <div className="mt-8 grid w-full justify-center py-16">
+            <div hidden={!isLoading} className="mx-auto text-secondary">
+              <Spinner />
+            </div>
+            <p
+              hidden={isLoading}
+              className="text-center text-sm text-secondary"
+            >
+              {error ? error.message : "No data to show."}
+            </p>
           </div>
-        </Section>
+        )}
       </PageWrapper>
     </>
   );
