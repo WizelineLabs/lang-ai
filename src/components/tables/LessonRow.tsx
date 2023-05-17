@@ -60,7 +60,8 @@ export function LessonRow(props: LessonRowProps) {
     <div className="flex flex-row justify-between py-3 pl-5 pr-4">
       <div className="flex grow flex-col space-y-2">
         <span className="text-base font-semibold leading-5 text-primary">
-          {title}.{" "}
+          {title}
+          {description ? ". " : ""}
           <span className="font-normal text-secondary">{description}</span>
         </span>
         <span className="text-sm font-normal leading-4 text-secondary">
