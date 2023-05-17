@@ -7,8 +7,9 @@ const config = {
   theme: {
     extend: {
       fontSize: {
-        sm: ["15px", "20px"],
-        base: ["17px", "24px"],
+        xs: ["13px", "17px"],
+        sm: ["15px", "21px"],
+        base: ["17px", "25px"],
       },
       colors: {
         primary: {
