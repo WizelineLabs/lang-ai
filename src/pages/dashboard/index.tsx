@@ -17,6 +17,9 @@ const Dashboard: NextPage = () => {
   return (
     <>
       <PageWrapper>
+        <Head>
+          <title>LangAI</title>
+        </Head>
         <PageTitle>Welcome back, Bismarck</PageTitle>
         <main>
           <div>
