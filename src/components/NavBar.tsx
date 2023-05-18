@@ -2,11 +2,13 @@ import * as React from "react";
 import { Fragment } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 import {
   ChevronDownIcon,
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/20/solid";
+import { signOut } from "next-auth/react";
 
 interface NavBarLink {
   title: string;
@@ -33,11 +35,16 @@ const userOptions: NavBarLink[] = [
 ];
 
 function NavBar() {
+  const session = useSession();
   function didTapLogOut() {
-    console.log("Logged Out");
+    signOut({callbackUrl: 'http://localhost:3000/login'})
+    
+    /* console.log("Logged Out"); */
+    
   }
 
   return (
+    
     <nav className="flex flex-row place-content-between border-b bg-white">
       <div className="mx-4 flex flex-row space-x-3">
         <Image
@@ -68,13 +75,15 @@ function NavBar() {
           >
             <Image
               className="mr-2 rounded-full"
-              src="/bismarck.jpg"
+              src="/defaultuser.png"
               alt="Profile Picture"
               width={32}
               height={32}
             />
             <span className="inline-flex flex-row self-center">
-              Bismarck
+
+              {session.data?.user.name ?? "Nadie"}
+
               <ChevronDownIcon
                 className="-mr-1 h-6 w-6 text-slate-500"
                 aria-hidden="true"
@@ -92,16 +101,19 @@ function NavBar() {
           >
             <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="px-4 py-2">
-                <div className="text-sm text-slate-900">Bismarck Lepe</div>
+                <div className="text-sm text-slate-900">{session.data?.user.name ?? "Nadie"}</div>
                 <div className="truncate text-sm font-medium text-slate-600">
-                  bismarck@wizeline.com
+                {session.data?.user.email ?? "Nadie"}
                 </div>
               </div>
               <div className="py-1">
                 <Menu.Item>
-                  {({ active: hovered }) => (
+
+
+
+                {({ active: hovered }) => (
                     <button
-                      onClick={() => didTapLogOut()}
+                      onClick={() => didTapLogOut() }
                       className={`${
                         hovered ? "bg-slate-100" : "bg-white text-gray-900"
                       } group flex w-full items-center px-3 py-2 text-sm text-slate-900`}
@@ -112,7 +124,13 @@ function NavBar() {
                       />
                       Sign out
                     </button>
-                  )}
+                  )} 
+
+
+
+
+
+
                 </Menu.Item>
               </div>
             </Menu.Items>
