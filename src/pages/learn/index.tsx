@@ -60,6 +60,7 @@ const Learn: NextPage = () => {
                     description={test.description ?? ""}
                     difficulty={test.difficulty}
                     state="pending"
+                    buttonHref={`/learn/${test.id}/`}
                   />
                 ))}
               </div>

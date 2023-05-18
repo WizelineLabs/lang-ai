@@ -10,9 +10,9 @@ datasource db {
 // Para que example router funcione
 // Se eliminará en el futuro
 model Example {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Account {
@@ -94,8 +94,9 @@ model UserTest {
   user_id          String
   test_id          String
   submitted        Boolean
+  startDate        DateTime         @default(now())
   submissionDate   DateTime?
-  score            Decimal          @db.Decimal
+  score            Decimal?         @db.Decimal
   test             Test             @relation(fields: [test_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "test_id")
   user             User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id")
   user_test_answer UserTestAnswer[]
