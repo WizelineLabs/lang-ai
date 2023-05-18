@@ -1,5 +1,6 @@
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
 import {
   ChevronIcon,
@@ -14,6 +15,7 @@ import { LessonRow } from "~/components/tables";
 import { api } from "~/utils/api";
 
 const Dashboard: NextPage = () => {
+  const session = useSession();
   const { data: tests, isLoading, error } = api.learn.getTests.useQuery();
 
   return (
@@ -22,7 +24,12 @@ const Dashboard: NextPage = () => {
         <Head>
           <title>LangAI</title>
         </Head>
-        <PageTitle>Welcome back, Bismarck</PageTitle>
+
+
+        <PageTitle>Welcome back, {session.data?.user.name ?? "Nadie"}</PageTitle>
+
+
+        
         <main>
           <div>
             <Section>
