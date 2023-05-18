@@ -2,6 +2,7 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
 import { filesRouter } from "./routers/files";
 import { learnRouter } from "./routers/learn";
+import { testRouter } from "./routers/test";
 import { gradesRouter } from "./routers/grades";
 
 /**
@@ -14,6 +15,7 @@ export const appRouter = createTRPCRouter({
   files: filesRouter,
   grades: gradesRouter,
   learn: learnRouter,
+  test: testRouter,
 });
 
 // export type definition of API

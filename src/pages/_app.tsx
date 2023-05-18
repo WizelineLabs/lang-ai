@@ -7,6 +7,9 @@ import { api } from "~/utils/api";
 
 import "~/styles/globals.css";
 
+import { AlertProvider } from "~/contexts/AlertContext";
+import AlertOverlay from "~/components/AlertOverlay";
+
 const MyApp: AppType<{ session: Session | null }> = ({
   Component,
   pageProps: { session, ...pageProps },
@@ -33,9 +36,12 @@ const MyApp: AppType<{ session: Session | null }> = ({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </Head>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
+      <AlertProvider>
+        <SessionProvider session={session}>
+          <Component {...pageProps} />
+        </SessionProvider>
+        <AlertOverlay />
+      </AlertProvider>
     </>
   );
 };

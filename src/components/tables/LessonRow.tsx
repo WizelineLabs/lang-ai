@@ -1,4 +1,4 @@
-import { Button, ChevronIcon } from "~/components";
+import { Button, ChevronIcon, LinkButton } from "~/components";
 
 export type LessonState = "pending" | "inProgress" | "done";
 
@@ -7,11 +7,11 @@ export interface LessonRowProps {
   description: string;
   difficulty: number;
   state: LessonState;
-  buttonOnClick?: () => void;
+  buttonHref?: string;
 }
 
 export function LessonRow(props: LessonRowProps) {
-  const { title, description, difficulty, state, buttonOnClick } = props;
+  const { title, description, difficulty, state, buttonHref } = props;
   function getDifficultyText(number: number) {
     switch (number) {
       case 0:
@@ -71,15 +71,15 @@ export function LessonRow(props: LessonRowProps) {
           </span>
         </span>
       </div>
-      <Button
+      <LinkButton
         className="my-auto"
         theme={getStateButtonTheme(state)}
         icon={<ChevronIcon />}
         iconInRight
-        onClick={buttonOnClick}
+        href={buttonHref ?? ""}
       >
         {getStateText(state)}
-      </Button>
+      </LinkButton>
     </div>
   );
 }

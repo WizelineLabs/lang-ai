@@ -1,19 +1,26 @@
 import * as React from "react";
 import Link, { type LinkProps } from "next/link";
+import { Spinner } from "~/components";
 
 const buttonClassName =
   "rounded-md px-3 py-2 text-base focus:outline-none focus:ring focus:ring-offset-0 shadow-sm inline-flex items-center align-middle gap-1.5";
 
 type ButtonTheme = "primary" | "primary-inverted" | "secondary";
 
-function getClassNameForTheme(theme: ButtonTheme) {
+function getClassNameForTheme(theme: ButtonTheme, disabled: boolean) {
   switch (theme) {
     case "primary":
-      return `${buttonClassName} bg-red-600 hover:bg-red-700 text-white hover:text-gray-100 font-medium focus:ring-red-600/50 border border-red-600`;
+      return `${buttonClassName} bg-red-600 text-white font-medium focus:ring-red-600/50 border border-red-600 ${
+        disabled ? "opacity-50" : "hover:bg-red-700 hover:text-gray-100"
+      }`;
     case "primary-inverted":
-      return `${buttonClassName} bg-white hover:bg-slate-50 text-red-600 hover:text-red-700 font-regular focus:ring-red-600/50 border border-slate-200 focus:border-red-600`;
+      return `${buttonClassName} bg-white text-red-600 font-regular focus:ring-red-600/50 border border-slate-200 focus:border-red-600 ${
+        disabled ? "opacity-50" : "hover:bg-slate-50 hover:text-red-700"
+      }`;
     case "secondary":
-      return `${buttonClassName} bg-white hover:bg-slate-50 text-slate-700 hover:text-slate-900 font-regular focus:ring-slate-700/50 border border-slate-200 focus:border-slate-700`;
+      return `${buttonClassName} bg-white text-slate-700 font-regular focus:ring-slate-700/50 border border-slate-200 focus:border-slate-700 ${
+        disabled ? "opacity-50" : "hover:bg-slate-50 hover:text-slate-900"
+      }`;
   }
 }
 
@@ -21,6 +28,7 @@ interface MainButtonProps {
   theme?: ButtonTheme;
   icon?: React.ReactNode;
   iconInRight?: boolean;
+  isLoading?: boolean;
 }
 
 interface ButtonProps
@@ -29,13 +37,15 @@ interface ButtonProps
 
 export function Button(props: ButtonProps) {
   const theme = props.theme ?? "primary";
+  const disabled = props.disabled ?? false;
   return (
     <button
       {...props}
-      className={`${buttonClassName} ${getClassNameForTheme(theme)} ${
+      className={`${buttonClassName} ${getClassNameForTheme(theme, disabled)} ${
         props.className ?? ""
       }`}
     >
+      {props.isLoading && <Spinner size={5} className="mr-0.5" />}
       {!props.iconInRight && props.icon}
       <span>{props.children}</span>
       {props.iconInRight && props.icon}
@@ -66,10 +76,11 @@ export function LinkButton(props: LinkButtonProps) {
     return (
       <a
         {...props}
-        className={`${buttonClassName} ${getClassNameForTheme(theme)} ${
+        className={`${buttonClassName} ${getClassNameForTheme(theme, false)} ${
           props.className ?? ""
         }`}
       >
+        {props.isLoading && <Spinner size={5} className="mr-0.5" />}
         {!props.iconInRight && props.icon}
         <span>{props.children}</span>
         {props.iconInRight && props.icon}
@@ -79,10 +90,11 @@ export function LinkButton(props: LinkButtonProps) {
   return (
     <Link
       {...props}
-      className={`${buttonClassName} ${getClassNameForTheme(theme)} ${
+      className={`${buttonClassName} ${getClassNameForTheme(theme, false)} ${
         props.className ?? ""
       }`}
     >
+      {props.isLoading && <Spinner size={5} className="mr-0.5" />}
       {!props.iconInRight && props.icon}
       <span>{props.children}</span>
       {props.iconInRight && props.icon}
@@ -94,12 +106,16 @@ import { ChevronRightIcon } from "@heroicons/react/24/outline";
 
 interface ChevronIconProps {
   className?: string;
+  additionalClassName?: string;
 }
 
 export function ChevronIcon(props: ChevronIconProps) {
   return (
     <ChevronRightIcon
-      className={props.className ?? "-mx-1 h-5"}
+      className={
+        (props.className ?? "-mx-1 h-5") +
+        (props.additionalClassName ? ` ${props.additionalClassName}` : "")
+      }
       strokeWidth={2}
       aria-hidden
     />

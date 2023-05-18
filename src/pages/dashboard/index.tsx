@@ -15,7 +15,6 @@ import { LessonRow } from "~/components/tables";
 import { api } from "~/utils/api";
 
 const Dashboard: NextPage = () => {
-
   const session = useSession();
   const { data: tests, isLoading, error } = api.learn.getTests.useQuery();
 
@@ -70,24 +69,21 @@ const Dashboard: NextPage = () => {
             </div>
           </Section>
 
-
-
           {tests && tests.length > 0 ? (
-          <Section title="Exercises awaiting for completion">
-            <div className="space-0 flex flex-col divide-y">
-              {tests.map((test) => (
-              
-              <LessonRow
-                key={test.id}
-                title={test.name}
-                description={test.description ?? ""}
-                difficulty={test.difficulty}
-                state="pending"
-              />
-              
-              ))}
-            </div>
-          </Section>
+            <Section title="Exercises awaiting for completion">
+              <div className="space-0 flex flex-col divide-y">
+                {tests.map((test) => (
+                  <LessonRow
+                    key={test.id}
+                    title={test.name}
+                    description={test.description ?? ""}
+                    difficulty={test.difficulty}
+                    state="pending"
+                    buttonHref={`/learn/${test.id}/`}
+                  />
+                ))}
+              </div>
+            </Section>
           ) : (
             <div className="mt-8 grid w-full justify-center py-16">
               <div hidden={!isLoading} className="mx-auto text-secondary">
