@@ -32,9 +32,35 @@ const userOptions: NavBarLink[] = [
   },
 ];
 
+const adminOptions: NavBarLink[] = [
+  {
+    title: "Home",
+    href: "/admin/dashboard",
+  },
+  {
+    title: "Grades",
+    href: "/admin/grades",
+  },
+  {
+    title: "Users",
+    href: "/admin/users",
+  },
+];
+
+type UserRole = "employee" | "administrator";
+const userRole: UserRole = "employee"; // "employee" or "administrator" cambiar esto para cambiar navbar
+
 function NavBar() {
   function didTapLogOut() {
     console.log("Logged Out");
+  }
+
+  let options: NavBarLink[] = [];
+
+  if (userRole === "employee") {
+    options = userOptions;
+  } else if (userRole === "administrator") {
+    options = adminOptions;
   }
 
   return (
@@ -50,7 +76,7 @@ function NavBar() {
         <span className="self-center text-3xl font-extrabold">LangAI</span>
       </div>
       <div className="mx-4 flex flex-row space-x-5">
-        {userOptions.map((option) => (
+        {options.map((option) => (
           <Link
             key={option.href}
             href={option.href}

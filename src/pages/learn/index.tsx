@@ -51,7 +51,7 @@ const Learn: NextPage = () => {
             </Dropdown>
           </div>
           {tests && tests.length > 0 ? (
-            <Section title="Part 1. Part title...">
+            <Section>
               <div className="space-0 flex flex-col divide-y">
                 {tests.map((test) => (
                   <LessonRow
