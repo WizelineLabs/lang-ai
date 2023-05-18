@@ -43,7 +43,7 @@ const getVideoFormat = () => {
 };
 
 interface ResponseVideoProps {
-  didGetNewVideo?: (base64: string) => void;
+  didGetNewVideo?: (base64: string, ext: string) => void;
 }
 
 function ResponseVideo(props: ResponseVideoProps) {
@@ -75,7 +75,7 @@ function ResponseVideo(props: ResponseVideoProps) {
         if (didGetNewVideo) {
           convertFileToBase64String(recordedBlob)
             .then((file) => {
-              didGetNewVideo(file as string);
+              didGetNewVideo(file as string, videoFormat?.ext ?? "");
             })
             .catch((error) => console.error(error));
         }

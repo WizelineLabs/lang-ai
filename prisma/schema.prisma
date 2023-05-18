@@ -104,12 +104,14 @@ model UserTest {
 
 // The specific answers of a userTest.
 model UserTestAnswer {
-  id           String   @id @default(cuid())
-  question_id  String
-  user_test_id String
-  answer       String   @db.VarChar
-  date         DateTime @db.Date
-  evaluation   Decimal  @db.Decimal
-  question     Question @relation(fields: [question_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_id")
-  user_test    UserTest @relation(fields: [user_test_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_test_id")
+  id         String   @id @default(cuid())
+  questionId String   @map("question_id")
+  userTestId String   @map("user_test_id")
+  answer     String   @db.VarChar
+  date       DateTime @default(now())
+  evaluation Decimal? @db.Decimal
+  question   Question @relation(fields: [questionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_id")
+  user_test  UserTest @relation(fields: [userTestId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_test_id")
+
+  @@unique([questionId, userTestId])
 }

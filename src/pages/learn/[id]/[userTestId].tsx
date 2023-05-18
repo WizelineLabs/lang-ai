@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import { useRef, useState, useCallback, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useRouter } from "next/router";
 import AlertContext from "~/contexts/AlertContext";
 
@@ -17,7 +17,7 @@ import {
   Section,
 } from "~/components";
 import { isRequestSuccess } from "~/server/models";
-import { Question } from "@prisma/client";
+import { type Question } from "@prisma/client";
 
 const Exercise: NextPage = () => {
   const router = useRouter();
@@ -34,14 +34,21 @@ const Exercise: NextPage = () => {
   const value = data && isRequestSuccess(data) ? data.value : undefined;
 
   useEffect(() => {
-    if (data && !data.success) {
-      showAlert(data.error.message);
-      console.error(data.error.message);
-      // Redirect to learn if userTest could'nt be obtained
-      // TODO: Redirect if error is related to userTest
-      router
-        .push("/learn/")
-        .finally(() => console.warn("Redirected outside of test"));
+    if (data) {
+      if (isRequestSuccess(data)) {
+        // If there are answers further ahead, move up to that question
+        if (currentQuestionIndex < data.value.startInQuestion) {
+          setCurrentQuestionIndex(data.value.startInQuestion);
+        }
+      } else {
+        showAlert(data.error.message);
+        console.error(data.error.message);
+        // Redirect to learn if userTest could'nt be obtained
+        // TODO: Redirect if error is related to userTest
+        router
+          .push("/learn/")
+          .finally(() => console.warn("Redirected outside of test"));
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, router]);
@@ -52,12 +59,38 @@ const Exercise: NextPage = () => {
     return i > 0 && i < questions.length ? questions[i] : questions[0];
   }
 
+  const isLastQuestion = value
+    ? currentQuestionIndex >= value.questions.length - 1
+    : false;
+
   const [currentVideoData, setCurrentVideoData] = useState<string | null>(null);
+  const [currentVideoExtension, setCurrentVideoExtension] =
+    useState<string>("");
+
+  const mutation = api.test.answerQuestion.useMutation();
 
   async function goToNextQuestion() {
     if (!value) return;
 
-    if (currentQuestionIndex < value.questions.length - 1) {
+    const currentQuestion = getCurrentQuestion(
+      value.questions,
+      currentQuestionIndex
+    );
+    if (!currentQuestion) return;
+
+    const result = await mutation.mutateAsync({
+      questionId: currentQuestion.id,
+      userTestId: userTestId,
+      textAnswer: undefined,
+      videoBase64: currentVideoData ?? "",
+      extension: currentVideoExtension,
+    });
+
+    if (!isRequestSuccess(result)) {
+      throw result.error;
+    }
+
+    if (!result.value.isLastQuestion) {
       // Go to next question
       setCurrentQuestionIndex((previous) => previous + 1);
       setCurrentVideoData(null);
@@ -73,7 +106,7 @@ const Exercise: NextPage = () => {
       .catch((e) => {
         const error = e as Error;
         console.error(error);
-        showAlert(error.message ?? "Hubo un error desconocido");
+        showAlert(error.message ?? "Hubo un error desconocido.");
       });
   }
 
@@ -97,12 +130,14 @@ const Exercise: NextPage = () => {
               {/* <Button>Previous</Button> */}
               <Button
                 className="my-auto"
+                theme={isLastQuestion ? "primary-inverted" : "primary"}
                 icon={<ChevronIcon />}
                 iconInRight
-                disabled={!currentVideoData}
+                isLoading={mutation.isLoading}
+                disabled={mutation.isLoading || !currentVideoData}
                 onClick={didTapNextQuestion}
               >
-                Next
+                {isLastQuestion ? "Finish" : "Next"}
               </Button>
             </div>
           </div>
@@ -121,7 +156,10 @@ const Exercise: NextPage = () => {
               <br />
               <ResponseVideo
                 key={currentQuestionIndex}
-                didGetNewVideo={(file) => setCurrentVideoData(file)}
+                didGetNewVideo={(file, ext) => {
+                  setCurrentVideoData(file);
+                  setCurrentVideoExtension(ext);
+                }}
               />
             </>
           ) : (
