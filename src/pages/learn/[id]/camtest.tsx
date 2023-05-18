@@ -1,5 +1,5 @@
 import { type NextPage } from "next";
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import AlertContext from "~/contexts/AlertContext";
 
@@ -14,11 +14,13 @@ const Camtest: NextPage = () => {
   const { showAlert } = useContext(AlertContext);
   const testId = router.query.id?.toString() ?? "";
 
+  const [forceLoading, setForceLoading] = useState(false);
   const mutation = api.test.prepareStartForTest.useMutation();
-  const isLoading = mutation.isLoading;
+  const isLoading = mutation.isLoading || forceLoading;
 
   async function startTest() {
     try {
+      setForceLoading(true);
       const result = await mutation.mutateAsync({ testId: testId });
       if (isRequestSuccess(result)) {
         await router.push(`/learn/${testId}/${result.value.id}`);
@@ -26,6 +28,7 @@ const Camtest: NextPage = () => {
         throw result.error;
       }
     } catch (e) {
+      setForceLoading(false);
       const error = e as Error;
       console.error(error);
       showAlert(error.message);
@@ -54,7 +57,8 @@ const Camtest: NextPage = () => {
                 onClick={didTapButton}
                 icon={<ChevronIcon />}
                 iconInRight
-                hidden={isLoading}
+                isLoading={isLoading}
+                disabled={isLoading}
               >
                 Next
               </Button>

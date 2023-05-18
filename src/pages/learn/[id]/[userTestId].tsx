@@ -10,6 +10,7 @@ import InstructionText from "~/components/test/InstructionTextProps";
 
 import {
   Button,
+  ChevronIcon,
   LoadingSection,
   PageTitle,
   PageWrapper,
@@ -22,6 +23,7 @@ const Exercise: NextPage = () => {
   const router = useRouter();
   const { showAlert } = useContext(AlertContext);
 
+  // Handling of test data
   const testId = router.query.id?.toString() ?? "";
   const userTestId = router.query.userTestId?.toString() ?? "";
   const { data, isLoading, error } = api.test.getTestData.useQuery({
@@ -50,20 +52,58 @@ const Exercise: NextPage = () => {
     return i > 0 && i < questions.length ? questions[i] : questions[0];
   }
 
+  const [currentVideoData, setCurrentVideoData] = useState<string | null>(null);
+
+  async function goToNextQuestion() {
+    if (!value) return;
+
+    if (currentQuestionIndex < value.questions.length - 1) {
+      // Go to next question
+      setCurrentQuestionIndex((previous) => previous + 1);
+      setCurrentVideoData(null);
+    } else {
+      // This is the final question (end the test)
+      await router.push(`/learn/finished`);
+    }
+  }
+
+  function didTapNextQuestion() {
+    goToNextQuestion()
+      .then(() => console.log("Moved to next question"))
+      .catch((e) => {
+        const error = e as Error;
+        console.error(error);
+        showAlert(error.message ?? "Hubo un error desconocido");
+      });
+  }
+
   return (
     <>
       <PageWrapper>
         <div className="flex flex-col">
           <div className="flex flex-row justify-between">
             <div className="flex flex-col">
-              <PageTitle editsTitle>Lesson Title</PageTitle>
+              <PageTitle editsTitle>
+                {value?.userTest.test.name ?? "Untitled"}
+              </PageTitle>
             </div>
 
             <div className="my-auto flex flex-row space-x-5">
-              <h2 className="py-3 font-sans">1 of 10</h2>
-              <Button>Previous</Button>
-
-              <Button>Next</Button>
+              {value && (
+                <h2 className="font-sm py-3">
+                  {currentQuestionIndex + 1} of {value.questions.length}
+                </h2>
+              )}
+              {/* <Button>Previous</Button> */}
+              <Button
+                className="my-auto"
+                icon={<ChevronIcon />}
+                iconInRight
+                disabled={!currentVideoData}
+                onClick={didTapNextQuestion}
+              >
+                Next
+              </Button>
             </div>
           </div>
           {data && isRequestSuccess(data) ? (
@@ -79,7 +119,10 @@ const Exercise: NextPage = () => {
                 </div>
               </Section>
               <br />
-              <ResponseVideo />
+              <ResponseVideo
+                key={currentQuestionIndex}
+                didGetNewVideo={(file) => setCurrentVideoData(file)}
+              />
             </>
           ) : (
             <LoadingSection
