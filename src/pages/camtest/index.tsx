@@ -8,7 +8,6 @@ import Webcam from "react-webcam";
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 import { convertWebMtoMP3 } from '~/services/ffmpeg/conversion';
-import { saveVid } from '~/pages/api/debug/saveVideo'
 
 const videoConstraints = {
   audio: true,

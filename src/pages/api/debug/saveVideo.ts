@@ -1,31 +1,17 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import fs from 'fs';
 import path from 'path';
+import { convertWebMtoMP3 } from '~/services/ffmpeg/conversion';
 
-export function saveVid(req: NextApiRequest, res: NextApiResponse) {
-if (req.method === 'POST') {
-    const { videoBlob } = req.body;
+export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+    try {
+        const input = req.query.input as string;
+        const output = req.query.output as string;
 
-    // Generate a unique file name for the video
-    const videoFileName = `WebcamTest.webm`;
-
-    // Define the path where the video will be saved
-    const savePath = path.join(process.cwd(), 'videos', videoFileName);
-
-    // Convert the video blob to a buffer
-    const buffer = Buffer.from(videoBlob, 'base64');
-
-    // Save the video file
-    fs.writeFile(savePath, buffer, (err) => {
-    if (err) {
-        console.error('Failed to save the video file:', err);
-        res.status(500).json({ error: 'Failed to save the video file' });
-    } else {
-        console.log('Video file saved successfully!');
-        res.status(200).json({ message: 'Video file saved successfully' });
+        await convertWebMtoMP3(input, output)
+        res.status(200).json({ hello: 'world' })
+    } catch (error) {
+        const err = error as any
+        res.status(400).json({ error: err.message });
     }
-    });
-} else {
-    res.status(405).json({ error: 'Method Not Allowed' });
-}
 }
