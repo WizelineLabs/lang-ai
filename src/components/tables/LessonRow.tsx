@@ -7,7 +7,7 @@ export interface LessonRowProps {
   description: string;
   difficulty: number;
   state: LessonState;
-  buttonHref: string;
+  buttonHref?: string;
 }
 
 export function LessonRow(props: LessonRowProps) {
@@ -76,7 +76,7 @@ export function LessonRow(props: LessonRowProps) {
         theme={getStateButtonTheme(state)}
         icon={<ChevronIcon />}
         iconInRight
-        href={buttonHref}
+        href={buttonHref ?? ""}
       >
         {getStateText(state)}
       </LinkButton>
