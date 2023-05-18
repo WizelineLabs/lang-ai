@@ -7,7 +7,8 @@ import Section from "~/components/Section";
 import Webcam from "react-webcam";
 import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
-//import { MediaRecorderErrorEvent, MediaRecorderDataAvailableEvent } from 'dom-mediacapture-record';
+import { convertWebMtoMP3 } from '~/services/ffmpeg/conversion';
+import { saveVid } from '~/pages/api/debug/saveVideo'
 
 const videoConstraints = {
   audio: true,
@@ -56,26 +57,19 @@ const Camtest: NextPage = () => {
   const webcamRef = useRef<Webcam>(null);
   const [recordedChunks, setRecordedChunks] = useState<Blob[]>([]);
   const [recordedVideoUrl, setRecordedVideoUrl] = useState<string | null>(null);
-  const [recordedAudioUrl, setRecordedAudioUrl] = useState<string | null>(null);
-  const [recordedAudioChunks, setRecordedAudioChunks] = useState<Blob[]>([]);
 
 
   const handleRecord = () => {
     if (!mediaRecorder) {
       console.log("Will start recording");
 
-      // Only continue if the webcam is being shown on the screen
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-member-access
       const stream = webcamRef.current?.stream;
       if (!stream) return;
 
-      // Get video format for video file
       const videoFormat = getVideoFormat();
       const videoCodec = videoFormat?.mimeType;
       setVideoFormat(videoFormat);
 
-      // Create a new MediaRecorder object with the desired settings
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
       const mediaRecorder = new MediaRecorder(stream, {
         mimeType: videoCodec,
         videoBitsPerSecond: 1500000, // 1500 kbps
@@ -83,7 +77,6 @@ const Camtest: NextPage = () => {
       });
       setMediaRecorder(mediaRecorder);
 
-      // Register event listener for the MediaRecorder object
       mediaRecorder.ondataavailable = (event: BlobEvent) => {
         console.log("MediaRecorder has new data available");
         if (event.data.size > 0) {
@@ -97,7 +90,6 @@ const Camtest: NextPage = () => {
             const isAudio = event.data.type.startsWith("audio/");
             
             if (isAudio) {
-              setRecordedAudioChunks((prevChunks) => [...prevChunks, blob]);
               console.log("Added chunk to audio");
             } else {
               setRecordedChunks((prevChunks) => [...prevChunks, blob]);
@@ -122,18 +114,15 @@ const Camtest: NextPage = () => {
     const recordedVideoBlob = new Blob(recordedChunks, {
       type: videoFormat?.mimeType,
     });
-    const recordedAudioBlob = new Blob(recordedAudioChunks, {
-      type: mediaRecorder?.mimeType || 'audio/webm', 
-    });
   
     console.log("Created files");
   
     setRecordedVideoUrl(URL.createObjectURL(recordedVideoBlob));
-    setRecordedAudioUrl(URL.createObjectURL(recordedAudioBlob));
   
     setRecordedChunks([]);
-    setRecordedAudioChunks([]);
   };
+  
+  
 
   return (
     <>
@@ -186,15 +175,16 @@ const Camtest: NextPage = () => {
               >
                 Download
               </a>
+              
             </div>
           </Section>  
           {recordedVideoUrl && (
             <video className="w-full" controls>
               <source src={recordedVideoUrl} type={videoFormat?.mimeType} />
             </video>
-      )}        
+      )}
         </div>
-      </PageWrapper>
+    </PageWrapper>
     </>
   );
 };
