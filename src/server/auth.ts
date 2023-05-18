@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(prisma),
   providers: [
-    CredentialsProvider({
+    /* CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
       id: "fake-user",
       name: "Fake User",
@@ -89,7 +89,7 @@ export const authOptions: NextAuthOptions = {
           // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
         }
       },
-    }),
+    }), */
     GoogleProvider({
       clientId: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
