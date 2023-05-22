@@ -1,30 +1,39 @@
 import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
 import Button from "~/components/Button";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
-import SegmentedPicker from "~/components/SegmentedPicker";
-import Section from "~/components/Section";
-import { Dropdown, DropdownButton } from "~/components/Dropdown";
+import {
+  PageTitle,
+  PageWrapper,
+  Section,
+  SegmentedPicker,
+  Dropdown,
+  DropdownButton,
+  Spinner,
+} from "~/components";
+import { UsersRow } from "~/components/tables";
 import Image from "next/image";
 
-type PickerOptions = "Name" | "Level" | "Last time Activity";
+import { api } from "~/utils/api";
+
+type PickerOptions = "Name" | "Level";
 
 const Users: NextPage = () => {
   const [selectedCategory, setSelectedCategory] =
     useState<PickerOptions>("Level");
+
+  const { data: users, isLoading, error } = api.users.getUsers.useQuery();
 
   return (
     <>
       <PageWrapper>
         <PageTitle editsTitle>Users</PageTitle>
         <div className="flex flex-row place-content-between">
-            <SegmentedPicker
-              title="Choose category:"
-              selectedOption={selectedCategory}
-              options={["Name", "Level", "Last time Activity"]}
-              didSelectOption={(o) => setSelectedCategory(o)}
-            />
+          <SegmentedPicker
+            title="Choose category:"
+            selectedOption={selectedCategory}
+            options={["Name", "Level"]}
+            didSelectOption={(o) => setSelectedCategory(o)}
+          />
           <Dropdown
             id={"date-dropdown"}
             dataDropdownToggle={"date-dropdown"}
@@ -41,226 +50,31 @@ const Users: NextPage = () => {
             <DropdownButton title="Level" onClick={() => console.log("2")} />
           </Dropdown>
         </div>
-
-        <Section title="English Level: A2">
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <tbody>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                      className="ml-3 rounded-full"
-                      src="/bismarck.jpg"
-                      alt="Profile Picture"
-                      width={40}
-                      height={40}
-                    />               
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">Bismarck Lepe</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="/admin/grades"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile_2.jpg"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                      />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">James Jackson</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="/admin/grades"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile.png"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                    />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">Juan Lopez</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile_2.jpg"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                    />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">Marcos Quintero</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+        {users && users.length > 0 ? (
+          <Section title="English Level">
+            <div className="space-0 flex flex-col divide-y">
+              {users.map((user) => (
+                <UsersRow
+                  key={user.id}
+                  name={user.name ?? ""}
+                  buttonHref={`/admin/users/${user.id}/`}
+                />
+              ))}
+            </div>
+          </Section>
+        ) : (
+          <div className="mt-8 grid w-full justify-center py-16">
+            <div hidden={!isLoading} className="mx-auto text-secondary">
+              <Spinner />
+            </div>
+            <p
+              hidden={isLoading}
+              className="text-center text-sm text-secondary"
+            >
+              {error ? error.message : "No data to show."}
+            </p>
           </div>
-        </Section>
-
-        <Section title="English Level: B1">
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <tbody>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile.png"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                      />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">James Jackson</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile.png"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                      />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">Marcos Quintero</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile.png"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                      />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">Juan Lopez</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <Image
-                        className="ml-3 rounded-full"
-                        src="/dummy_profile.png"
-                        alt="Profile Picture"
-                        width={40}
-                        height={40}
-                      />          
-                  </th>
-                  <td className="px-6 py-6 ">
-                    <h1 className="dark:text-white">James Jackson</h1>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Activity Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See Profile
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </Section>
-
-        
+        )}
       </PageWrapper>
     </>
   );

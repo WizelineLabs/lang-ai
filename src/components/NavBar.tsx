@@ -55,10 +55,9 @@ const userRole: UserRole = "employee"; // "employee" or "administrator" cambiar 
 function NavBar() {
   const session = useSession();
   function didTapLogOut() {
-    signOut({callbackUrl: 'http://localhost:3000/login'})
-    
+    signOut({ callbackUrl: "http://localhost:3000/login" });
+
     /* console.log("Logged Out"); */
-    
   }
 
   let options: NavBarLink[] = [];
@@ -70,7 +69,6 @@ function NavBar() {
   }
 
   return (
-    
     <nav className="flex flex-row place-content-between border-b bg-white">
       <div className="mx-4 flex flex-row space-x-3">
         <Image
@@ -107,7 +105,6 @@ function NavBar() {
               height={32}
             />
             <span className="inline-flex flex-row self-center">
-
               {session.data?.user.name ?? "Nadie"}
 
               <ChevronDownIcon
@@ -127,19 +124,18 @@ function NavBar() {
           >
             <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
               <div className="px-4 py-2">
-                <div className="text-sm text-slate-900">{session.data?.user.name ?? "Nadie"}</div>
+                <div className="text-sm text-slate-900">
+                  {session.data?.user.name ?? "Nadie"}
+                </div>
                 <div className="truncate text-sm font-medium text-slate-600">
-                {session.data?.user.email ?? "Nadie"}
+                  {session.data?.user.email ?? "Nadie"}
                 </div>
               </div>
               <div className="py-1">
                 <Menu.Item>
-
-
-
-                {({ active: hovered }) => (
+                  {({ active: hovered }) => (
                     <button
-                      onClick={() => didTapLogOut() }
+                      onClick={() => didTapLogOut()}
                       className={`${
                         hovered ? "bg-slate-100" : "bg-white text-gray-900"
                       } group flex w-full items-center px-3 py-2 text-sm text-slate-900`}
@@ -150,13 +146,7 @@ function NavBar() {
                       />
                       Sign out
                     </button>
-                  )} 
-
-
-
-
-
-
+                  )}
                 </Menu.Item>
               </div>
             </Menu.Items>
