@@ -55,9 +55,9 @@ const userRole: UserRole = "employee"; // "employee" or "administrator" cambiar 
 function NavBar() {
   const session = useSession();
   function didTapLogOut() {
-    signOut({ callbackUrl: "http://localhost:3000/login" });
+    signOut({ callbackUrl: "/login" });
 
-    /* console.log("Logged Out"); */
+    console.log("Logged Out"); 
   }
 
   let options: NavBarLink[] = [];
