@@ -47,10 +47,14 @@ const adminOptions: NavBarLink[] = [
     title: "Users",
     href: "/admin/users",
   },
+  {
+    title: "Profile",
+    href: "/admin/profile",
+  },
 ];
 
 type UserRole = "employee" | "administrator";
-const userRole: UserRole = "employee"; // "employee" or "administrator" cambiar esto para cambiar navbar
+const userRole: UserRole = "administrator"; // "employee" or "administrator" cambiar esto para cambiar navbar
 
 function NavBar() {
   const session = useSession();
