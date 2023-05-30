@@ -12,11 +12,38 @@ import { Dropdown, DropdownButton } from "~/components/Dropdown";
 
 import { api } from "~/utils/api";
 
+
+
+import { useRouter } from "next/router";
+
+
+
 type PickerOptions = "Learn" | "Evaluations";
 
-const Grades: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("Learn");
+const Profile: NextPage = () => {
+  const [selectedCategory, setSelectedCategory] = useState<PickerOptions>("Learn");
+
+  const router = useRouter();
+  const userId  = router.query.userId?.toString() ?? ""; // Obtén el ID del usuario de la URL
+  //const {data, isLoading, error } = api.users.getProfileData.useQuery({
+  //  userId: userId,
+  // });
+
+  //   try {
+  //     const response = await api.get(`/users/${userId}`);
+  //     setUserData(response.data);
+  //   } catch (error) {
+  //     console.error("Error al obtener los datos del usuario:", error);
+  //   }
+  // };
+  
+    
+
+
+
+
+
+
   return (
     <>
       <PageWrapper>
@@ -240,4 +267,4 @@ const Grades: NextPage = () => {
   );
 };
 
-export default Grades;
+export default Profile;
