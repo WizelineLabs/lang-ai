@@ -16,32 +16,17 @@ import { api } from "~/utils/api";
 
 import { useRouter } from "next/router";
 
-
-
 type PickerOptions = "Learn" | "Evaluations";
 
 const Profile: NextPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<PickerOptions>("Learn");
 
   const router = useRouter();
-  const userId  = router.query.userId?.toString() ?? ""; // Obtén el ID del usuario de la URL
-  //const {data, isLoading, error } = api.users.getProfileData.useQuery({
-  //  userId: userId,
-  // });
 
-  //   try {
-  //     const response = await api.get(`/users/${userId}`);
-  //     setUserData(response.data);
-  //   } catch (error) {
-  //     console.error("Error al obtener los datos del usuario:", error);
-  //   }
-  // };
-  
-    
-
-
-
-
+  const userId  = router.query.profileId?.toString() ?? ""; 
+  const { data, isLoading, error } = api.users.getUserById.useQuery({
+    userId: userId,
+  });
 
 
   return (
@@ -54,7 +39,7 @@ const Profile: NextPage = () => {
                 <div className="basis-1/3">
                   <Image
                     className="my-3 ml-4 rounded-full"
-                    src="/bismarck.jpg"
+                    src="/defaultuser.png"
                     alt="Profile Picture"
                     width={180}
                     height={180}
@@ -62,11 +47,11 @@ const Profile: NextPage = () => {
                 </div>
                 <div className="flex basis-2/3 items-center">
                   <h2 className="dark:text-dark pl-3 text-2xl font-bold tracking-tight text-gray-900">
-                    Bismarck Lepe
+                    {data?.name}
                   </h2>
-                  <h3 className="pl-4 font-normal text-gray-700 dark:text-gray-400">
+                  {/* <h3 className="pl-4 font-normal text-gray-700 dark:text-gray-400">
                     Founder of Wizeline
-                  </h3>
+                  </h3> */}
                 </div>
               </div>
             </Section>

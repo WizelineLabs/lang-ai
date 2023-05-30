@@ -11,13 +11,11 @@ export interface UsersRowProps {
 }
 
 
-//const userId = router.query.userId?.toString() ?? "";
-
 export function UsersRow(props: UsersRowProps) {
   const { name, buttonHref, id } = props;
   const router = useRouter();
   const handleProfileClick = () => {
-    const profileUrl = `/profile/${id}`;
+    const profileUrl = `/admin/profile/${id}`;
     router.push(profileUrl); // Navegar a la página de perfil del usuario
   };
   return (
@@ -36,12 +34,12 @@ export function UsersRow(props: UsersRowProps) {
             </th>
             <td className="px-6 py-6">{name}</td>
             <td className="px-6 py-4 text-right">
-            <button
+            <LinkButton
                 className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                onClick={handleProfileClick}
+                href={`/admin/profile/${id}`}
               >
                 See Profile
-              </button>
+              </LinkButton>
             </td>
           </tr>
         </tbody>
