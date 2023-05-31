@@ -32,7 +32,7 @@ const Profile: NextPage = () => {
   const [selectedCategory, setSelectedCategory] = useState<PickerOptions>("Learn");
 
   const router = useRouter();
-
+ //ola
   const userId  = router.query.profileId?.toString() ?? ""; 
   //const grades = router.query.grades?.toString() ?? "";
   const { data, isLoading, error } = api.users.getUserById.useQuery({
