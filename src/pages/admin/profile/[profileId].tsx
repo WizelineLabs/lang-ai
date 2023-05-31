@@ -2,15 +2,25 @@ import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
 import Head from "next/head";
 import NavBar from "~/components/NavBar";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
+
 import Button from "~/components/Button";
-import Section from "~/components/Section";
+
 import Image from "next/image";
-import SegmentedPicker from "~/components/SegmentedPicker";
-import { Dropdown, DropdownButton } from "~/components/Dropdown";
+import { GradesRow } from "~/components/tables";
+
+
 
 import { api } from "~/utils/api";
+
+import {
+  PageTitle,
+  PageWrapper,
+  Section,
+  SegmentedPicker,
+  Dropdown,
+  DropdownButton,
+  Spinner,
+} from "~/components";
 
 
 
@@ -24,8 +34,14 @@ const Profile: NextPage = () => {
   const router = useRouter();
 
   const userId  = router.query.profileId?.toString() ?? ""; 
+  //const grades = router.query.grades?.toString() ?? "";
   const { data, isLoading, error } = api.users.getUserById.useQuery({
     userId: userId,
+  });
+  const { data: grades } = api.gradesUser.getGrades.useQuery({ 
+    category: selectedCategory,
+    userId: userId,
+  
   });
 
 
@@ -89,160 +105,32 @@ const Profile: NextPage = () => {
 
             <Section>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-                  <tbody>
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-6 py-4 dark:text-white ">
-                        <h1
-                          className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]"
-                          style={{ color: "white" }}
-                        >
-                          100
-                        </h1>
-                      </th>
-                      <td className="px-6 py-4 ">
-                        <h1 className="dark:text-white">Lesson Title</h1>
-                        <p>Employee Name</p>
-                      </td>
-                      <td className="dark:text px-6 py-4">
-                        Completed on: Feb 21, 2023 6:45pm
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <a
-                          href="/admin/evaluation"
-                          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                        >
-                          See details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-6 py-4 dark:text-white ">
-                        <h1
-                          className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]"
-                          style={{ color: "white" }}
-                        >
-                          95
-                        </h1>
-                      </th>
-                      <td className="px-6 py-4 ">
-                        <h1 className="dark:text-white">Lesson Title</h1>
-                        <p>Employee Name</p>
-                      </td>
-                      <td className="dark:text px-6 py-4">
-                        Completed on: Feb 21, 2023 6:45pm
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <a
-                          href="#"
-                          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                        >
-                          See details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-6 py-4 dark:text-white ">
-                        <h1
-                          className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]"
-                          style={{ color: "white" }}
-                        >
-                          55
-                        </h1>
-                      </th>
-                      <td className="px-6 py-4 ">
-                        <h1 className="dark:text-white">Lesson Title</h1>
-                        <p>Employee Name</p>
-                      </td>
-                      <td className="dark:text px-6 py-4">
-                        Completed on: Feb 21, 2023 6:45pm
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <a
-                          href="#"
-                          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                        >
-                          See details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-6 py-4 dark:text-white ">
-                        <h1
-                          className="inline-flex items-center justify-center rounded-full bg-red-500 px-[0.65em] pb-[0.25em] pt-[0.35em]"
-                          style={{ color: "white" }}
-                        >
-                          30
-                        </h1>
-                      </th>
-                      <td className="px-6 py-4 ">
-                        <h1 className="dark:text-white">Lesson Title</h1>
-                        <p>Employee Name</p>
-                      </td>
-                      <td className="dark:text px-6 py-4">
-                        Completed on: Feb 21, 2023 6:45pm
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <a
-                          href="#"
-                          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                        >
-                          See details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-6 py-4 dark:text-white ">
-                        <h1
-                          className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]"
-                          style={{ color: "white" }}
-                        >
-                          69
-                        </h1>
-                      </th>
-                      <td className="px-6 py-4 ">
-                        <h1 className="dark:text-white">Lesson Title</h1>
-                        <p>Employee Name</p>
-                      </td>
-                      <td className="dark:text px-6 py-4">
-                        Completed on: Feb 21, 2023 6:45pm
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <a
-                          href="#"
-                          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                        >
-                          See details
-                        </a>
-                      </td>
-                    </tr>
-                    <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                      <th scope="row" className="px-6 py-4 dark:text-white ">
-                        <h1
-                          className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]"
-                          style={{ color: "white" }}
-                        >
-                          100
-                        </h1>
-                      </th>
-                      <td className="px-6 py-4 ">
-                        <h1 className="dark:text-white">Lesson Title</h1>
-                        <p>Employee Name</p>
-                      </td>
-                      <td className="dark:text px-6 py-4">
-                        Completed on: Feb 21, 2023 6:45pm
-                      </td>
-                      <td className="px-6 py-4 text-right">
-                        <a
-                          href="#"
-                          className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                        >
-                          See details
-                        </a>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
+                {grades && grades.length > 0 ? (
+                  <Section>
+                    <div className="space-0 flex flex-col divide-y">
+                      {grades.map((userTest) => (
+                        <GradesRow
+                          title={userTest?.test.name ?? "Untitled"}
+                          description={userTest?.test.description ?? ""}
+                          date={userTest?.submissionDate ?? new Date()}
+                          grade={Number(userTest?.score)}
+                        />
+                      ))}
+                    </div>
+                  </Section>
+                ) : (
+                  <div className="mt-8 grid w-full justify-center py-16">
+                    <div hidden={!isLoading} className="mx-auto text-secondary">
+                      <Spinner />
+                    </div>
+                    <p
+                      hidden={isLoading}
+                      className="text-center text-sm text-secondary"
+                    >
+                      {error ? error.message : "No data to show."}
+                    </p>
+                  </div>
+                )}
               </div>
             </Section>
           </div>
