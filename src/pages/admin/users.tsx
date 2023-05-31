@@ -57,7 +57,9 @@ const Users: NextPage = () => {
                 <UsersRow
                   key={user.id}
                   name={user.name ?? ""}
-                  buttonHref={`/admin/users/${user.id}/`} id={user.id}                />
+                  buttonHref={`/admin/users/${user.id}/`} 
+                  id={user.id}                
+                />
               ))}
             </div>
           </Section>
