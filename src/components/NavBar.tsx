@@ -40,16 +40,8 @@ const adminOptions: NavBarLink[] = [
     href: "/admin/dashboard",
   },
   {
-    title: "Grades",
-    href: "/admin/grades",
-  },
-  {
     title: "Users",
     href: "/admin/users",
-  },
-  {
-    title: "Profile",
-    href: "/admin/profile",
   },
 ];
 
