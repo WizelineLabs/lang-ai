@@ -82,6 +82,7 @@ model Question {
   text             String
   type             String
   weigh            Decimal          @db.Decimal
+  audioKey         String?
   test_id          String
   test             Test             @relation(fields: [test_id], references: [id])
   user_test_answer UserTestAnswer[]
@@ -97,6 +98,7 @@ model UserTest {
   startDate        DateTime         @default(now())
   submissionDate   DateTime?
   score            Decimal?         @db.Decimal
+  feedback         String?
   test             Test             @relation(fields: [test_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "test_id")
   user             User             @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id")
   user_test_answer UserTestAnswer[]
@@ -104,14 +106,17 @@ model UserTest {
 
 // The specific answers of a userTest.
 model UserTestAnswer {
-  id         String   @id @default(cuid())
-  questionId String   @map("question_id")
-  userTestId String   @map("user_test_id")
-  answer     String   @db.VarChar
-  date       DateTime @default(now())
-  evaluation Decimal? @db.Decimal
-  question   Question @relation(fields: [questionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_id")
-  user_test  UserTest @relation(fields: [userTestId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_test_id")
+  id               String   @id @default(cuid())
+  questionId       String   @map("question_id")
+  userTestId       String   @map("user_test_id")
+  answer           String   @db.VarChar
+  date             DateTime @default(now())
+  evaluation       Decimal? @db.Decimal
+  evaluationReason String?
+  feedback         String?
+  videoKey         String?
+  question         Question @relation(fields: [questionId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "question_id")
+  user_test        UserTest @relation(fields: [userTestId], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_test_id")
 
   @@unique([questionId, userTestId])
 }
