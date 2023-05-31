@@ -9,7 +9,7 @@ import { useRef, useState, useCallback } from "react";
 import Link from "next/link";
 
 import { api } from "~/utils/api";
-import InstructionText from "~/components/test/InstructionTextProps";
+import InstructionText from "~/components/test/InstructionText";
 
 const Exercise: NextPage = () => {
   return (
