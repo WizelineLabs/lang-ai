@@ -9,6 +9,9 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
+import { api } from "~/utils/api";
+
+
 
 interface NavBarLink {
   title: string;
@@ -46,10 +49,15 @@ const adminOptions: NavBarLink[] = [
 ];
 
 type UserRole = "employee" | "administrator";
-const userRole: UserRole = "administrator"; // "employee" or "administrator" cambiar esto para cambiar navbar
+var userRole: UserRole = "employee"; // "employee" or "administrator" cambiar esto para cambiar navbar
 
 function NavBar() {
   const session = useSession();
+  //const { data: users, isLoading, error } = api.users.getUsers.useQuery();
+  if( session.data?.user.name === "Humberto Rodriguez" && "Erick Padilla"){
+    userRole = "administrator";
+  }
+
   function didTapLogOut() {
     signOut({ callbackUrl: "/login" });
 
@@ -57,7 +65,7 @@ function NavBar() {
   }
 
   let options: NavBarLink[] = [];
-
+  
   if (userRole === "employee") {
     options = userOptions;
   } else if (userRole === "administrator") {
