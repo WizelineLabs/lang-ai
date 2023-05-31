@@ -2,7 +2,7 @@
 import { type GetServerSideProps, type NextPage } from "next";
 import { getSession } from "next-auth/react";
 
-const TestIndex: NextPage = () => {
+const GradesIndex: NextPage = () => {
   return null;
 };
 
@@ -11,7 +11,6 @@ export const getServerSideProps: GetServerSideProps<
   { id: string }
   // eslint-disable-next-line @typescript-eslint/require-await
 > = async (context) => {
-  const id = context.params?.id ?? "";
   const session = await getSession(context);
 
   if (!session) {
@@ -26,10 +25,10 @@ export const getServerSideProps: GetServerSideProps<
   // If the user is logged in, continue rendering the page
   return {
     redirect: {
-      destination: "/learn/" + id + "/camtest",
+      destination: "/grades/",
       permanent: false,
     },
   };
 };
 
-export default TestIndex;
+export default GradesIndex;

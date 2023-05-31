@@ -1,5 +1,5 @@
 import { StarIcon } from "@heroicons/react/20/solid";
-import { Button, ChevronIcon } from "~/components";
+import { LinkButton, ChevronIcon } from "~/components";
 
 export type EvaluationGrade = "A2" | "B1" | "B2" | "C1" | "C2";
 export type TestGrade = number | EvaluationGrade;
@@ -9,11 +9,11 @@ export interface GradesRowProps {
   description: string;
   date: Date;
   grade?: TestGrade;
-  buttonOnClick?: () => void;
+  buttonHref?: string;
 }
 
 export function GradesRow(props: GradesRowProps) {
-  const { title, description, date, grade, buttonOnClick } = props;
+  const { title, description, date, grade, buttonHref } = props;
   const formattedDate = date.toLocaleString("en-US", {
     dateStyle: "long",
     timeStyle: "short",
@@ -31,15 +31,15 @@ export function GradesRow(props: GradesRowProps) {
           Completed on {formattedDate}.
         </span>
       </div>
-      <Button
+      <LinkButton
         className="my-auto"
         theme="secondary"
         icon={<ChevronIcon />}
         iconInRight
-        onClick={buttonOnClick}
+        href={buttonHref ?? ""}
       >
         See details
-      </Button>
+      </LinkButton>
     </div>
   );
 }
@@ -59,10 +59,10 @@ export function GradeIcon(props: GradeIconProps) {
 
   function getPercentText(grade: TestGrade) {
     if (typeof grade === "number") {
-      const value = Math.max(0, Math.min(grade, 100));
+      const value = Math.max(-1, Math.min(grade, 100));
       if (value === 100) {
         return "*";
-      } else if (value === 0) {
+      } else if (value < 0) {
         return "-";
       } else {
         return `${value}`;
@@ -74,12 +74,12 @@ export function GradeIcon(props: GradeIconProps) {
 
   function getColorValue(grade: TestGrade) {
     if (typeof grade === "number") {
-      const value = Math.max(0, Math.min(grade, 100));
+      const value = Math.max(-1, Math.min(grade, 100));
       if (value > 70) {
         return "text-emerald-600";
       } else if (value > 40) {
         return "text-yellow-400";
-      } else if (value > 0) {
+      } else if (value >= 0) {
         return "text-red-600";
       } else {
         return "text-slate-700";

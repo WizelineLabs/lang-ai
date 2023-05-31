@@ -65,21 +65,31 @@ const Grades: NextPage = () => {
               </span>
             )}
           >
-            <DropdownButton title="Date" onClick={() => console.log("1")} />
-            <DropdownButton title="Level" onClick={() => console.log("2")} />
+            <DropdownButton onClick={() => console.log("1")}>
+              Date
+            </DropdownButton>
+            <DropdownButton onClick={() => console.log("2")}>
+              Level
+            </DropdownButton>
           </Dropdown>
         </div>
         {grades && grades.length > 0 ? (
           <Section>
             <div className="space-0 flex flex-col divide-y">
-              {grades.map((userTest) => (
-                <GradesRow
-                  title={userTest?.test.name ?? "Untitled"}
-                  description={userTest?.test.description ?? ""}
-                  date={userTest?.submissionDate ?? new Date()}
-                  grade={Number(userTest?.score)}
-                />
-              ))}
+              {grades.map((userTest) =>
+                userTest ? (
+                  <GradesRow
+                    key={userTest.id}
+                    title={userTest.test.name}
+                    description={userTest.test.description ?? ""}
+                    date={userTest.submissionDate ?? new Date()}
+                    grade={Number(userTest.score)}
+                    buttonHref={`/grades/${userTest.test.id}/${userTest.id}`}
+                  />
+                ) : (
+                  <></>
+                )
+              )}
             </div>
           </Section>
         ) : (
