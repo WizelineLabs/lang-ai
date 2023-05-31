@@ -190,6 +190,6 @@ function getTestGrade(userTest: Exam, answers: AnswerGrade[]): number {
       accum + item.grade.grade * item.answer.question.weigh.toNumber(),
     0
   );
-  const grade = Math.floor(sumOfWeights / sumOfWeightedGrades);
+  const grade = Math.floor(sumOfWeightedGrades / sumOfWeights);
   return grade;
 }
