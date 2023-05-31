@@ -43,10 +43,6 @@ const adminOptions: NavBarLink[] = [
     title: "Users",
     href: "/admin/users",
   },
-  {
-    title: "Profile",
-    href: "/admin/profile",
-  },
 ];
 
 type UserRole = "employee" | "administrator";
