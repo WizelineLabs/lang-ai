@@ -29,6 +29,7 @@ type Answer = UserTestAnswer & {
 type Grade = {
   grade: number;
   reason: string;
+  feedback?: string;
 };
 
 type AnswerGrade = {
@@ -60,9 +61,11 @@ export async function gradeUserTest(userTestId: string) {
     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const answer = answers[i]!;
     let grade: Grade;
+    let answerText = answer.answer;
 
     if (result.status === "fulfilled") {
-      grade = result.value;
+      grade = result.value.grade;
+      answerText = result.value.answer;
     } else {
       // Create grade object for failed gradings
       grade = {
@@ -74,6 +77,7 @@ export async function gradeUserTest(userTestId: string) {
     return {
       answer: answer,
       grade: grade,
+      answerText: answerText,
     };
   });
 
@@ -104,9 +108,10 @@ export async function gradeUserTest(userTestId: string) {
           id: entry.answer.id,
         },
         data: {
+          answer: entry.answerText,
           evaluation: entry.grade.grade,
           evaluationReason: entry.grade.reason,
-          feedback: "Generic feedback",
+          feedback: entry.grade.feedback,
         },
       })
     ),
@@ -131,9 +136,10 @@ async function gradeAnswer(answer: Answer) {
       const videoKey = answer.videoKey;
       const audioData = await convertS3VideoToAudio(videoKey);
       const transcription = await getWhisperTranscription(
-        audioData.file,
+        audioData.filePath,
         undefined,
-        0
+        0,
+        false
       );
       answerText = transcription.text;
     } else {
@@ -152,13 +158,17 @@ async function gradeAnswer(answer: Answer) {
   );
   const grade = parseChatGPTResponse(chatGPTAnswer);
 
-  return grade;
+  return {
+    grade: grade,
+    answer: answerText,
+  };
 }
 
 function parseChatGPTResponse(response: CreateChatCompletionResponse): Grade {
   try {
     if (response.choices[0]?.message) {
       const message = response.choices[0].message;
+      console.log("ChatGPT response:", message.content);
       return JSON.parse(message.content) as Grade;
     } else {
       throw new Error("JSON.parse failed");
