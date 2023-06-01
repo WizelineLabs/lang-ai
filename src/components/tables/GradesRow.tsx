@@ -1,7 +1,7 @@
 import { StarIcon } from "@heroicons/react/20/solid";
 import { LinkButton, ChevronIcon } from "~/components";
 
-export type EvaluationGrade = "A2" | "B1" | "B2" | "C1" | "C2";
+export type EvaluationGrade = "A1" | "A2" | "B1" | "B2" | "C1" | "C2";
 export type TestGrade = number | EvaluationGrade;
 
 export interface GradesRowProps {
@@ -85,7 +85,7 @@ export function GradeIcon(props: GradeIconProps) {
         return "text-slate-700";
       }
     } else {
-      if (grade === "A2") {
+      if (grade === "A1" || grade === "A2") {
         return "text-red-600";
       } else if (grade === "B1" || grade === "B2") {
         return "text-yellow-400";

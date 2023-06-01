@@ -4,6 +4,7 @@ import type {
   UserTest,
   UserTestAnswer,
 } from "@prisma/client";
+import { EvaluationGrade } from "~/components/tables";
 
 export function getAttemptTitle(
   userTests: UserTest[],
@@ -29,6 +30,15 @@ export function getAttemptIndex(userTests: UserTest[], id: string): number {
 
 export function getGradeNumber(decimal: Prisma.Decimal | null): number {
   return decimal ? Number(decimal) : -1;
+}
+
+export function getEvaluationGrade(grade: number): EvaluationGrade {
+  if (grade < 10) return "A1";
+  else if (grade < 25) return "A2";
+  else if (grade < 50) return "B1";
+  else if (grade < 75) return "B2";
+  else if (grade < 90) return "C1";
+  else return "C2";
 }
 
 export function getGradeText(decimal: Prisma.Decimal | null): string {

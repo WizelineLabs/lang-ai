@@ -63,8 +63,6 @@ const TestGrades: NextPage = () => {
     );
   }
 
-  console.log(value?.userTest.score);
-
   return (
     <>
       <PageWrapper>
@@ -75,9 +73,11 @@ const TestGrades: NextPage = () => {
                 <PageTitle editsTitle>
                   {data.value.userTest.test.name}
                 </PageTitle>
-                <span className="text-base text-secondary">
-                  {data.value.userTest.test.description ?? "-"}
-                </span>
+                {data.value.userTest.test.description && (
+                  <span className="text-base text-secondary">
+                    {data.value.userTest.test.description}
+                  </span>
+                )}
               </div>
               <Dropdown
                 id={"date-dropdown"}

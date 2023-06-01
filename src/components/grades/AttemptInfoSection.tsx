@@ -1,7 +1,7 @@
 import type { Question, Test, UserTest, UserTestAnswer } from "@prisma/client";
 import { GradeIcon } from "~/components/tables";
 import { formatDateDiff } from "~/utils/formatSecondsToTime";
-import { getGradeNumber } from "~/utils/gradesCalculations";
+import { getEvaluationGrade, getGradeNumber } from "~/utils/gradesCalculations";
 
 export interface AttemptInfoSectionProps {
   userTest: UserTest & {
@@ -14,12 +14,24 @@ export interface AttemptInfoSectionProps {
 
 export function AttemptInfoSection(props: AttemptInfoSectionProps) {
   const { userTest } = props;
+
+  const isEvaluation = userTest.test.type === 0;
+  const gradeNumber = getGradeNumber(userTest.score);
+
+  const gradeForIcon = isEvaluation
+    ? getEvaluationGrade(gradeNumber)
+    : gradeNumber;
+
   return (
     <div className="flex flex-row justify-around gap-3 px-6 py-5">
       <div className="flex flex-col items-center justify-center gap-1">
-        <GradeIcon grade={getGradeNumber(userTest.score)} />
+        <GradeIcon grade={gradeForIcon} />
         <span className="text-sm text-secondary">
-          {getGradeNumber(userTest.score) < 0 ? "Not Graded" : "Score"}
+          {gradeNumber < 0
+            ? "Not Graded"
+            : isEvaluation
+            ? "English Level"
+            : "Score"}
         </span>
       </div>
       <div className="flex flex-col items-center justify-center gap-1">
