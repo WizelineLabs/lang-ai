@@ -6,6 +6,7 @@ import {
 } from "next-auth";
 import { env } from "~/env.mjs";
 import { prisma } from "~/server/db";
+import { type User as PrismaUser } from "@prisma/client";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -22,15 +23,8 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession["user"];
+    } & PrismaUser & DefaultSession["user"];
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
 }
 
 /**
@@ -40,10 +34,18 @@ declare module "next-auth" {
  */
 export const authOptions: NextAuthOptions = {
   callbacks: {
-    session({ session, user }) {
+    async session({ session, user }) {
       if (session.user) {
-        session.user.id = user.id;
-        // session.user.role = user.role; <-- put other properties on the session here
+        const prismaUser = await prisma.user.findUnique({ where: { id: user.id } })
+        const userObject = {
+          ...session.user,
+          ...user,
+          ...prismaUser,
+        }
+        session.user = {
+          ...userObject,
+          email: userObject.email ?? '', // Fix TypeScript bug
+        }
       }
       return session;
     },

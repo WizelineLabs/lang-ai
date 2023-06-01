@@ -55,14 +55,15 @@ const Users: NextPage = () => {
           </Dropdown>
         </div>
         {users && users.length > 0 ? (
-          <Section title="English Level">
+          <Section title="Employees">
             <div className="space-0 flex flex-col divide-y">
               {users.map((user) => (
                 <UsersRow
                   key={user.id}
                   name={user.name ?? ""}
-                  buttonHref={`/admin/users/${user.id}/`} 
-                  id={user.id}                
+                  buttonHref={`/admin/users/${user.id}/`}
+                  id={user.id}
+                  image={user.image}
                 />
               ))}
             </div>
