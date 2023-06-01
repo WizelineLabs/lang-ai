@@ -1,10 +1,16 @@
-import { Question, Test, UserTest, UserTestAnswer } from "@prisma/client";
+import {
+  type Question,
+  type Test,
+  type UserTest,
+  type UserTestAnswer,
+} from "@prisma/client";
 import { z } from "zod";
 import path from "path";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { RequestError, RequestSuccess } from "~/server/models";
+import { type RequestError, type RequestSuccess } from "~/server/models";
 import { prisma } from "~/server/db";
+import { gradeUserTest } from "~/services/grading";
 
 type GetTestDataReturnType = Promise<
   | RequestSuccess<{
@@ -144,7 +150,7 @@ export const testRouter = createTRPCRouter({
         extension: z.string(),
       })
     )
-    .mutation(async function ({ input, ctx }): AnswerQuestionReturnType {
+    .mutation(async function ({ input }): AnswerQuestionReturnType {
       try {
         // const userId = ctx.session.user.id;
         const userTestId = input.userTestId;
@@ -199,9 +205,17 @@ export const testRouter = createTRPCRouter({
             data: {
               submitted: true,
               submissionDate: new Date(),
-              score: Math.min(Math.floor(Math.random() * 101), 100),
+              //score: Math.min(Math.floor(Math.random() * 101), 100),
             },
           });
+
+          // Try to grade it
+          console.log("Will grade userTest", userTestId);
+          gradeUserTest(userTestId)
+            .then(() => console.log("Did grade userTest", userTestId))
+            .catch((error) =>
+              console.error("Did fail grading userTest", userTestId, error)
+            );
         }
 
         return {

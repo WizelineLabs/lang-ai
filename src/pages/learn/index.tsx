@@ -45,9 +45,15 @@ const Learn: NextPage = () => {
                 </span>
               )}
             >
-              <DropdownButton title="Date" onClick={() => console.log("1")} />
-              <DropdownButton title="Level" onClick={() => console.log("2")} />
-              <DropdownButton title="User" onClick={() => console.log("3")} />
+              <DropdownButton onClick={() => console.log("1")}>
+                Date
+              </DropdownButton>
+              <DropdownButton onClick={() => console.log("2")}>
+                Level
+              </DropdownButton>
+              <DropdownButton onClick={() => console.log("3")}>
+                User
+              </DropdownButton>
             </Dropdown>
           </div>
           {tests && tests.length > 0 ? (

@@ -5,7 +5,7 @@ import { OpenAIApi, type CreateTranscriptionResponse } from "openai";
 declare module "openai" {
   interface OpenAIApi {
     createTranscription(
-      file: File | ReadStream,
+      file: File | ReadStream | Buffer,
       model: string,
       prompt?: string,
       responseFormat?: string,

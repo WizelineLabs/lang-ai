@@ -3,11 +3,16 @@ import openai from "./config";
 import fs from "fs";
 
 export async function getWhisperTranscription(
-  filePath: string,
+  file: string | Buffer,
   prompt?: string,
   temperature?: number | undefined
 ): Promise<CreateTranscriptionResponse> {
-  const stream = fs.createReadStream(filePath);
+  let stream: fs.ReadStream | Buffer;
+  if (typeof file === "string") {
+    stream = fs.createReadStream(file);
+  } else {
+    stream = file;
+  }
   const response = await openai.createTranscription(
     stream,
     "whisper-1",
