@@ -13,6 +13,7 @@ import {
 import { GradesRow } from "~/components/tables";
 
 import { api } from "~/utils/api";
+import { getEvaluationGrade, getGradeNumber } from "~/utils/gradesCalculations";
 
 type PickerOptions = "Learn" | "Evaluations";
 
@@ -65,21 +66,38 @@ const Grades: NextPage = () => {
               </span>
             )}
           >
-            <DropdownButton title="Date" onClick={() => console.log("1")} />
-            <DropdownButton title="Level" onClick={() => console.log("2")} />
+            <DropdownButton onClick={() => console.log("1")}>
+              Date
+            </DropdownButton>
+            <DropdownButton onClick={() => console.log("2")}>
+              Level
+            </DropdownButton>
           </Dropdown>
         </div>
         {grades && grades.length > 0 ? (
           <Section>
             <div className="space-0 flex flex-col divide-y">
-              {grades.map((userTest) => (
-                <GradesRow
-                  title={userTest?.test.name ?? "Untitled"}
-                  description={userTest?.test.description ?? ""}
-                  date={userTest?.submissionDate ?? new Date()}
-                  grade={Number(userTest?.score)}
-                />
-              ))}
+              {grades.map((userTest) => {
+                if (!userTest) return <></>;
+
+                const isEvaluation = userTest.test.type === 0;
+                const gradeNumber = getGradeNumber(userTest.score);
+
+                const gradeForIcon = isEvaluation
+                  ? getEvaluationGrade(gradeNumber)
+                  : gradeNumber;
+
+                return (
+                  <GradesRow
+                    key={userTest.id}
+                    title={userTest.test.name}
+                    description={userTest.test.description ?? ""}
+                    date={userTest.submissionDate ?? new Date()}
+                    grade={gradeForIcon}
+                    buttonHref={`/grades/${userTest.test.id}/${userTest.id}`}
+                  />
+                );
+              })}
             </div>
           </Section>
         ) : (

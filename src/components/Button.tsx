@@ -121,3 +121,55 @@ export function ChevronIcon(props: ChevronIconProps) {
     />
   );
 }
+
+interface RecordingButtonProps {
+  isRecording: boolean;
+  text?: string;
+  onClick: () => void;
+}
+
+export function RecordingButton(props: RecordingButtonProps) {
+  const { isRecording, text, onClick } = props;
+  return (
+    <div className="flex rounded-full border bg-white shadow-sm">
+      <button
+        className="relative flex h-14 w-14 items-center justify-center rounded-full text-red-500 hover:bg-slate-100 hover:text-red-700"
+        onClick={() => onClick()}
+      >
+        <div
+          className={
+            "absolute h-6 w-6 bg-current " +
+            (isRecording ? "rounded" : "rounded-full")
+          }
+        />
+      </button>
+      {text && (
+        <span className="my-auto ml-2 mr-5 text-base text-secondary">
+          {text}
+        </span>
+      )}
+    </div>
+  );
+}
+
+import { VideoCameraIcon } from "@heroicons/react/24/solid";
+
+interface CameraButtonProps {
+  children?: React.ReactNode;
+  onClick: () => void;
+}
+
+export function CameraButton(props: CameraButtonProps) {
+  const { children, onClick } = props;
+  return (
+    <div className="flex rounded-full border bg-white shadow-sm">
+      <button
+        className="relative flex h-14 w-14 items-center justify-center rounded-full text-red-500 hover:bg-slate-100 hover:text-red-700"
+        onClick={() => onClick()}
+      >
+        <VideoCameraIcon className="h-8 w-8" />
+      </button>
+      {children}
+    </div>
+  );
+}

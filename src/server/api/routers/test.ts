@@ -1,10 +1,17 @@
-import { Question, Test, UserTest, UserTestAnswer } from "@prisma/client";
+import {
+  type Question,
+  type Test,
+  type UserTest,
+  type UserTestAnswer,
+} from "@prisma/client";
 import { z } from "zod";
-import path from "path";
+import { randomUUID } from "crypto";
 
 import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
-import { RequestError, RequestSuccess } from "~/server/models";
+import { type RequestError, type RequestSuccess } from "~/server/models";
 import { prisma } from "~/server/db";
+import { gradeUserTest } from "~/services/grading";
+import { uploadFile } from "~/services/aws/s3";
 
 type GetTestDataReturnType = Promise<
   | RequestSuccess<{
@@ -144,7 +151,7 @@ export const testRouter = createTRPCRouter({
         extension: z.string(),
       })
     )
-    .mutation(async function ({ input, ctx }): AnswerQuestionReturnType {
+    .mutation(async function ({ input }): AnswerQuestionReturnType {
       try {
         // const userId = ctx.session.user.id;
         const userTestId = input.userTestId;
@@ -153,6 +160,7 @@ export const testRouter = createTRPCRouter({
         // Answer if question exists
         const question = await prisma.question.findUnique({
           where: { id: questionId },
+          include: { test: true },
         });
         if (!question) {
           return {
@@ -164,23 +172,30 @@ export const testRouter = createTRPCRouter({
           };
         }
 
+        // Upload video to Amazon S3
+        const hasVideo = !input.textAnswer;
+        const base64String = input.videoBase64.split("base64,")[1];
+        let videoKey: string | undefined = undefined;
+        if (hasVideo && base64String) {
+          const mainFolder = question.test.type === 0 ? "evaluation" : "learn";
+          const fileName = randomUUID() + "." + input.extension;
+          const filePath = [mainFolder, userTestId, questionId, fileName].join(
+            "/"
+          );
+          videoKey = filePath;
+          const buffer = Buffer.from(base64String, "base64");
+          await uploadFile(buffer, filePath);
+        }
+
+        // Add answer to database
         const answer = await prisma.userTestAnswer.create({
           data: {
             questionId: questionId,
             userTestId: userTestId,
             answer: input.textAnswer ?? "",
+            videoKey: videoKey,
           },
         });
-
-        const hasVideo = !input.textAnswer;
-        if (hasVideo && input.videoBase64) {
-          const fileName = answer.id + "." + input.extension;
-          const filePath = path.join("learn", userTestId, fileName);
-          const buffer = Buffer.from(input.videoBase64);
-
-          const { uploadFile } = await import("~/services/aws/s3");
-          await uploadFile(buffer, filePath);
-        }
 
         // Check if all questions have been answered
         const numberOfQuestions = await prisma.question.count({
@@ -199,9 +214,17 @@ export const testRouter = createTRPCRouter({
             data: {
               submitted: true,
               submissionDate: new Date(),
-              score: Math.min(Math.floor(Math.random() * 101), 100),
+              //score: Math.min(Math.floor(Math.random() * 101), 100),
             },
           });
+
+          // Try to grade it
+          console.log("Will grade userTest", userTestId);
+          gradeUserTest(userTestId)
+            .then(() => console.log("Did grade userTest", userTestId))
+            .catch((error) =>
+              console.error("Did fail grading userTest", userTestId, error)
+            );
         }
 
         return {

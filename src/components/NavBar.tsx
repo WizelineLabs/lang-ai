@@ -9,6 +9,7 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
+import { api } from "~/utils/api";
 
 interface NavBarLink {
   title: string;
@@ -40,40 +41,29 @@ const adminOptions: NavBarLink[] = [
     href: "/admin/dashboard",
   },
   {
-    title: "Grades",
-    href: "/admin/grades",
-  },
-  {
     title: "Users",
     href: "/admin/users",
   },
 ];
 
-type UserRole = "employee" | "administrator";
-const userRole: UserRole = "employee"; // "employee" or "administrator" cambiar esto para cambiar navbar
-
 function NavBar() {
   const session = useSession();
+  //const { data: users, isLoading, error } = api.users.getUsers.useQuery();
   function didTapLogOut() {
     signOut({ callbackUrl: "/login" });
 
-    console.log("Logged Out"); 
+    console.log("Logged Out");
   }
 
-  let options: NavBarLink[] = [];
-
-  if (userRole === "employee") {
-    options = userOptions;
-  } else if (userRole === "administrator") {
-    options = adminOptions;
-  }
+  const options = session.data?.user.isAdmin ? adminOptions : userOptions;
+  const profilePictureURL = session.data?.user.image;
 
   return (
     <nav className="flex flex-row place-content-between border-b bg-white">
       <div className="mx-4 flex flex-row space-x-3">
         <Image
           className="my-2"
-          src="/wizeline-light.svg"
+          src={"/wizeline-light.svg"}
           alt="Wizeline"
           width={207.5}
           height={36}
@@ -97,13 +87,23 @@ function NavBar() {
             id="dropdownNavBarUser"
             data-dropdown-toggle="dropdownUser"
           >
-            <Image
-              className="mr-2 rounded-full"
-              src="/defaultuser.png"
-              alt="Profile Picture"
-              width={32}
-              height={32}
-            />
+            {profilePictureURL ? (
+              <img
+                className="mr-2 rounded-full"
+                src={profilePictureURL}
+                alt="Profile Picture"
+                width={32}
+                height={32}
+              />
+            ) : (
+              <Image
+                className="mr-2 rounded-full"
+                src="/defaultuser.png"
+                alt="Profile Picture"
+                width={32}
+                height={32}
+              />
+            )}
             <span className="inline-flex flex-row self-center">
               {session.data?.user.name ?? "Nadie"}
 

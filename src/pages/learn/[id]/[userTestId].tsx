@@ -6,7 +6,8 @@ import AlertContext from "~/contexts/AlertContext";
 import { api } from "~/utils/api";
 
 import ResponseVideo from "~/components/test/ResponseVideo";
-import InstructionText from "~/components/test/InstructionTextProps";
+import ResponseText from "~/components/test/ResponseText";
+import InstructionText from "~/components/test/InstructionText";
 
 import {
   Button,
@@ -18,6 +19,7 @@ import {
 } from "~/components";
 import { isRequestSuccess } from "~/server/models";
 import { type Question } from "@prisma/client";
+import { getQuestionTypeData } from "~/utils/models";
 
 const Exercise: NextPage = () => {
   const router = useRouter();
@@ -63,9 +65,13 @@ const Exercise: NextPage = () => {
     ? currentQuestionIndex >= value.questions.length - 1
     : false;
 
+  const [currentTextAnswer, setCurrentTextAnswer] = useState("");
+
   const [currentVideoData, setCurrentVideoData] = useState<string | null>(null);
   const [currentVideoExtension, setCurrentVideoExtension] =
     useState<string>("");
+
+  const shouldGoToNextQuestion = !!currentTextAnswer || !!currentVideoData;
 
   const mutation = api.test.answerQuestion.useMutation();
 
@@ -81,7 +87,7 @@ const Exercise: NextPage = () => {
     const result = await mutation.mutateAsync({
       questionId: currentQuestion.id,
       userTestId: userTestId,
-      textAnswer: undefined,
+      textAnswer: currentTextAnswer,
       videoBase64: currentVideoData ?? "",
       extension: currentVideoExtension,
     });
@@ -93,6 +99,7 @@ const Exercise: NextPage = () => {
     if (!result.value.isLastQuestion) {
       // Go to next question
       setCurrentQuestionIndex((previous) => previous + 1);
+      setCurrentTextAnswer("");
       setCurrentVideoData(null);
     } else {
       // This is the final question (end the test)
@@ -108,6 +115,38 @@ const Exercise: NextPage = () => {
         console.error(error);
         showAlert(error.message ?? "Hubo un error desconocido.");
       });
+  }
+
+  function getUIForQuestion(question?: Question) {
+    const [, hasVideo] = getQuestionTypeData(question?.type ?? "");
+
+    return (
+      <>
+        <Section>
+          <div className="px-4 py-3">
+            <InstructionText>{question?.text ?? "..."}</InstructionText>
+          </div>
+        </Section>
+        {hasVideo ? (
+          <>
+            <ResponseVideo
+              key={currentQuestionIndex}
+              didGetNewVideo={(file, ext) => {
+                setCurrentVideoData(file);
+                setCurrentVideoExtension(ext);
+              }}
+            />
+          </>
+        ) : (
+          <>
+            <ResponseText
+              text={currentTextAnswer}
+              didChangeText={(text) => setCurrentTextAnswer(text)}
+            />
+          </>
+        )}
+      </>
+    );
   }
 
   return (
@@ -134,7 +173,7 @@ const Exercise: NextPage = () => {
                 icon={<ChevronIcon />}
                 iconInRight
                 isLoading={mutation.isLoading}
-                disabled={mutation.isLoading || !currentVideoData}
+                disabled={mutation.isLoading || !shouldGoToNextQuestion}
                 onClick={didTapNextQuestion}
               >
                 {isLastQuestion ? "Finish" : "Next"}
@@ -142,26 +181,9 @@ const Exercise: NextPage = () => {
             </div>
           </div>
           {data && isRequestSuccess(data) ? (
-            <>
-              <Section>
-                <div className="px-4 py-3">
-                  <InstructionText>
-                    {getCurrentQuestion(
-                      data.value.questions,
-                      currentQuestionIndex
-                    )?.text ?? "..."}
-                  </InstructionText>
-                </div>
-              </Section>
-              <br />
-              <ResponseVideo
-                key={currentQuestionIndex}
-                didGetNewVideo={(file, ext) => {
-                  setCurrentVideoData(file);
-                  setCurrentVideoExtension(ext);
-                }}
-              />
-            </>
+            getUIForQuestion(
+              getCurrentQuestion(data.value.questions, currentQuestionIndex)
+            )
           ) : (
             <LoadingSection
               isLoading={isLoading}
