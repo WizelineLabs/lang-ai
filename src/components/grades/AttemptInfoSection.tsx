@@ -18,9 +18,12 @@ export function AttemptInfoSection(props: AttemptInfoSectionProps) {
   const isEvaluation = userTest.test.type === 0;
   const gradeNumber = getGradeNumber(userTest.score);
 
-  const gradeForIcon = isEvaluation
-    ? getEvaluationGrade(gradeNumber)
-    : gradeNumber;
+  const gradeForIcon =
+    gradeNumber < 0
+      ? gradeNumber
+      : isEvaluation
+      ? getEvaluationGrade(gradeNumber)
+      : gradeNumber;
 
   return (
     <div className="flex flex-row justify-around gap-3 px-6 py-5">
