@@ -9,6 +9,9 @@ import {
   ArrowLeftOnRectangleIcon,
 } from "@heroicons/react/20/solid";
 import { signOut } from "next-auth/react";
+import { api } from "~/utils/api";
+
+
 
 interface NavBarLink {
   title: string;
@@ -40,28 +43,29 @@ const adminOptions: NavBarLink[] = [
     href: "/admin/dashboard",
   },
   {
-    title: "Grades",
-    href: "/admin/grades",
-  },
-  {
     title: "Users",
     href: "/admin/users",
   },
 ];
 
 type UserRole = "employee" | "administrator";
-const userRole: UserRole = "employee"; // "employee" or "administrator" cambiar esto para cambiar navbar
+var userRole: UserRole = "employee"; // "employee" or "administrator" cambiar esto para cambiar navbar
 
 function NavBar() {
   const session = useSession();
-  function didTapLogOut() {
-    signOut({ callbackUrl: "http://localhost:3000/login" });
+  //const { data: users, isLoading, error } = api.users.getUsers.useQuery();
+  if( session.data?.user.name === "Humberto Rodriguez" && "Erick Padilla"){
+    userRole = "administrator";
+  }
 
-    /* console.log("Logged Out"); */
+  function didTapLogOut() {
+    signOut({ callbackUrl: "/login" });
+
+    console.log("Logged Out"); 
   }
 
   let options: NavBarLink[] = [];
-
+  
   if (userRole === "employee") {
     options = userOptions;
   } else if (userRole === "administrator") {
