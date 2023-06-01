@@ -10,4 +10,4 @@ describe('template spec', () => {
     cy.wait(2000)
     cy.contains('Level').click()
   })
-})
+}) 
