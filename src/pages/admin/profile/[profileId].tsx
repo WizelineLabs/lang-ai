@@ -4,11 +4,10 @@ import Head from "next/head";
 import NavBar from "~/components/NavBar";
 
 import Button from "~/components/Button";
+import { useSession } from "next-auth/react";
 
 import Image from "next/image";
 import { GradesRow } from "~/components/tables";
-
-
 
 import { api } from "~/utils/api";
 
@@ -22,28 +21,25 @@ import {
   Spinner,
 } from "~/components";
 
-
-
 import { useRouter } from "next/router";
 
 type PickerOptions = "Learn" | "Evaluations";
 
 const Profile: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<PickerOptions>("Learn");
+  const [selectedCategory, setSelectedCategory] =
+    useState<PickerOptions>("Learn");
 
   const router = useRouter();
- //ola
-  const userId  = router.query.profileId?.toString() ?? ""; 
+  //ola
+  const userId = router.query.profileId?.toString() ?? "";
   //const grades = router.query.grades?.toString() ?? "";
   const { data, isLoading, error } = api.users.getUserById.useQuery({
     userId: userId,
   });
-  const { data: grades } = api.gradesUser.getGrades.useQuery({ 
+  const { data: grades } = api.gradesUser.getGrades.useQuery({
     category: selectedCategory,
     userId: userId,
-  
   });
-
 
   return (
     <>
@@ -53,13 +49,23 @@ const Profile: NextPage = () => {
             <Section>
               <div className="flex flex-row">
                 <div className="basis-1/3">
-                  <Image
-                    className="my-3 ml-4 rounded-full"
-                    src="/defaultuser.png"
-                    alt="Profile Picture"
-                    width={180}
-                    height={180}
-                  />
+                  {data?.image ? (
+                    <img
+                      className="my-3 ml-4 rounded-full"
+                      src={data?.image}
+                      alt="Profile Picture"
+                      width={180}
+                      height={180}
+                    />
+                  ) : (
+                    <Image
+                      className="my-3 ml-4 rounded-full"
+                      src="/defaultuser.png"
+                      alt="Profile Picture"
+                      width={180}
+                      height={180}
+                    />
+                  )}
                 </div>
                 <div className="flex basis-2/3 items-center">
                   <h2 className="dark:text-dark pl-3 text-2xl font-bold tracking-tight text-gray-900">
