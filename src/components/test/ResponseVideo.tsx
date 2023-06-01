@@ -1,10 +1,13 @@
-import Button from "~/components/Button";
-import Section from "~/components/Section";
-import Webcam from "react-webcam";
 import { useRef, useState, useCallback, useReducer, useEffect } from "react";
+import Webcam from "react-webcam";
+import { CameraButton, RecordingButton } from "~/components";
 import { formatSecondsToTime } from "~/utils/formatSecondsToTime";
 import { useTimer } from "~/hooks";
 import { convertFileToBase64String } from "~/utils/fileToString";
+
+import { ArrowDownTrayIcon } from "@heroicons/react/24/solid";
+
+const allowVideoDownload = true;
 
 const videoConstraints = {
   audio: true,
@@ -170,27 +173,29 @@ function ResponseVideo(props: ResponseVideoProps) {
             ref={webcamRef}
           />
         )}
-        <div className="flex flex-row justify-between p-5">
-          <span className="mx-3 my-auto text-base text-secondary">
-            {formatSecondsToTime(currentTime)}
-          </span>
+        <div className="flex flex-row justify-center px-5 py-4">
           {recordedVideoUrl ? (
-            <Button onClick={() => removeCurrentVideo()}>
-              Record another video
-            </Button>
+            <CameraButton onClick={removeCurrentVideo}>
+              {allowVideoDownload && (
+                <a
+                  className="my-auto ml-2 mr-5 text-primary hover:text-secondary"
+                  href={recordedVideoUrl ?? undefined}
+                  download={"WebcamTest." + (videoFormat?.ext ?? "mp4")}
+                  hidden={!recordedVideoUrl}
+                >
+                  <ArrowDownTrayIcon className="h-6 w-6" />
+                </a>
+              )}
+            </CameraButton>
           ) : (
-            <Button onClick={() => handleRecord()}>
-              {mediaRecorder ? "Stop Recording" : "Start Recording"}
-            </Button>
+            <RecordingButton
+              isRecording={!!mediaRecorder}
+              text={
+                !!mediaRecorder ? formatSecondsToTime(currentTime) : undefined
+              }
+              onClick={handleRecord}
+            />
           )}
-          <a
-            className="mx-3 my-auto"
-            href={recordedVideoUrl ?? undefined}
-            download={"WebcamTest." + (videoFormat?.ext ?? "mp4")}
-            hidden={!recordedVideoUrl}
-          >
-            Download
-          </a>
         </div>
       </div>
     </>

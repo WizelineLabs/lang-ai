@@ -2,11 +2,11 @@ import { createTRPCRouter } from "~/server/api/trpc";
 import { exampleRouter } from "~/server/api/routers/example";
 import { filesRouter } from "./routers/files";
 import { learnRouter } from "./routers/learn";
+import { evaluationsRouter } from "./routers/evaluations";
 import { testRouter } from "./routers/test";
 import { gradesRouter } from "./routers/grades";
 import { usersRouter } from "./routers/user";
 import { gradesUserRouter } from "./routers/gradesUser";
-
 
 /**
  * This is the primary router for your server.
@@ -18,6 +18,7 @@ export const appRouter = createTRPCRouter({
   files: filesRouter,
   grades: gradesRouter,
   learn: learnRouter,
+  evaluations: evaluationsRouter,
   test: testRouter,
   users: usersRouter,
   gradesUser: gradesUserRouter,
