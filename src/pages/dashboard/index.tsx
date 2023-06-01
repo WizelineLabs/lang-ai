@@ -2,6 +2,7 @@ import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { type NextPage } from "next";
 import { useSession } from "next-auth/react";
 import Head from "next/head";
+import { useEffect, useState } from "react";
 import {
   ChevronIcon,
   LinkButton,
@@ -11,12 +12,37 @@ import {
   Spinner,
 } from "~/components";
 import { LessonRow } from "~/components/tables";
-
+import { queryChatGPTChat, queryChatGPTCompletion } from "~/services/openai/chatgpt";
 import { api } from "~/utils/api";
 
+
+
+
 const Dashboard: NextPage = () => {
-  const session = useSession();
+  const [response, setResponse] = useState("");
+  const [isLoadingResponse, setIsLoadingResponse] = useState(true);
   const { data: tests, isLoading, error } = api.learn.getTests.useQuery();
+  const session  = useSession();
+
+  useEffect(() => {
+    async function fetchFeedbackTxt() {
+      try {
+        const completionResponse = await queryChatGPTCompletion(
+          "You are an English evaluator, give me a short feedback on a user who is currently at C1 level of English and is having trouble in the listening section."
+        );
+
+        const generatedText = completionResponse.choices[0]?.text ?? "";
+
+        setResponse(generatedText);
+        setIsLoadingResponse(false);
+      } catch (error) {
+        console.error("Error:", error);
+        setIsLoadingResponse(false); // Update loading state in case of error
+      }
+    }
+
+    fetchFeedbackTxt();
+  }, []);
 
   const AdminPage = () => (
     <PageWrapper>
@@ -67,6 +93,7 @@ const Dashboard: NextPage = () => {
   );
 
   const UserPage = () => (
+
     <PageWrapper>
       <Head>
         <title>LangAI</title>
@@ -99,19 +126,18 @@ const Dashboard: NextPage = () => {
           </Section>
         </div>
 
+      {isLoadingResponse ? (
+        <Spinner /> // Show spinner while loading
+      ) : (
         <Section title="Latest feedback">
           <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
-            <p className="text-sm text-secondary">
-              Your C2 English is impressive, but diversifying vocabulary and
-              sentence structures can further enhance communication skills. Keep
-              pushing yourself!
-            </p>
+            <p className="text-sm text-secondary">{response}</p>
             <p className="text-right text-xs text-slate-400">
-              <InformationCircleIcon className="mb-0.5 inline h-4" /> Powered by
-              Wizeline AI
+              <InformationCircleIcon className="mb-0.5 inline h-4" /> Powered by Wizeline AI
             </p>
           </div>
         </Section>
+      )}
 
         {tests && tests.length > 0 ? (
           <Section title="Exercises awaiting for completion">
