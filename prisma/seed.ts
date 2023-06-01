@@ -39,6 +39,7 @@ async function testSeeder() {
     },
     "textToVideo"
   );
+  await generateEvaluation();
 }
 
 async function generateConversationTest(test: Test, questionType: string) {
@@ -156,3 +157,64 @@ Woman: You're welcome, John. I'm looking forward to working on this project.
 Man: Me too, Jane. I appreciate your constructive feedback.
 
 `;
+
+async function generateEvaluation() {
+  const test: Test = {
+    id: "evaluation",
+    name: "Evaluation",
+    description: null,
+    type: 0,
+    difficulty: 4,
+  };
+
+  await prisma.test.upsert({
+    where: {
+      id: test.id,
+    },
+    create: test,
+    update: test,
+  });
+
+  const question1: Question = {
+    id: test.id + "_question1",
+    test_id: test.id,
+    text: 'Read the following article:\n\n"Climate change is a pressing global issue with far-reaching consequences. Rising temperatures, melting glaciers, and extreme weather events are some of the signs of climate change. It is primarily caused by human activities, such as burning fossil fuels and deforestation."\n\nBased on the article, what are some of the signs and causes of climate change?',
+    weigh: new Decimal(1),
+    type: "textToVideo",
+    audioKey: null,
+  };
+
+  const question2: Question = {
+    id: test.id + "_question2",
+    test_id: test.id,
+    text: 'Read the following conversation:\n\nSarah: Have you watched the latest episode of the TV series "The Crown"? It\'s getting rave reviews.\n\nEmma: No, I haven\'t had the chance yet. What makes it so popular?\n\nSarah: Well, the show offers a captivating portrayal of the British royal family, exploring their history, scandals, and personal lives. The production values and performances are top-notch too.\n\nWhy is the TV series "The Crown" receiving positive reviews according to Sarah?',
+    weigh: new Decimal(1),
+    type: "textToVideo",
+    audioKey: null,
+  };
+
+  const question3: Question = {
+    id: test.id + "_question3",
+    test_id: test.id,
+    text: 'Read the following article:\n\n"Social media has revolutionized the way people connect and communicate. Platforms like Facebook, Twitter, and Instagram have become integral parts of many people\'s lives. However, there are concerns about the impact of excessive social media use on mental health and privacy."\n\nAccording to the article, what are the potential negative effects of excessive social media use?',
+    weigh: new Decimal(1),
+    type: "textToVideo",
+    audioKey: null,
+  };
+
+  await prisma.question.upsert({
+    where: { id: test.id + "_question1" },
+    create: question1,
+    update: question1,
+  });
+  await prisma.question.upsert({
+    where: { id: test.id + "_question2" },
+    create: question2,
+    update: question2,
+  });
+  await prisma.question.upsert({
+    where: { id: test.id + "_question3" },
+    create: question3,
+    update: question3,
+  });
+}

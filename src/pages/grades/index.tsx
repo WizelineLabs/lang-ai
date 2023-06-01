@@ -83,7 +83,7 @@ const Grades: NextPage = () => {
                     title={userTest.test.name}
                     description={userTest.test.description ?? ""}
                     date={userTest.submissionDate ?? new Date()}
-                    grade={Number(userTest.score)}
+                    grade={Number(userTest.score ?? -1)}
                     buttonHref={`/grades/${userTest.test.id}/${userTest.id}`}
                   />
                 ) : (

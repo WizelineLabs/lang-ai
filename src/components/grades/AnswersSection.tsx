@@ -1,8 +1,14 @@
-import { InformationCircleIcon } from "@heroicons/react/24/outline";
+import { useContext, useEffect } from "react";
+import type { Question, Test, UserTest, UserTestAnswer } from "@prisma/client";
 import { Disclosure, Transition } from "@headlessui/react";
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { ChevronUpIcon } from "@heroicons/react/20/solid";
 import { getGradeText, getQuestionWeight } from "~/utils/gradesCalculations";
-import type { Question, Test, UserTest, UserTestAnswer } from "@prisma/client";
+import { getQuestionTypeData } from "~/utils/models";
+import { isRequestSuccess } from "~/server/models";
+import AlertContext from "~/contexts/AlertContext";
+
+import { api } from "~/utils/api";
 
 export interface AnswersSectionProps {
   userTest: UserTest & {
@@ -39,6 +45,30 @@ export interface AnswerDisclosureProps {
 
 function AnswerDisclosure(props: AnswerDisclosureProps) {
   const { userTestAnswer, i, questionWeightText } = props;
+
+  const { showAlert } = useContext(AlertContext);
+
+  const [hasAudio, hasVideo] = getQuestionTypeData(
+    userTestAnswer.question.type
+  );
+
+  const { data, isLoading, error } = api.grades.getAnswerMediaURLs.useQuery({
+    userTestAnswerId: userTestAnswer.id,
+  });
+
+  const value = data && isRequestSuccess(data) ? data.value : undefined;
+
+  useEffect(() => {
+    if (data) {
+      if (isRequestSuccess(data)) {
+      } else {
+        showAlert(data.error.message);
+        console.error(data.error.message);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
+
   return (
     <div className="mx-auto w-full rounded-2xl border bg-white p-2">
       <Disclosure>
@@ -80,8 +110,27 @@ function AnswerDisclosure(props: AnswerDisclosureProps) {
                     </div>
                   </div>
                   <div className="flex flex-col gap-3 pl-4">
+                    {hasVideo && (
+                      <div className="flex flex-col gap-2">
+                        <span className="font-bold">Video</span>
+                        {value?.videoURL ? (
+                          <video
+                            className="aspect-video w-full rounded-xl bg-black"
+                            autoPlay={false}
+                            controls
+                            src={value.videoURL}
+                          />
+                        ) : (
+                          <div className="flex aspect-video w-full rounded-xl bg-black">
+                            <span>{isLoading ? "Loading..." : "Error"}</span>
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <div className="flex flex-col gap-1">
-                      <span className="font-bold">Answer</span>
+                      <span className="font-bold">
+                        {hasVideo ? "Transcription" : "Answer"}
+                      </span>
                       <span className="whitespace-pre-wrap break-words">
                         {userTestAnswer.answer}
                       </span>

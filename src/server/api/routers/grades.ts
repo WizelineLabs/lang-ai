@@ -9,6 +9,7 @@ import {
   type UserTest,
   type Question,
 } from "@prisma/client";
+import { getFileURL } from "~/services/aws/s3";
 
 type GetTestAttemptReturnType = Promise<
   | RequestSuccess<{
@@ -19,6 +20,14 @@ type GetTestAttemptReturnType = Promise<
         })[];
       };
       allUserTests: UserTest[];
+    }>
+  | RequestError
+>;
+
+type GetAnswerMediaURLsReturnType = Promise<
+  | RequestSuccess<{
+      audioURL?: string;
+      videoURL?: string;
     }>
   | RequestError
 >;
@@ -149,6 +158,47 @@ export const gradesRouter = createTRPCRouter({
           value: {
             userTest: userTest,
             allUserTests: userTestList,
+          },
+        };
+      } catch (e) {
+        const error = e as Error;
+        return {
+          success: false,
+          code: error.name,
+          error: error,
+        };
+      }
+    }),
+
+  getAnswerMediaURLs: protectedProcedure
+    .input(z.object({ userTestAnswerId: z.string() }))
+    .query(async function ({ input, ctx }): GetAnswerMediaURLsReturnType {
+      try {
+        const userTestAnswerId = input.userTestAnswerId;
+
+        // Get and validate answer
+        const answer = await prisma.userTestAnswer.findUnique({
+          where: { id: userTestAnswerId },
+          include: { question: true },
+        });
+
+        if (!answer) {
+          return {
+            success: false,
+            code: "userTestAnswerNotFound",
+            error: new Error("No se pudo encontrar la respuesta."),
+          };
+        }
+
+        return {
+          success: true,
+          value: {
+            audioURL: answer.question.audioKey
+              ? await getFileURL(answer.question.audioKey)
+              : undefined,
+            videoURL: answer.videoKey
+              ? await getFileURL(answer.videoKey)
+              : undefined,
           },
         };
       } catch (e) {

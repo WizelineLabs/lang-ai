@@ -28,7 +28,7 @@ const Evaluations: NextPage = () => {
             className="flex-1 justify-center"
             icon={<ChevronIcon className="h-6" />}
             iconInRight
-            href="/camtest/"
+            href="/learn/evaluation/"
           >
             <div className="py-16">
               <span className="text-2xl">Start now</span>
