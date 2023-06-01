@@ -67,11 +67,12 @@ const Grades: NextPage = () => {
                   </span>
                 )}
               >
-                <DropdownButton title="Date" onClick={() => console.log("1")} />
-                <DropdownButton
-                  title="Level"
-                  onClick={() => console.log("2")}
-                />
+                <DropdownButton onClick={() => console.log("1")}>
+                  Date
+                </DropdownButton>
+                <DropdownButton onClick={() => console.log("2")}>
+                  Level
+                </DropdownButton>
               </Dropdown>
             </div>
 
