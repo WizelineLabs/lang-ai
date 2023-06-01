@@ -139,7 +139,7 @@ async function gradeAnswer(answer: Answer) {
         audioData.filePath,
         undefined,
         0,
-        false
+        true
       );
       answerText = transcription.text;
     } else {

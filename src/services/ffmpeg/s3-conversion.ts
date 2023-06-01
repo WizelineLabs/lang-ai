@@ -26,6 +26,7 @@ export async function convertS3VideoToAudio(
 
   console.log("Will write file to", inputTempPath);
 
+  await fs.mkdir(path.join(process.cwd(), "temp"), { recursive: true });
   await fs.writeFile(inputTempPath, data);
 
   console.log("Did write file to", inputTempPath);
