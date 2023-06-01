@@ -19,18 +19,32 @@ main()
  * TESTS AND QUESTIONS
  */
 async function testSeeder() {
-  const testId = "seededTest0";
-  const test: Test = {
-    id: testId,
-    name: "Conversations",
-    description: "Reading and Writing",
-    type: 1,
-    difficulty: 1,
-  };
+  await generateConversationTest(
+    {
+      id: "seededTest0",
+      name: "Conversations",
+      description: "Reading and Writing",
+      type: 1,
+      difficulty: 1,
+    },
+    "textToText"
+  );
+  await generateConversationTest(
+    {
+      id: "seededTest1",
+      name: "Conversations",
+      description: "Reading and Speaking",
+      type: 1,
+      difficulty: 1,
+    },
+    "textToVideo"
+  );
+}
 
+async function generateConversationTest(test: Test, questionType: string) {
   await prisma.test.upsert({
     where: {
-      id: testId,
+      id: test.id,
     },
     create: test,
     update: test,
@@ -38,90 +52,90 @@ async function testSeeder() {
 
   // Questions
   const question1: Question = {
-    id: "seededTest0_question1",
-    test_id: testId,
+    id: test.id + "_question1",
+    test_id: test.id,
     text: conversation + "What is the main topic of this conversation?",
     weigh: new Decimal(1),
-    type: "textToText",
+    type: questionType,
     audioKey: null,
   };
   const question2: Question = {
-    id: "seededTest0_question2",
-    test_id: testId,
+    id: test.id + "_question2",
+    test_id: test.id,
     text:
       conversation +
       "How does the woman feel about the man's initial project proposal?",
     weigh: new Decimal(1),
-    type: "textToText",
+    type: questionType,
     audioKey: null,
   };
   const question3: Question = {
-    id: "seededTest0_question3",
-    test_id: testId,
+    id: test.id + "_question3",
+    test_id: test.id,
     text:
       conversation +
       "According to the woman, what should be changed in the project proposal?",
     weigh: new Decimal(1),
-    type: "textToText",
+    type: questionType,
     audioKey: null,
   };
   const question4: Question = {
-    id: "seededTest0_question4",
-    test_id: testId,
+    id: test.id + "_question4",
+    test_id: test.id,
     text:
       conversation + "What is the man's response to the woman's suggestions?",
     weigh: new Decimal(1),
-    type: "textToText",
+    type: questionType,
     audioKey: null,
   };
   const question5: Question = {
-    id: "seededTest0_question5",
-    test_id: testId,
+    id: test.id + "_question5",
+    test_id: test.id,
     text:
       conversation +
       "How does the man feel about working with the woman on this project?",
     weigh: new Decimal(1),
-    type: "textToText",
+    type: questionType,
     audioKey: null,
   };
   const question6: Question = {
-    id: "seededTest0_question6",
-    test_id: testId,
+    id: test.id + "_question6",
+    test_id: test.id,
     text:
       conversation +
       "What does this conversation suggest about the professional relationship between the man and the woman?",
     weigh: new Decimal(1),
-    type: "textToText",
+    type: questionType,
     audioKey: null,
   };
 
   await prisma.question.upsert({
-    where: { id: "seededTest0_question1" },
+    where: { id: test.id + "_question1" },
     create: question1,
     update: question1,
   });
   await prisma.question.upsert({
-    where: { id: "seededTest0_question2" },
+    where: { id: test.id + "_question2" },
     create: question2,
     update: question2,
   });
   await prisma.question.upsert({
-    where: { id: "seededTest0_question3" },
+    where: { id: test.id + "_question3" },
     create: question3,
     update: question3,
   });
   await prisma.question.upsert({
-    where: { id: "seededTest0_question4" },
+    where: { id: test.id + "_question4" },
     create: question4,
     update: question4,
   });
   await prisma.question.upsert({
-    where: { id: "seededTest0_question5" },
+    where: { id: test.id + "_question5" },
     create: question5,
     update: question5,
   });
   await prisma.question.upsert({
-    where: { id: "seededTest0_question6" },
+    where: { id: test.id + "_question6" },
     create: question6,
     update: question6,
   });
