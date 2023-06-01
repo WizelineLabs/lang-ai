@@ -8,8 +8,6 @@ import Button from "~/components/Button";
 import Image from "next/image";
 import { GradesRow } from "~/components/tables";
 
-
-
 import { api } from "~/utils/api";
 
 import {
@@ -22,28 +20,25 @@ import {
   Spinner,
 } from "~/components";
 
-
-
 import { useRouter } from "next/router";
 
 type PickerOptions = "Learn" | "Evaluations";
 
 const Profile: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] = useState<PickerOptions>("Learn");
+  const [selectedCategory, setSelectedCategory] =
+    useState<PickerOptions>("Learn");
 
   const router = useRouter();
- //ola
-  const userId  = router.query.profileId?.toString() ?? ""; 
+  //ola
+  const userId = router.query.profileId?.toString() ?? "";
   //const grades = router.query.grades?.toString() ?? "";
   const { data, isLoading, error } = api.users.getUserById.useQuery({
     userId: userId,
   });
-  const { data: grades } = api.gradesUser.getGrades.useQuery({ 
+  const { data: grades } = api.gradesUser.getGrades.useQuery({
     category: selectedCategory,
     userId: userId,
-  
   });
-
 
   return (
     <>
@@ -95,11 +90,12 @@ const Profile: NextPage = () => {
                   </span>
                 )}
               >
-                <DropdownButton title="Date" onClick={() => console.log("1")} />
-                <DropdownButton
-                  title="Level"
-                  onClick={() => console.log("2")}
-                />
+                <DropdownButton onClick={() => console.log("1")}>
+                  Date
+                </DropdownButton>
+                <DropdownButton onClick={() => console.log("2")}>
+                  Level
+                </DropdownButton>
               </Dropdown>
             </div>
 
@@ -110,6 +106,7 @@ const Profile: NextPage = () => {
                     <div className="space-0 flex flex-col divide-y">
                       {grades.map((userTest) => (
                         <GradesRow
+                          key={userTest?.id}
                           title={userTest?.test.name ?? "Untitled"}
                           description={userTest?.test.description ?? ""}
                           date={userTest?.submissionDate ?? new Date()}
