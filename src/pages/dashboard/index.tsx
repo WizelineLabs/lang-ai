@@ -73,9 +73,9 @@ const Dashboard: NextPage = () => {
       <Section title="Latest feedback">
         <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
           <p className="text-sm text-secondary">
-            Your C2 English is impressive, but diversifying vocabulary and
-            sentence structures can further enhance communication skills. Keep
-            pushing yourself!
+            Your English is impressive, but diversifying vocabulary and sentence
+            structures can further enhance communication skills. Keep pushing
+            yourself!
           </p>
           <p className="text-right text-xs text-slate-400">
             <InformationCircleIcon className="mb-0.5 inline h-4" /> Powered by
