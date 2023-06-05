@@ -122,6 +122,7 @@ const Profile: NextPage = () => {
                           description={userTest?.test.description ?? ""}
                           date={userTest?.submissionDate ?? new Date()}
                           grade={Number(userTest?.score)}
+                          buttonHref={`/grades/${userTest?.test.id}/${userTest?.id}`} // no jala esto
                         />
                       ))}
                     </div>
