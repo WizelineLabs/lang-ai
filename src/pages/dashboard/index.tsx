@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { PageTitle, PageWrapper, Section, Spinner } from "~/components";
 import { EnglishLevelSection } from "~/components/evaluations/EnglishLevelSection";
+import { AdminLessonRow } from "~/components/tables";
 import { LessonRow } from "~/components/tables";
 
 import { api } from "~/utils/api";
@@ -33,12 +34,11 @@ const Dashboard: NextPage = () => {
           <Section title="Exercises Availible for Employees">
             <div className="space-0 flex flex-col divide-y">
               {tests.map((test) => (
-                <LessonRow
+                <AdminLessonRow
                   key={test.id}
                   title={test.name}
                   description={test.description ?? ""}
                   difficulty={test.difficulty}
-                  state="pending"
                 />
               ))}
             </div>
