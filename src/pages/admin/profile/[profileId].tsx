@@ -36,7 +36,7 @@ const Profile: NextPage = () => {
   const { data, isLoading, error } = api.users.getUserById.useQuery({
     userId: userId,
   });
-  const { data: grades } = api.gradesUser.getGrades.useQuery({
+  const { data: grades } = api.gradesAdmin.getGrades.useQuery({
     category: selectedCategory,
     userId: userId,
   });
@@ -112,21 +112,26 @@ const Profile: NextPage = () => {
 
             <Section>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-                {grades && grades.length > 0 ? (
-                  <Section>
-                    <div className="space-0 flex flex-col divide-y">
-                      {grades.map((userTest) => (
-                        <GradesRow
-                          key={userTest?.id}
-                          title={userTest?.test.name ?? "Untitled"}
-                          description={userTest?.test.description ?? ""}
-                          date={userTest?.submissionDate ?? new Date()}
-                          grade={Number(userTest?.score)}
-                        />
-                      ))}
-                    </div>
-                  </Section>
-                ) : (
+              {grades && grades.length > 0 ? (
+                    <Section>
+                      <div className="space-0 flex flex-col divide-y">
+                        {grades.map((userTest) =>
+                          userTest ? (
+                            <GradesRow
+                              key={userTest.id}
+                              title={userTest.test.name}
+                              description={userTest.test.description ?? ""}
+                              date={userTest.submissionDate ?? new Date()}
+                              grade={Number(userTest.score)}
+                              buttonHref={`/gradesAdmin/${userTest.id}`}
+                            />
+                          ) : (
+                            <></>
+                          )
+                        )}
+                      </div>
+                    </Section>
+                  ) : (
                   <div className="mt-8 grid w-full justify-center py-16">
                     <div hidden={!isLoading} className="mx-auto text-secondary">
                       <Spinner />
