@@ -1,20 +1,16 @@
 import { type CreateTranscriptionResponse } from "openai";
 import openai from "./config";
 import fs from "fs";
+import fsPromises from "fs/promises";
 
 export async function getWhisperTranscription(
-  file: string | Buffer,
+  file: string,
   prompt?: string,
-  temperature?: number | undefined
+  temperature?: number | undefined,
+  deleteFile = false
 ): Promise<CreateTranscriptionResponse> {
-  let stream: fs.ReadStream | Buffer;
-  if (typeof file === "string") {
-    stream = fs.createReadStream(file);
-  } else {
-    stream = file;
-  }
   const response = await openai.createTranscription(
-    stream,
+    fs.createReadStream(file),
     "whisper-1",
     prompt,
     undefined,
@@ -22,6 +18,9 @@ export async function getWhisperTranscription(
     "en"
   );
   console.log("Whisper", response.status, response.data);
+  if (deleteFile) {
+    await fsPromises.unlink(file);
+  }
   if (response.status == 200) {
     return response.data;
   } else {

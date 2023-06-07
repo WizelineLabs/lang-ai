@@ -11,7 +11,10 @@ export function PageWrapper(props: PageWrapperProps) {
       <div className="w-screen shrink">
         <NavBar />
       </div>
-      <div className="p-auto w-full grow overflow-y-auto overflow-x-hidden py-16">
+      <div
+        id="page-wrapper-overflow"
+        className="p-auto w-full grow overflow-y-auto overflow-x-hidden py-16"
+      >
         <div className="mx-auto max-w-screen-md">{props.children}</div>
       </div>
     </div>

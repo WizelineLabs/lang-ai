@@ -1,5 +1,6 @@
 import { S3Client, GetObjectCommand } from "@aws-sdk/client-s3";
 import { Upload } from "@aws-sdk/lib-storage";
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 
 import { env } from "~/env.mjs";
 
@@ -38,4 +39,18 @@ export async function uploadFile(file: Buffer, path: string) {
     console.log("Upload progress:", progress);
   });
   await upload.done();
+}
+
+export async function getFileURL(filePath: string) {
+  const command = new GetObjectCommand({
+    Bucket: bucketName,
+    Key: filePath,
+  });
+  try {
+    return await getSignedUrl(s3, command, { expiresIn: 3600 * 12 });
+  } catch (err) {
+    const error = err as Error;
+    console.error("getSignedUrl error:", error);
+    return undefined;
+  }
 }
