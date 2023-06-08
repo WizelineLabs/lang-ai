@@ -19,16 +19,6 @@ const Dashboard: NextPage = () => {
         Welcome back, {session.data?.user.name ?? "Administrator"}
       </PageTitle>
       <main>
-        <Section title="Latest user feedback">
-          <p className="p-3 font-normal text-gray-700 dark:text-gray-500">
-            User: Bizmarck Lepe
-          </p>
-
-          <p className="p-3 font-normal text-gray-700 dark:text-gray-500">
-            Bizmarcks C2 English is impressive, but diversifying vocabulary and
-            sentence structures can further enhance his communication skills.
-          </p>
-        </Section>
 
         {tests && tests.length > 0 ? (
           <Section title="Exercises Availible for Employees">
