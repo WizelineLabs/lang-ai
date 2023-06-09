@@ -1,5 +1,8 @@
 # Installs Node.js image
-FROM --platform=linux/amd64 node:20
+FROM --platform=linux/amd64 node:20-alpine
+
+# Install FFmpeg and other dependencies
+RUN apk update && apk add ffmpeg
 
 # Skip env validation to prevent crash on build
 # (Docker image should not contain .env in prod)
