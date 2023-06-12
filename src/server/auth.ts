@@ -23,7 +23,8 @@ declare module "next-auth" {
   interface Session extends DefaultSession {
     user: {
       id: string;
-    } & PrismaUser & DefaultSession["user"];
+    } & PrismaUser &
+      DefaultSession["user"];
   }
 }
 
@@ -36,21 +37,26 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async session({ session, user }) {
       if (session.user) {
-        const prismaUser = await prisma.user.findUnique({ where: { id: user.id } })
+        const prismaUser = await prisma.user.findUnique({
+          where: { id: user.id },
+        });
         const userObject = {
           ...session.user,
           ...user,
           ...prismaUser,
-        }
+        };
         session.user = {
           ...userObject,
-          email: userObject.email ?? '', // Fix TypeScript bug
-        }
+          email: userObject.email ?? "", // Fix TypeScript bug
+        };
       }
       return session;
     },
   },
   adapter: PrismaAdapter(prisma),
+  // pages: {
+  //   //signIn: "/login/",
+  // },
   providers: [
     /* CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
