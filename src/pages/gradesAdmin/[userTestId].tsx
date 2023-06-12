@@ -91,7 +91,7 @@ const TestGrades: NextPage = () => {
                 </div>
               </div>
             </Section>
-            <Section title="Feedback">
+            {/* <Section title="Feedback">
               <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
                 <p className="text-sm text-secondary">
                   {data.value.userTest.feedback ??
@@ -102,7 +102,7 @@ const TestGrades: NextPage = () => {
                   Powered by Wizeline AI
                 </p>
               </div>
-            </Section>
+            </Section> */}
             <Section title="Answers" noBackground>
               <div className="mt-2 flex flex-col gap-3">
                 {data.value.userTest.user_test_answer.map(
