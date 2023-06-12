@@ -85,6 +85,7 @@ model Question {
   type             String
   weigh            Decimal          @db.Decimal
   audioKey         String?
+  audioTranscript  String?
   test_id          String
   test             Test             @relation(fields: [test_id], references: [id])
   user_test_answer UserTestAnswer[]

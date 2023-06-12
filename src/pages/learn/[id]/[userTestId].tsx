@@ -20,6 +20,7 @@ import {
 import { isRequestSuccess } from "~/server/models";
 import { type Question } from "@prisma/client";
 import { getQuestionTypeData } from "~/utils/models";
+import InstructionAudio from "~/components/test/InstructionAudio";
 
 const Exercise: NextPage = () => {
   const router = useRouter();
@@ -118,12 +119,13 @@ const Exercise: NextPage = () => {
   }
 
   function getUIForQuestion(question?: Question) {
-    const [, hasVideo] = getQuestionTypeData(question?.type ?? "");
+    const [hasAudio, hasVideo] = getQuestionTypeData(question?.type ?? "");
 
     return (
       <>
         <Section>
           <div className="px-4 py-3">
+            {hasAudio && question && <AudioUI questionId={question.id} />}
             <InstructionText>{question?.text ?? "..."}</InstructionText>
           </div>
         </Section>
@@ -147,6 +149,17 @@ const Exercise: NextPage = () => {
         )}
       </>
     );
+  }
+
+  function AudioUI(props: { questionId: string }) {
+    const { questionId } = props;
+    const { data } = api.test.getAudioURL.useQuery({ questionId: questionId });
+    const url = data && isRequestSuccess(data) ? data.value.url : null;
+
+    if (!url) {
+      return <></>;
+    }
+    return <InstructionAudio audioUrl={url} />;
   }
 
   return (
