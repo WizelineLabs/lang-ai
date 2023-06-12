@@ -28,7 +28,7 @@ const Dashboard: NextPage = () => {
     async function fetchFeedbackTxt() {
       try {
         const completionResponse = await queryChatGPTCompletion(
-          "You are an English evaluator, give me a short feedback on a user who is currently at C1 level of English and is having trouble in the listening section."
+          "You are an English evaluator, give me a very short feedback (50 words or less) on a user who is currently at C1 level of English and is having trouble in the listening section."
         );
 
         const generatedText = completionResponse.choices[0]?.text ?? "";
