@@ -126,7 +126,22 @@ export async function gradeUserTest(userTestId: string) {
 }
 
 async function gradeAnswer(answer: Answer) {
-  const [, hasVideo] = getQuestionTypeData(answer.question.type);
+  const [hasAudio, hasVideo] = getQuestionTypeData(answer.question.type);
+
+  // Get the question as text
+  let questionText: string;
+  if (hasAudio) {
+    if (answer.question.audioTranscript) {
+      // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
+      questionText = `${answer.question.audioTranscript}\n\n${answer.question.text}`;
+    } else {
+      throw new Error(
+        "Question should have audio transcript but it wasn't found"
+      );
+    }
+  } else {
+    questionText = answer.question.text;
+  }
 
   // Get the answer as text
   let answerText: string;
@@ -151,7 +166,11 @@ async function gradeAnswer(answer: Answer) {
   }
 
   // Grade the answer
-  const prompt = generateGradingPromptChat(answerText, answer.question);
+  const prompt = generateGradingPromptChat(
+    questionText,
+    answerText,
+    answer.question
+  );
   const chatGPTAnswer = await queryChatGPTChat(
     gradingSystemPromptBaseTextCompletionChat,
     prompt

@@ -173,3 +173,24 @@ export function CameraButton(props: CameraButtonProps) {
     </div>
   );
 }
+
+interface IconButtonProps {
+  icon: React.ReactNode;
+  children?: React.ReactNode;
+  onClick: () => void;
+}
+
+export function IconButton(props: IconButtonProps) {
+  const { icon, children, onClick } = props;
+  return (
+    <div className="flex rounded-full border bg-white shadow-sm">
+      <button
+        className="relative flex h-14 w-14 items-center justify-center rounded-full text-red-500 hover:bg-slate-100 hover:text-red-700"
+        onClick={() => onClick()}
+      >
+        {icon}
+      </button>
+      {children}
+    </div>
+  );
+}

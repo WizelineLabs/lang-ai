@@ -21,7 +21,11 @@ export default async function handler(
   try {
     const input = req.body as Input;
     console.log(input);
-    const prompt = generateGradingPromptChat(input.answer, input.question);
+    const prompt = generateGradingPromptChat(
+      input.question.text,
+      input.answer,
+      input.question
+    );
     console.log(prompt);
     const response = await queryChatGPTChat(
       gradingSystemPromptBaseTextCompletionChat,

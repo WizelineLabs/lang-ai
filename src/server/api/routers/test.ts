@@ -11,7 +11,7 @@ import { createTRPCRouter, protectedProcedure } from "~/server/api/trpc";
 import { type RequestError, type RequestSuccess } from "~/server/models";
 import { prisma } from "~/server/db";
 import { gradeUserTest } from "~/services/grading";
-import { uploadFile } from "~/services/aws/s3";
+import { getFileURL, uploadFile } from "~/services/aws/s3";
 
 type GetTestDataReturnType = Promise<
   | RequestSuccess<{
@@ -30,6 +30,13 @@ type PrepareStartForTestReturnType = Promise<
 
 type AnswerQuestionReturnType = Promise<
   | RequestSuccess<{ answer: UserTestAnswer; isLastQuestion: boolean }>
+  | RequestError
+>;
+
+type GetAudioURLReturnType = Promise<
+  | RequestSuccess<{
+      url: string | null;
+    }>
   | RequestError
 >;
 
@@ -233,6 +240,41 @@ export const testRouter = createTRPCRouter({
             answer: answer,
             isLastQuestion: isTestFinished,
           },
+        };
+      } catch (e) {
+        const error = e as Error;
+        return {
+          success: false,
+          code: error.name,
+          error: error,
+        };
+      }
+    }),
+
+  getAudioURL: protectedProcedure
+    .input(
+      z.object({
+        questionId: z.string(),
+      })
+    )
+    .query(async function ({ input, ctx }): GetAudioURLReturnType {
+      try {
+        const question = await prisma.question.findUnique({
+          where: { id: input.questionId },
+        });
+
+        if (!question || !question.audioKey) {
+          return {
+            success: false,
+            code: "audioNotFound",
+            error: new Error("This question doesn't have any audio."),
+          };
+        }
+
+        const url = await getFileURL(question.audioKey);
+        return {
+          success: true,
+          value: { url: url ?? null },
         };
       } catch (e) {
         const error = e as Error;

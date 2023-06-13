@@ -20,6 +20,7 @@ import {
 import { isRequestSuccess } from "~/server/models";
 import { type Question } from "@prisma/client";
 import { getQuestionTypeData } from "~/utils/models";
+import InstructionAudio from "~/components/test/InstructionAudio";
 
 const Exercise: NextPage = () => {
   const router = useRouter();
@@ -118,12 +119,15 @@ const Exercise: NextPage = () => {
   }
 
   function getUIForQuestion(question?: Question) {
-    const [, hasVideo] = getQuestionTypeData(question?.type ?? "");
+    const [hasAudio, hasVideo] = getQuestionTypeData(question?.type ?? "");
 
     return (
       <>
         <Section>
-          <div className="px-4 py-3">
+          <div className="flex flex-col gap-4 px-5 py-4">
+            {hasAudio && question && (
+              <InstructionAudio questionId={question.id} />
+            )}
             <InstructionText>{question?.text ?? "..."}</InstructionText>
           </div>
         </Section>
