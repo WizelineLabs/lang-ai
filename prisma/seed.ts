@@ -193,7 +193,7 @@ async function generateAudioTest(test: Test) {
   const question2: Question = {
     id: test.id + "_question2",
     test_id: test.id,
-    text: "What mistake did the man make when spelling his postcode?",
+    text: "What mistake did the woman make when typing the man's postcode?",
     weigh: new Decimal(1),
     type: "audioToVideo",
     audioKey: `questions/${test.id}_question2.mp3`,
@@ -258,24 +258,29 @@ Woman: International student ID card?
 Man: Yes, that's right.
 Woman: Have you got the form?
 Man: Yes, here it is.
-Woman: OK, let's see. Name, Ahmed. Surname, Saeed. Age, 14. Address, oh, what's your address?
-Man: 14 Spring Avenue.
-Woman: 14 Spring Avenue. Leicester. Can you spell that, please?
-Man: L-E-I-C-E-S-T-E-R.
-Woman: Mm-hm. What's your postcode?
-Man: L-E-14-2-G-S.
-Woman: No, 2-G-Z.
-Man: OK, 2-G-Z.
-Woman: And what's your nationality?
-Man: I'm British.
-Woman: What's your school?
-Man: Newtown Secondary School. N-E-W-T-O-W-N.
-Woman: Mm-hm. And what's your date of birth?
-Man: The 2nd of June, 1998.
-Woman: The 2nd of the 6th, 1998. Ah, have you got a photo?
+*Man pulls form out*
+Woman: Okay let's see, name… Achmed, surname…Saeed, age 14, address, Oh.. what's you address?
+Man: Fourteen Spring Avenue
+Woman: Fourteen… Spring… Avenue
+Man: Leicester
+Woman: Can you Spell that please?
+Man: L-E-I-C-E-S-T-E-R
+Woman: Mhmm, what's your postcode?
+Man: L-E-1-4-2-G-Z
+Woman: L-E-1-4-2-G-S
+Man: No, 2-G-Z
+Woman: Oh okay… 2-G-Z. And what's your nationality?
+Man: I'm… British
+Woman: What's your School
+Man: NewTown Secondary School… N-E-W-T-O-W-N
+Woman: What's your date of birth?
+Man: The second of june, 1998
+Woman: The second of the sixth… 1998. Oh have you got a photo?
 Man: Yes, here you are.
-Woman: Ah, thank you. One moment, please. And here's your card.
-Man: Thanks. Bye!
+*Man pulls photo*
+Woman: Oh thank you, one moment please.
+Woman: And here's your ID card!
+Man: Thanks! Bye!
 `;
 
 const transcript3 = `

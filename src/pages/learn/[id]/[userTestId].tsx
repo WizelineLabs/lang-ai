@@ -124,8 +124,10 @@ const Exercise: NextPage = () => {
     return (
       <>
         <Section>
-          <div className="px-4 py-3">
-            {hasAudio && question && <AudioUI questionId={question.id} />}
+          <div className="flex flex-col gap-4 px-5 py-4">
+            {hasAudio && question && (
+              <InstructionAudio questionId={question.id} />
+            )}
             <InstructionText>{question?.text ?? "..."}</InstructionText>
           </div>
         </Section>
@@ -149,17 +151,6 @@ const Exercise: NextPage = () => {
         )}
       </>
     );
-  }
-
-  function AudioUI(props: { questionId: string }) {
-    const { questionId } = props;
-    const { data } = api.test.getAudioURL.useQuery({ questionId: questionId });
-    const url = data && isRequestSuccess(data) ? data.value.url : null;
-
-    if (!url) {
-      return <></>;
-    }
-    return <InstructionAudio audioUrl={url} />;
   }
 
   return (
