@@ -183,7 +183,7 @@ async function generateAudioTest(test: Test) {
   const question1: Question = {
     id: test.id + "_question1",
     test_id: test.id,
-    text: "Is the woman interested in admitting the man to the band? Why?",
+    text: "What do you think will the woman do, will she call the man back? And what would you have done if you were put in the woman's situation?",
     weigh: new Decimal(1),
     type: "audioToVideo",
     audioKey: `questions/${test.id}_question1.mp3`,
@@ -193,7 +193,7 @@ async function generateAudioTest(test: Test) {
   const question2: Question = {
     id: test.id + "_question2",
     test_id: test.id,
-    text: "What mistake did the woman make when typing the man's postcode?",
+    text: "What do you think on how the man presented his information? Was he being too slow or too fast? What do you think of the woman's ability to listen?",
     weigh: new Decimal(1),
     type: "audioToVideo",
     audioKey: `questions/${test.id}_question2.mp3`,
@@ -203,7 +203,7 @@ async function generateAudioTest(test: Test) {
   const question3: Question = {
     id: test.id + "_question3",
     test_id: test.id,
-    text: "Why is Ismael tired of school?",
+    text: "What do you think about skipping homework for going to the movies with your friends? What are some of your favorite movie genres?",
     weigh: new Decimal(1),
     type: "audioToVideo",
     audioKey: `questions/${test.id}_question3.mp3`,
@@ -359,6 +359,26 @@ async function generateEvaluation() {
     audioTranscript: null,
   };
 
+  const question4: Question = {
+    id: test.id + "_question4",
+    test_id: test.id,
+    text: "What do you think will the woman do, will she call the man back? And what would you have done if you were put in the woman's situation?",
+    weigh: new Decimal(1),
+    type: "audioToVideo",
+    audioKey: `questions/${test.id}_question4.mp3`,
+    audioTranscript: transcript1,
+  };
+
+  const question5: Question = {
+    id: test.id + "_question5",
+    test_id: test.id,
+    text: "What do you think about skipping homework for going to the movies with your friends? What are some of your favorite movie genres?",
+    weigh: new Decimal(1),
+    type: "audioToVideo",
+    audioKey: `questions/${test.id}_question5.mp3`,
+    audioTranscript: transcript3,
+  };
+
   await prisma.question.upsert({
     where: { id: test.id + "_question1" },
     create: question1,
@@ -373,5 +393,15 @@ async function generateEvaluation() {
     where: { id: test.id + "_question3" },
     create: question3,
     update: question3,
+  });
+  await prisma.question.upsert({
+    where: { id: test.id + "_question4" },
+    create: question4,
+    update: question4,
+  });
+  await prisma.question.upsert({
+    where: { id: test.id + "_question5" },
+    create: question5,
+    update: question5,
   });
 }
