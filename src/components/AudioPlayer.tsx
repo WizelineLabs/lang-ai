@@ -5,10 +5,11 @@ import { ProgressBar } from "./ProgressBar";
 import { PlayIcon, PauseIcon } from "@heroicons/react/24/solid";
 
 interface AudioPlayerProps {
+  width?: string;
   audioUrl: string;
 }
 
-function AudioPlayer({ audioUrl }: AudioPlayerProps) {
+function AudioPlayer({ width, audioUrl }: AudioPlayerProps) {
   const [isPlaying, setIsPlaying] = React.useState(false);
   const [progress, setProgress] = React.useState(0);
   const audioRef = React.useRef<HTMLAudioElement>(null);
@@ -55,7 +56,7 @@ function AudioPlayer({ audioUrl }: AudioPlayerProps) {
             className="rounded-full"
             value={progress}
             max={100}
-            style={{ width: "300px" }}
+            style={{ width: width ?? "300px" }}
           />
         </div>
       </IconButton>

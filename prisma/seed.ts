@@ -228,6 +228,8 @@ async function generateAudioTest(test: Test) {
 }
 
 const transcript1 = `
+Listen to the following conversation:
+
 Man: Oh band auditions! Great! I'd love to be in a band.
 *Man Knocks on the door and the woman opens the door*
 Man: Hello, is this the band audition?
@@ -254,6 +256,8 @@ Woman: Great! Uhm, thanks for coming! I'll call you next week.
 `;
 
 const transcript2 = `
+Listen to the following conversation:
+
 Woman: International student ID card?
 Man: Yes, that's right.
 Woman: Have you got the form?
@@ -284,6 +288,8 @@ Man: Thanks! Bye!
 `;
 
 const transcript3 = `
+Listen to the following conversation:
+
 Jack: Hi Ismael! How are you?
 Ismael: Hi Jack… I'm okay but I've got loads of homework.
 Jack: Aha me too! But would you like to come with us to the cinema tonight?
