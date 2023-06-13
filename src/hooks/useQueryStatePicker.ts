@@ -16,8 +16,10 @@ export function useQueryStatePicker(
 
   useEffect(() => {
     if (!stringValue || !options.allowedValues.has(stringValue)) {
+      const url = new URL(router.asPath, "http://dummy.com")
+      console.log(router.pathname, router.asPath, url.pathname)
       router
-        .replace(router.pathname + "?" + name + "=" + options.defaultValue)
+        .replace(url.pathname + "?" + name + "=" + options.defaultValue)
         .finally(() => console.log("useQueryStatePicker checks"));
     }
   }, [router, name, stringValue, options]);
@@ -31,8 +33,9 @@ export function useQueryStatePicker(
       ? options.defaultValue
       : currentValue;
     if (value !== currentValue) {
+      const url = new URL(router.asPath, "http://dummy.com")
       router
-        .replace(router.pathname + "?" + name + "=" + value)
+        .replace(url.pathname + "?" + name + "=" + value)
         .finally(() => console.log("useQueryStatePicker update"));
     }
   }

@@ -8,6 +8,8 @@ import { useSession } from "next-auth/react";
 
 import Image from "next/image";
 import { GradesRow } from "~/components/tables";
+import { getEvaluationGrade, getGradeNumber } from "~/utils/gradesCalculations";
+import { useQueryStatePicker } from "~/hooks";
 
 import { api } from "~/utils/api";
 
@@ -24,15 +26,28 @@ import {
 import { useRouter } from "next/router";
 
 type PickerOptions = "Learn" | "Evaluations";
+function getPickerOption(string: string): PickerOptions {
+  if (string == "learn") {
+    return "Learn";
+  } else if (string == "evaluations") {
+    return "Evaluations";
+  } else {
+    return "Learn";
+  }
+}
 
 const Profile: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("Learn");
+  const [selectedCategory, setSelectedCategory] = useQueryStatePicker(
+    "category",
+    { defaultValue: "learn", allowedValues: new Set(["learn", "evaluations"]) }
+  );
+
+  function didSelectInPicker(category: PickerOptions) {
+    setSelectedCategory(category.toLowerCase());
+  }
 
   const router = useRouter();
-  //ola
   const userId = router.query.profileId?.toString() ?? "";
-  //const grades = router.query.grades?.toString() ?? "";
   const { data, isLoading, error } = api.users.getUserById.useQuery({
     userId: userId,
   });
@@ -85,9 +100,9 @@ const Profile: NextPage = () => {
             <div className="flex flex-row place-content-between">
               <SegmentedPicker
                 title="Choose category:"
-                selectedOption={selectedCategory}
+                selectedOption={getPickerOption(selectedCategory)}
                 options={["Learn", "Evaluations"]}
-                didSelectOption={(o) => setSelectedCategory(o)}
+                didSelectOption={(o) => didSelectInPicker(o)}
               />
               <Dropdown
                 id={"date-dropdown"}
@@ -109,28 +124,38 @@ const Profile: NextPage = () => {
                 </DropdownButton>
               </Dropdown>
             </div>
+            {/* buttonHref={`/gradesAdmin/${userTest.id}`} */}
+
+
 
             <Section>
               <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-              {grades && grades.length > 0 ? (
+                {grades && grades.length > 0 ? (
                     <Section>
-                      <div className="space-0 flex flex-col divide-y">
-                        {grades.map((userTest) =>
-                          userTest ? (
-                            <GradesRow
-                              key={userTest.id}
-                              title={userTest.test.name}
-                              description={userTest.test.description ?? ""}
-                              date={userTest.submissionDate ?? new Date()}
-                              grade={Number(userTest.score)}
-                              buttonHref={`/gradesAdmin/${userTest.id}`}
-                            />
-                          ) : (
-                            <></>
-                          )
-                        )}
-                      </div>
-                    </Section>
+                    <div className="space-0 flex flex-col divide-y">
+                      {grades.map((userTest) => {
+                        if (!userTest) return <></>;
+          
+                        const isEvaluation = userTest.test.type === 0;
+                        const gradeNumber = getGradeNumber(userTest.score);
+          
+                        const gradeForIcon = isEvaluation
+                          ? getEvaluationGrade(gradeNumber)
+                          : gradeNumber;
+          
+                        return (
+                          <GradesRow
+                            key={userTest.id}
+                            title={userTest.test.name}
+                            description={userTest.test.description ?? ""}
+                            date={userTest.submissionDate ?? new Date()}
+                            grade={gradeForIcon}
+                            buttonHref={`/gradesAdmin/${userTest.id}`}
+                          />
+                        );
+                      })}
+                    </div>
+                  </Section>
                   ) : (
                   <div className="mt-8 grid w-full justify-center py-16">
                     <div hidden={!isLoading} className="mx-auto text-secondary">
