@@ -22,14 +22,14 @@ const Users: NextPage = () => {
   const session = useSession();
 
   const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("Level");
+    useState<PickerOptions>("Name");
 
   const { data: users, isLoading, error } = api.users.getUsers.useQuery();
 
   const UsersPage = () => (
     <PageWrapper>
       <PageTitle editsTitle>Users</PageTitle>
-      <div className="flex flex-row place-content-between">
+      {/* <div className="flex flex-row place-content-between">
         <SegmentedPicker
           title="Choose category:"
           selectedOption={selectedCategory}
@@ -53,9 +53,9 @@ const Users: NextPage = () => {
             Level
           </DropdownButton>
         </Dropdown>
-      </div>
+      </div> */}
       {users && users.length > 0 ? (
-        <Section title="Employees">
+        <Section title="">
           <div className="space-0 flex flex-col divide-y">
             {users.map((user) => (
               <UsersRow

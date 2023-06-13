@@ -112,7 +112,7 @@ const TestGrades: NextPage = () => {
             <Section title="Attempt Information">
               <AttemptInfoSection userTest={data.value.userTest} />
             </Section>
-            <Section title="Feedback">
+            {/* <Section title="Feedback">
               <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
                 <p className="text-sm text-secondary">
                   {data.value.userTest.feedback ??
@@ -123,7 +123,7 @@ const TestGrades: NextPage = () => {
                   Powered by Wizeline AI
                 </p>
               </div>
-            </Section>
+            </Section> */}
             <Section title="Answers" noBackground>
               <AnswersSection userTest={data.value.userTest} />
             </Section>
