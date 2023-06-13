@@ -19,9 +19,8 @@ const Dashboard: NextPage = () => {
         Welcome back, {session.data?.user.name ?? "Administrator"}
       </PageTitle>
       <main>
-
         {tests && tests.length > 0 ? (
-          <Section title="Exercises Availible for Employees">
+          <Section title="Exercises Available for Employees">
             <div className="space-0 flex flex-col divide-y">
               {tests.map((test) => (
                 <AdminLessonRow

@@ -1,25 +1,19 @@
 import { type NextPage } from "next";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import {
-  Dropdown,
-  DropdownButton,
-  LoadingSection,
-  PageTitle,
-  PageWrapper,
-  Section,
-  SegmentedPicker,
-  Spinner,
-} from "~/components";
+import { LoadingSection, PageTitle, PageWrapper, Section } from "~/components";
 import { isRequestSuccess } from "~/server/models";
 import { api } from "~/utils/api";
 import AlertContext from "~/contexts/AlertContext";
-import { Prisma, Question, UserTest, UserTestAnswer } from "@prisma/client";
-import { GradeIcon } from "~/components/tables";
-import { Disclosure, Transition } from "@headlessui/react";
-import { ChevronUpIcon } from "@heroicons/react/20/solid";
-import { formatDateDiff } from "~/utils/formatSecondsToTime";
+import type {
+  Prisma,
+  Question,
+  UserTest,
+  UserTestAnswer,
+} from "@prisma/client";
+import { AnswersSection } from "~/components/grades/AnswersSection";
+import { AttemptInfoSection } from "~/components/grades/AttemptInfoSection";
 
 const TestGrades: NextPage = () => {
   const router = useRouter();
@@ -28,7 +22,6 @@ const TestGrades: NextPage = () => {
   // Handling of test data
   const userTestId = router.query.userTestId?.toString() ?? "";
 
-  
   const { data, isLoading, error } = api.gradesAdmin.getTestAttempt.useQuery({
     userTestId: userTestId,
   });
@@ -63,33 +56,15 @@ const TestGrades: NextPage = () => {
                 <PageTitle editsTitle>
                   {data.value.userTest.test.name}
                 </PageTitle>
-                <span className="text-base text-secondary">
-                  {data.value.userTest.test.description ?? "-"}
-                </span>
+                {data.value.userTest.test.description && (
+                  <span className="text-base text-secondary">
+                    {data.value.userTest.test.description}
+                  </span>
+                )}
               </div>
             </div>
             <Section title="Attempt Information">
-              <div className="flex flex-row justify-around gap-3 px-6 py-5">
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <GradeIcon
-                    grade={getGradeNumber(data.value.userTest.score)}
-                  />
-                  <span className="text-sm text-secondary">
-                    {getGradeNumber(data.value.userTest.score) < 0
-                      ? "Not Graded"
-                      : "Score"}
-                  </span>
-                </div>
-                <div className="flex flex-col items-center justify-center gap-1">
-                  <span className="my-auto text-xl font-bold">
-                    {formatDateDiff(
-                      data.value.userTest.startDate,
-                      data.value.userTest.submissionDate ?? new Date()
-                    )}
-                  </span>
-                  <span className="text-sm text-secondary">Time taken</span>
-                </div>
-              </div>
+              <AttemptInfoSection userTest={data.value.userTest} />
             </Section>
             {/* <Section title="Feedback">
               <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
@@ -104,105 +79,7 @@ const TestGrades: NextPage = () => {
               </div>
             </Section> */}
             <Section title="Answers" noBackground>
-              <div className="mt-2 flex flex-col gap-3">
-                {data.value.userTest.user_test_answer.map(
-                  (userTestAnswer, i) => (
-                    <div
-                      key={userTestAnswer.id}
-                      className="mx-auto w-full rounded-2xl border bg-white p-2"
-                    >
-                      <Disclosure>
-                        {({ open }) => (
-                          <>
-                            <Disclosure.Button className="flex w-full gap-2.5 rounded-lg bg-slate-100 px-4 py-2 text-left text-sm font-medium text-primary hover:bg-slate-200 focus:outline-none focus-visible:ring focus-visible:ring-slate-500 focus-visible:ring-opacity-75">
-                              <div className="flex w-full justify-between">
-                                <span>
-                                  Question {i + 1} (
-                                  {getQuestionWeight(
-                                    data.value.userTest.user_test_answer,
-                                    i
-                                  )}
-                                  )
-                                </span>
-                                <div className="flex gap-2">
-                                  <span className="text-secondary">
-                                    Score:{" "}
-                                    {getGradeText(userTestAnswer.evaluation)}
-                                  </span>
-                                </div>
-                              </div>
-                              <ChevronUpIcon
-                                className={`${
-                                  open ? "rotate-180 transform" : ""
-                                } h-5 w-5 text-slate-500`}
-                              />
-                            </Disclosure.Button>
-                            <Transition
-                              enter="transition duration-100 ease-out"
-                              enterFrom="transform scale-95 opacity-0"
-                              enterTo="transform scale-100 opacity-100"
-                              leave="transition duration-75 ease-out"
-                              leaveFrom="transform scale-100 opacity-100"
-                              leaveTo="transform scale-95 opacity-0"
-                            >
-                              <Disclosure.Panel className="pb-2 pl-4 pr-3 pt-4 text-sm text-primary">
-                                <div className="grid grid-cols-2 divide-x">
-                                  <div className="flex flex-col pr-4">
-                                    <div className="flex flex-col gap-1">
-                                      <span className="font-bold">
-                                        Question
-                                      </span>
-                                      <span className="whitespace-pre-wrap break-words">
-                                        {userTestAnswer.question.text}
-                                      </span>
-                                    </div>
-                                  </div>
-                                  <div className="flex flex-col gap-3 pl-4">
-                                    <div className="flex flex-col gap-1">
-                                      <span className="font-bold">Answer</span>
-                                      <span className="whitespace-pre-wrap break-words">
-                                        {userTestAnswer.answer}
-                                      </span>
-                                    </div>
-                                    {userTestAnswer.evaluation ? (
-                                      <div className="flex flex-col gap-3 rounded-lg bg-slate-100 px-3 py-2">
-                                        <div className="flex flex-col gap-1">
-                                          <span className="font-bold">
-                                            Reason for score
-                                          </span>
-                                          <span className="whitespace-pre-wrap break-words">
-                                            {userTestAnswer.evaluationReason ??
-                                              "Not yet graded"}
-                                          </span>
-                                        </div>
-                                        <div className="flex flex-col gap-1">
-                                          <span className="font-bold">
-                                            Feedback
-                                          </span>
-                                          <span className="whitespace-pre-wrap break-words">
-                                            {userTestAnswer.feedback ??
-                                              "No feedback yet."}
-                                          </span>
-                                        </div>
-                                        <p className="mr-2 text-right text-xs text-slate-400">
-                                          <InformationCircleIcon className="mb-0.5 inline h-4" />{" "}
-                                          Powered by Wizeline AI
-                                        </p>
-                                      </div>
-                                    ) : (
-                                      <></>
-                                    )}
-                                  </div>
-                                </div>
-                              </Disclosure.Panel>
-                            </Transition>
-                          </>
-                        )}
-                      </Disclosure>
-                    </div>
-                  )
-                )}
-              </div>
+              <AnswersSection userTest={data.value.userTest} />
             </Section>
           </div>
         ) : (
