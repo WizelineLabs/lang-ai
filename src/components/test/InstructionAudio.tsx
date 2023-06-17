@@ -1,49 +1,29 @@
-import * as React from "react";
-import Button from "../Button";
+import AudioPlayer from "../AudioPlayer";
+import { isRequestSuccess } from "~/server/models";
+
+import { api } from "~/utils/api";
 
 interface InstructionAudioProps {
-  audioUrl: string;
+  questionId: string;
 }
 
-function InstructionAudio({ audioUrl }: InstructionAudioProps) {
-  const [isPlaying, setIsPlaying] = React.useState(false);
-  const [progress, setProgress] = React.useState(0);
-  const audioRef = React.useRef<HTMLAudioElement>(null);
+function InstructionAudio(props: InstructionAudioProps) {
+  const { questionId } = props;
+  const { data } = api.test.getAudioURL.useQuery({ questionId: questionId });
+  const url = data && isRequestSuccess(data) ? data.value.url : null;
 
-  const handleClick = () => {
-    const audio = audioRef.current;
-
-    if (audio) {
-      if (!isPlaying) {
-        audio.play();
-        setIsPlaying(true);
-      } else {
-        audio.pause();
-        setIsPlaying(false);
-      }
-    }
-  };
-
-  const handleTimeUpdate = () => {
-    const audio = audioRef.current;
-
-    if (audio) {
-      const currentTime = audio.currentTime;
-      const duration = audio.duration;
-      const currentProgress = (currentTime / duration) * 100;
-      setProgress(currentProgress);
-    }
-  };
-
+  if (!url) {
+    return <></>;
+  }
   return (
-    <div style={{ textAlign: "center" }}>
-      <h1>Press the following button and listen to the sentence.</h1>
-      <br></br>
-      <Button onClick={handleClick}>{isPlaying ? "Pause" : "Listen"}</Button><br></br>
-      <br></br>
-      <progress value={progress} max={100} style={{ width: "100%" }} />
-      <audio ref={audioRef} src={audioUrl} onTimeUpdate={handleTimeUpdate} />
-    </div>
+    <>
+      <p className="whitespace-pre-wrap break-words text-base leading-normal text-primary">
+        Listen to the following audio:
+      </p>
+      <div className="flex items-center justify-center pb-3">
+        <AudioPlayer audioUrl={url} />
+      </div>
+    </>
   );
 }
 

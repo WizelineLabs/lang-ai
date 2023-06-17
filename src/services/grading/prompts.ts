@@ -66,13 +66,14 @@ _answer_text_
 `;
 
 export function generateGradingPromptChat(
+  questionText: string,
   input: string,
   question: Question
 ): string {
   const [hasAudio, hasVideo] = getQuestionTypeData(question.type);
 
   let prompt = gradingUserPromptBaseTextCompletionChat
-    .replace("_question_text_", question.text)
+    .replace("_question_text_", questionText)
     .replace("_answer_text_", input);
 
   if (hasAudio) {

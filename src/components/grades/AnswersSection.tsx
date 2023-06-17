@@ -9,6 +9,7 @@ import { isRequestSuccess } from "~/server/models";
 import AlertContext from "~/contexts/AlertContext";
 
 import { api } from "~/utils/api";
+import AudioPlayer from "../AudioPlayer";
 
 export interface AnswersSectionProps {
   userTest: UserTest & {
@@ -101,13 +102,32 @@ function AnswerDisclosure(props: AnswerDisclosureProps) {
             >
               <Disclosure.Panel className="pb-2 pl-4 pr-3 pt-4 text-sm text-primary">
                 <div className="grid grid-cols-2 divide-x">
-                  <div className="flex flex-col pr-4">
+                  <div className="flex flex-col gap-3 pr-4">
                     <div className="flex flex-col gap-1">
                       <span className="font-bold">Question</span>
+                      {value?.audioURL && (
+                        <div className="flex py-2">
+                          <AudioPlayer
+                            width="100px"
+                            audioUrl={value.audioURL}
+                          />
+                        </div>
+                      )}
                       <span className="whitespace-pre-wrap break-words">
                         {userTestAnswer.question.text}
                       </span>
                     </div>
+                    {hasAudio && userTestAnswer.question.audioTranscript && (
+                      <div className="flex flex-col gap-1">
+                        <span className="font-bold">Audio Transcript</span>
+                        <span className="whitespace-pre-wrap break-words">
+                          {removeEdgeNewlines(
+                            // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                            userTestAnswer.question.audioTranscript
+                          )}
+                        </span>
+                      </div>
+                    )}
                   </div>
                   <div className="flex flex-col gap-3 pl-4">
                     {hasVideo && (
@@ -167,4 +187,8 @@ function AnswerDisclosure(props: AnswerDisclosureProps) {
       </Disclosure>
     </div>
   );
+}
+
+function removeEdgeNewlines(text: string): string {
+  return text.replace(/^\n+|\n+$/g, "");
 }

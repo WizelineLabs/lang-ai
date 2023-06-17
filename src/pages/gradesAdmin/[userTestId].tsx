@@ -2,32 +2,27 @@ import { type NextPage } from "next";
 import { useContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import {
-  Dropdown,
-  DropdownButton,
-  LoadingSection,
-  PageTitle,
-  PageWrapper,
-  Section,
-} from "~/components";
+import { LoadingSection, PageTitle, PageWrapper, Section } from "~/components";
 import { isRequestSuccess } from "~/server/models";
-
+import { api } from "~/utils/api";
 import AlertContext from "~/contexts/AlertContext";
+import type {
+  Prisma,
+  Question,
+  UserTest,
+  UserTestAnswer,
+} from "@prisma/client";
 import { AnswersSection } from "~/components/grades/AnswersSection";
 import { AttemptInfoSection } from "~/components/grades/AttemptInfoSection";
-import { getAttemptIndex, getAttemptTitle } from "~/utils/gradesCalculations";
-
-import { api } from "~/utils/api";
 
 const TestGrades: NextPage = () => {
   const router = useRouter();
   const { showAlert } = useContext(AlertContext);
 
   // Handling of test data
-  const testId = router.query.testId?.toString() ?? "";
   const userTestId = router.query.userTestId?.toString() ?? "";
-  const { data, isLoading, error } = api.grades.getTestAttempt.useQuery({
-    testId: testId,
+
+  const { data, isLoading, error } = api.gradesAdmin.getTestAttempt.useQuery({
     userTestId: userTestId,
   });
 
@@ -42,26 +37,14 @@ const TestGrades: NextPage = () => {
         // Redirect to grades if userTest could'nt be obtained
         // TODO: Redirect if error is related to userTest
         router
-          .push("/grades/")
+          .push("/gradesAdmin/")
           .finally(() => console.warn("Redirected outside of test grades"));
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, router]);
 
-  function didChangeAttempt(newUserTestId: string) {
-    router
-      .replace(`/grades/${testId}/${newUserTestId}`)
-      .finally(() => console.log("Changed test attempt"));
-  }
-
-  function AttemptTitle({ n, date }: { n: number; date: string }) {
-    return (
-      <span>
-        {n} <span className="text-secondary">({date})</span>
-      </span>
-    );
-  }
+  console.log(value?.userTest.score);
 
   return (
     <>
@@ -79,35 +62,6 @@ const TestGrades: NextPage = () => {
                   </span>
                 )}
               </div>
-              <Dropdown
-                id={"date-dropdown"}
-                dataDropdownToggle={"date-dropdown"}
-                menuButtonContent={(ChevronIcon) => (
-                  <span className="text-slate-700">
-                    Attempt:
-                    <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
-                      <AttemptTitle
-                        {...getAttemptTitle(
-                          data.value.allUserTests,
-                          getAttemptIndex(data.value.allUserTests, userTestId)
-                        )}
-                      />
-                      {ChevronIcon}
-                    </span>
-                  </span>
-                )}
-              >
-                {data.value.allUserTests.map((userTest, i) => (
-                  <DropdownButton
-                    key={userTest.id}
-                    onClick={() => didChangeAttempt(userTest.id)}
-                  >
-                    <AttemptTitle
-                      {...getAttemptTitle(data.value.allUserTests, i)}
-                    />
-                  </DropdownButton>
-                ))}
-              </Dropdown>
             </div>
             <Section title="Attempt Information">
               <AttemptInfoSection userTest={data.value.userTest} />
@@ -141,3 +95,50 @@ const TestGrades: NextPage = () => {
 };
 
 export default TestGrades;
+
+function getAttemptTitle(
+  userTests: UserTest[],
+  i: number
+): { n: number; date: string } {
+  const userTest = userTests[i];
+  if (userTest?.submissionDate) {
+    const formattedDate = userTest.submissionDate.toLocaleString("en-US", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
+    return {
+      n: userTests.length - i,
+      date: formattedDate,
+    };
+  }
+  return { n: 0, date: "-" };
+}
+
+function getAttemptIndex(userTests: UserTest[], id: string): number {
+  return userTests.findIndex((value) => value.id === id);
+}
+
+function getGradeNumber(decimal: Prisma.Decimal | null): number {
+  return decimal ? Number(decimal) : -1;
+}
+
+function getGradeText(decimal: Prisma.Decimal | null): string {
+  const number = getGradeNumber(decimal);
+  return number < 0 ? "-" : String(number);
+}
+
+function getQuestionWeight(
+  answers: (UserTestAnswer & { question: Question })[],
+  i: number
+): string {
+  const answer = answers[i];
+  if (answer) {
+    const sumOfWeights = answers.reduce(
+      (accum, item) => accum + Number(item.question.weigh),
+      0
+    );
+    const percentage = (100 * Number(answer.question.weigh)) / sumOfWeights;
+    return percentage.toFixed(2) + "%";
+  }
+  return "0%";
+}

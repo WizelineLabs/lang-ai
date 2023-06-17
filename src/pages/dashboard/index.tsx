@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { PageTitle, PageWrapper, Section, Spinner } from "~/components";
 import { EnglishLevelSection } from "~/components/evaluations/EnglishLevelSection";
+import { AdminLessonRow } from "~/components/tables";
 import { LessonRow } from "~/components/tables";
 
 import { api } from "~/utils/api";
@@ -18,27 +19,15 @@ const Dashboard: NextPage = () => {
         Welcome back, {session.data?.user.name ?? "Administrator"}
       </PageTitle>
       <main>
-        <Section title="Latest user feedback">
-          <p className="p-3 font-normal text-gray-700 dark:text-gray-500">
-            User: Bizmarck Lepe
-          </p>
-
-          <p className="p-3 font-normal text-gray-700 dark:text-gray-500">
-            Bizmarcks C2 English is impressive, but diversifying vocabulary and
-            sentence structures can further enhance his communication skills.
-          </p>
-        </Section>
-
         {tests && tests.length > 0 ? (
-          <Section title="Exercises Availible for Employees">
+          <Section title="Exercises Available for Employees">
             <div className="space-0 flex flex-col divide-y">
               {tests.map((test) => (
-                <LessonRow
+                <AdminLessonRow
                   key={test.id}
                   title={test.name}
                   description={test.description ?? ""}
                   difficulty={test.difficulty}
-                  state="pending"
                 />
               ))}
             </div>
@@ -73,9 +62,9 @@ const Dashboard: NextPage = () => {
       <Section title="Latest feedback">
         <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
           <p className="text-sm text-secondary">
-            Your C2 English is impressive, but diversifying vocabulary and
-            sentence structures can further enhance communication skills. Keep
-            pushing yourself!
+            Your English is impressive, but diversifying vocabulary and sentence
+            structures can further enhance communication skills. Keep pushing
+            yourself!
           </p>
           <p className="text-right text-xs text-slate-400">
             <InformationCircleIcon className="mb-0.5 inline h-4" /> Powered by

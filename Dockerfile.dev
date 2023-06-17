@@ -1,6 +1,9 @@
 # Installs Node.js image
 # Architecture doesn't need to be specified (allow building for Apple M1)
-FROM --platform=linux node:20
+FROM --platform=linux node:20-alpine
+
+# Install FFmpeg and other dependencies
+RUN apk update && apk add ffmpeg
 
 # sets the working directory for any RUN, CMD, COPY command
 # this directory is bound to the machine's project directory.

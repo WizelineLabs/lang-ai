@@ -38,7 +38,7 @@ const userOptions: NavBarLink[] = [
 const adminOptions: NavBarLink[] = [
   {
     title: "Home",
-    href: "/admin/dashboard",
+    href: "/dashboard",
   },
   {
     title: "Users",
