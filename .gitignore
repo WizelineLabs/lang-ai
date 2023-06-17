@@ -44,3 +44,6 @@ yarn-error.log*
 # database data
 db_data/
 temp/
+
+#cypress
+cypress.env.json

@@ -177,15 +177,16 @@ function ResponseVideo(props: ResponseVideoProps) {
           {recordedVideoUrl ? (
             <CameraButton onClick={removeCurrentVideo}>
               {allowVideoDownload && (
-                <a
-                  className="my-auto ml-2 mr-5 text-primary hover:text-secondary"
-                  href={recordedVideoUrl ?? undefined}
-                  download={"WebcamTest." + (videoFormat?.ext ?? "mp4")}
-                  hidden={!recordedVideoUrl}
-                >
-                  <ArrowDownTrayIcon className="h-6 w-6" />
-                </a>
-              )}
+  <a
+    className="my-auto ml-2 mr-5 text-primary hover:text-secondary"
+    href={recordedVideoUrl ?? undefined}
+    download={"WebcamTest." + (videoFormat?.ext ?? "mp4")}
+    hidden={!recordedVideoUrl}
+    data-testid="download-button" // Add this attribute
+  >
+    <ArrowDownTrayIcon className="h-6 w-6" />
+  </a>
+)}
             </CameraButton>
           ) : (
             <RecordingButton
