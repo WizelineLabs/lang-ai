@@ -1,172 +1,110 @@
+import { InformationCircleIcon } from "@heroicons/react/24/outline";
 import { type NextPage } from "next";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import NavBar from "~/components/NavBar";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
-import Button from "~/components/Button";
-import Section from "~/components/Section";
+import { PageTitle, PageWrapper, Section, Spinner } from "~/components";
+import { EnglishLevelSection } from "~/components/evaluations/EnglishLevelSection";
+import { AdminLessonRow } from "~/components/tables";
+import { LessonRow } from "~/components/tables";
 
 import { api } from "~/utils/api";
 
 const Dashboard: NextPage = () => {
-  return (
-    <>
-      <PageWrapper>
-        <PageTitle>Welcome back, Bismarck</PageTitle>
-        <main>
-          <div>
-            <Section>
-              <div style={{ width: "75%", float: "left", padding: 20 }}>
-                <a href="#">
-                  <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-black">
-                    Current English level: C2
-                  </h5>
-                </a>
-                <p className="mb-3 font-normal text-gray-700 dark:text-gray-400">
-                  You need a level of at least C1 to be admitted into Wizeline
-                </p>
-              </div>
-              <div
-                style={{
-                  margin: "auto",
-                  width: "25%",
-                  float: "right",
-                  padding: 10,
-                }}
-              >
-                <br />
-                <Button>Go to Evaluations</Button>
-              </div>
-            </Section>
-          </div>
+  const session = useSession();
+  const { data: tests, isLoading, error } = api.learn.getTests.useQuery();
 
-          <Section title="Latest feedback">
-            <p
-              className="font-normal text-gray-700 dark:text-gray-500"
-              style={{ padding: "20px" }}
-            >
-              Your C2 English is impressive, but diversifying vocabulary and
-              sentence structures can further enhance communication skills. Keep
-              pushing yourself!
-            </p>
-          </Section>
-
-          <Section title="Exercises awaiting for completion">
-            <div className="mb-8 grid rounded-lg border border-gray-200 shadow-sm dark:border-gray-700 md:mb-12 md:grid-cols-2">
-              <figure className="flex flex-col items-center justify-center rounded-t-lg border-b border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800 md:rounded-t-none md:rounded-tl-lg md:border-r">
-                <blockquote className="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400 lg:mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Lesson 1
-                  </h3>
-                  <p className="my-4">Basic English 1</p>
-                </blockquote>
-                <a
-                  href="#"
-                  className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Resume
-                  <svg
-                    aria-hidden="true"
-                    className="-mr-1 ml-2 h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </figure>
-              <figure className="flex flex-col items-center justify-center rounded-tr-lg border-b border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800">
-                <blockquote className="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400 lg:mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Lesson 2
-                  </h3>
-                  <p className="my-4">Basic English 2</p>
-                </blockquote>
-                <a
-                  href="#"
-                  className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Start
-                  <svg
-                    aria-hidden="true"
-                    className="-mr-1 ml-2 h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </figure>
-              <figure className="flex flex-col items-center justify-center rounded-bl-lg border-b border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800 md:border-b-0 md:border-r">
-                <blockquote className="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400 lg:mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Lesson 3
-                  </h3>
-                  <p className="my-4">Intermediate English 1</p>
-                </blockquote>
-                <a
-                  href="#"
-                  className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Start
-                  <svg
-                    aria-hidden="true"
-                    className="-mr-1 ml-2 h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </figure>
-              <figure className="flex flex-col items-center justify-center rounded-b-lg border-gray-200 bg-white p-8 text-center dark:border-gray-700 dark:bg-gray-800 md:rounded-br-lg">
-                <blockquote className="mx-auto mb-4 max-w-2xl text-gray-500 dark:text-gray-400 lg:mb-8">
-                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                    Lesson 4
-                  </h3>
-                  <p className="my-4">Intermediate English 2</p>
-                </blockquote>
-                <a
-                  href="#"
-                  className="inline-flex items-center rounded-lg bg-blue-700 px-3 py-2 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  Start
-                  <svg
-                    aria-hidden="true"
-                    className="-mr-1 ml-2 h-4 w-4"
-                    fill="currentColor"
-                    viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z"
-                      clip-rule="evenodd"
-                    ></path>
-                  </svg>
-                </a>
-              </figure>
+  const AdminPage = () => (
+    <PageWrapper>
+      <PageTitle>
+        Welcome back, {session.data?.user.name ?? "Administrator"}
+      </PageTitle>
+      <main>
+        {tests && tests.length > 0 ? (
+          <Section title="Exercises Available for Employees">
+            <div className="space-0 flex flex-col divide-y">
+              {tests.map((test) => (
+                <AdminLessonRow
+                  key={test.id}
+                  title={test.name}
+                  description={test.description ?? ""}
+                  difficulty={test.difficulty}
+                />
+              ))}
             </div>
           </Section>
-        </main>
-      </PageWrapper>
-    </>
+        ) : (
+          <div className="mt-8 grid w-full justify-center py-16">
+            <div hidden={!isLoading} className="mx-auto text-secondary">
+              <Spinner />
+            </div>
+            <p
+              hidden={isLoading}
+              className="text-center text-sm text-secondary"
+            >
+              {error ? error.message : "No data to show."}
+            </p>
+          </div>
+        )}
+      </main>
+    </PageWrapper>
   );
+
+  const UserPage = () => (
+    <PageWrapper>
+      <Head>
+        <title>LangAI</title>
+      </Head>
+
+      <PageTitle>Welcome back, {session.data?.user.name ?? "Nadie"}</PageTitle>
+
+      <EnglishLevelSection showButton />
+
+      <Section title="Latest feedback">
+        <div className="flex flex-col space-y-2 px-6 pb-4 pt-5">
+          <p className="text-sm text-secondary">
+            Your English is impressive, but diversifying vocabulary and sentence
+            structures can further enhance communication skills. Keep pushing
+            yourself!
+          </p>
+          <p className="text-right text-xs text-slate-400">
+            <InformationCircleIcon className="mb-0.5 inline h-4" /> Powered by
+            Wizeline AI
+          </p>
+        </div>
+      </Section>
+
+      {tests && tests.length > 0 ? (
+        <Section title="Exercises awaiting for completion">
+          <div className="space-0 flex flex-col divide-y">
+            {tests.map((test) => (
+              <LessonRow
+                key={test.id}
+                title={test.name}
+                description={test.description ?? ""}
+                difficulty={test.difficulty}
+                state="pending"
+                buttonHref={`/learn/${test.id}/`}
+              />
+            ))}
+          </div>
+        </Section>
+      ) : (
+        <div className="mt-8 grid w-full justify-center py-16">
+          <div hidden={!isLoading} className="mx-auto text-secondary">
+            <Spinner />
+          </div>
+          <p hidden={isLoading} className="text-center text-sm text-secondary">
+            {error ? error.message : "No data to show."}
+          </p>
+        </div>
+      )}
+    </PageWrapper>
+  );
+
+  if (session.data?.user.isAdmin) {
+    return <AdminPage />;
+  }
+  return <UserPage />;
 };
 
 export default Dashboard;

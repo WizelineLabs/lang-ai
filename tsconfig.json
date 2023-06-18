@@ -28,6 +28,6 @@
     "**/*.tsx",
     "**/*.cjs",
     "**/*.mjs"
-, "src/components/WebcamVideo.js"  ],
+  ],
   "exclude": ["node_modules"]
 }

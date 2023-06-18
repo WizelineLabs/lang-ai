@@ -1,189 +1,129 @@
-import { ReactNode, useState } from "react";
 import { type NextPage } from "next";
-import Button from "~/components/Button";
-import PageTitle from "~/components/PageTitle";
-import PageWrapper from "~/components/PageWrapper";
-import SegmentedPicker from "~/components/SegmentedPicker";
-import Section from "~/components/Section";
-import { Dropdown, DropdownButton } from "~/components/Dropdown";
+import { useEffect, useState } from "react";
+import { useQueryStatePicker } from "~/hooks";
+import {
+  Dropdown,
+  DropdownButton,
+  PageTitle,
+  PageWrapper,
+  Section,
+  SegmentedPicker,
+  Spinner,
+} from "~/components";
+import { GradesRow } from "~/components/tables";
+import { useSession } from "next-auth/react";
+import { api } from "~/utils/api";
+import { getEvaluationGrade, getGradeNumber } from "~/utils/gradesCalculations";
 
 type PickerOptions = "Learn" | "Evaluations";
 
+function getPickerOption(string: string): PickerOptions {
+  if (string == "learn") {
+    return "Learn";
+  } else if (string == "evaluations") {
+    return "Evaluations";
+  } else {
+    return "Learn";
+  }
+}
+
 const Grades: NextPage = () => {
-  const [selectedCategory, setSelectedCategory] =
-    useState<PickerOptions>("Learn");
+  const session = useSession();
 
-  return (
-    <>
-      <PageWrapper>
-        <PageTitle editsTitle>Grades</PageTitle>
-        <div className="flex flex-row place-content-between">
-          <SegmentedPicker
-            title="Choose category:"
-            selectedOption={selectedCategory}
-            options={["Learn", "Evaluations"]}
-            didSelectOption={(o) => setSelectedCategory(o)}
-          />
-          <Dropdown
-            id={"date-dropdown"}
-            dataDropdownToggle={"date-dropdown"}
-            menuButtonContent={(ChevronIcon) => (
-              <span className="text-slate-700">
-                Order by:
-                <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
-                  Date{ChevronIcon}
-                </span>
+  const [selectedCategory, setSelectedCategory] = useQueryStatePicker(
+    "category",
+    { defaultValue: "learn", allowedValues: new Set(["learn", "evaluations"]) }
+  );
+
+  function didSelectInPicker(category: PickerOptions) {
+    setSelectedCategory(category.toLowerCase());
+  }
+
+  const {
+    data: grades,
+    isLoading,
+    error,
+  } = api.grades.getGrades.useQuery({ category: selectedCategory });
+
+  const GradesPage = () => (
+    <PageWrapper>
+      <PageTitle editsTitle>Grades</PageTitle>
+      <div className="flex flex-row place-content-between">
+        <SegmentedPicker
+          title="Choose category:"
+          selectedOption={getPickerOption(selectedCategory)}
+          options={["Learn", "Evaluations"]}
+          didSelectOption={(o) => didSelectInPicker(o)}
+        />
+        <Dropdown
+          id={"date-dropdown"}
+          dataDropdownToggle={"date-dropdown"}
+          menuButtonContent={(ChevronIcon) => (
+            <span className="text-slate-700">
+              Order by:
+              <span className="ml-1 inline-flex text-slate-500 hover:opacity-50">
+                Date{ChevronIcon}
               </span>
-            )}
-          >
-            <DropdownButton title="Date" onClick={() => console.log("1")} />
-            <DropdownButton title="Level" onClick={() => console.log("2")} />
-          </Dropdown>
-        </div>
+            </span>
+          )}
+        >
+          <DropdownButton onClick={() => console.log("1")}>Date</DropdownButton>
+          <DropdownButton onClick={() => console.log("2")}>
+            Level
+          </DropdownButton>
+        </Dropdown>
+      </div>
+      {grades && grades.length > 0 ? (
+        <Section>
+          <div className="space-0 flex flex-col divide-y">
+            {grades.map((userTest) => {
+              if (!userTest) return <></>;
 
-        <Section title="">
-          <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-            <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400">
-              <tbody>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      100
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      95
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      55
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-red-500 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      30
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-amber-400 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      69
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-                <tr className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-                  <th scope="row" className="px-6 py-4 dark:text-white ">
-                    <h1 className="inline-flex items-center justify-center rounded-full bg-green-800 px-[0.65em] pb-[0.25em] pt-[0.35em]" style={{color:"white"}}>
-                      100
-                    </h1>
-                  </th>
-                  <td className="px-6 py-4 ">
-                    <h1 className="dark:text-white">Lesson Title</h1>
-                    <p>Lesson Description</p>
-                  </td>
-                  <td className="dark:text px-6 py-4">
-                    Completed on: Feb 21, 2023 6:45pm
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <a
-                      href="#"
-                      className="font-medium text-blue-600 hover:underline dark:text-blue-500"
-                    >
-                      See details
-                    </a>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
+              const isEvaluation = userTest.test.type === 0;
+              const gradeNumber = getGradeNumber(userTest.score);
+
+              const gradeForIcon = isEvaluation
+                ? getEvaluationGrade(gradeNumber)
+                : gradeNumber;
+
+              return (
+                <GradesRow
+                  key={userTest.id}
+                  title={userTest.test.name}
+                  description={userTest.test.description ?? ""}
+                  date={userTest.submissionDate ?? new Date()}
+                  grade={gradeForIcon}
+                  buttonHref={`/grades/${userTest.test.id}/${userTest.id}`}
+                />
+              );
+            })}
           </div>
         </Section>
-      </PageWrapper>
-    </>
+      ) : (
+        <div className="mt-8 grid w-full justify-center py-16">
+          <div hidden={!isLoading} className="mx-auto text-secondary">
+            <Spinner />
+          </div>
+          <p hidden={isLoading} className="text-center text-sm text-secondary">
+            {error ? error.message : "No data to show."}
+          </p>
+        </div>
+      )}
+    </PageWrapper>
   );
+  const ErrorPage = () => (
+    <PageWrapper>
+      <PageTitle editsTitle>404 Page Not Found</PageTitle>
+      <p className="py-3 font-normal text-gray-700 dark:text-gray-500">
+        I'm sorry, it seems this page is not accessible at the moment.
+      </p>
+    </PageWrapper>
+  );
+
+  if (session.data?.user.isAdmin) {
+    return <ErrorPage />;
+  }
+  return <GradesPage />;
 };
 
 export default Grades;

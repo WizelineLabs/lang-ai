@@ -5,3 +5,11 @@
 html {
   font-family: "Lato", sans-serif;
 }
+
+@media print {
+  body,
+  html,
+  #page-wrapper-overflow {
+    overflow: visible !important;
+  }
+}

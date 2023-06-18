@@ -46,7 +46,7 @@ export function Dropdown({
 }
 
 export interface DropdownButtonProps {
-  title: string;
+  children: React.ReactNode;
   icon?: React.ForwardRefExoticComponent<
     React.PropsWithoutRef<React.SVGProps<SVGSVGElement>> & {
       title?: string;
@@ -56,7 +56,11 @@ export interface DropdownButtonProps {
   onClick: () => void;
 }
 
-export function DropdownButton({ title, icon, onClick }: DropdownButtonProps) {
+export function DropdownButton({
+  children,
+  icon,
+  onClick,
+}: DropdownButtonProps) {
   const ButtonIcon = icon;
   return (
     <div className="my-1">
@@ -81,7 +85,7 @@ export function DropdownButton({ title, icon, onClick }: DropdownButtonProps) {
                 return <></>;
               }
             })()}
-            {title}
+            {children}
           </button>
         )}
       </Menu.Item>
