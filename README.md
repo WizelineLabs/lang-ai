@@ -37,7 +37,12 @@ You can check out the [create-t3-app GitHub repository](https://github.com/t3-os
 
 ## How do I deploy this?
 
-Follow our deployment guide for [Docker](https://create.t3.gg/en/deployment/docker) for more information.
+Follow our deployment guide for [Docker](https://create.t3.gg/en/deployment/docker) for more information..
+
+After setting up docker with postgres. Run
+```
+npm install
+```
 
 ## Environment Variables
 Create an `.env` file on root. 
@@ -77,3 +82,37 @@ AWS_S3_BUCKET=
 OPENAI_API_KEY=
 ```
 Ask for the `.env` values to the colabs.
+
+# Database setup
+Initialize database
+```
+npx prisma generate
+npx prisma db push
+npx prisma db seed
+```
+To validate the schema without errors
+```
+prisma validate 
+```
+Initialize server:
+```
+npm run dev
+```
+
+# Environments
+
+### **Main**
+This proyect was created in the `main` branch, which is the local environment.
+
+### **Tests**
+We created a container in Lightsail AWS, which is already configurated to run our tests. These can be found in the `main` branch in the cypress folder. 
+More info can be found here [Deploy to AWS Lightsail](https://github.com/wizelineacademy/itesm-socioformador-ene-feb-2023-equipo-4/wiki/Deploy-to-AWS-Lightsail)
+
+### **Dev**
+We created a container in Lightsail AWS, which is already configurated to deploy the app. The branch for this environment is `dev`.
+More info can be found here [Deploy to AWS Lightsail](https://github.com/wizelineacademy/itesm-socioformador-ene-feb-2023-equipo-4/wiki/Deploy-to-AWS-Lightsail)
+
+# CI
+### **Cypress**
+We use Cypress for End-to-End and Unitary testing. These can be found in the `main` branch in the cypress folder. To run these tests in development use npm run test.
+
