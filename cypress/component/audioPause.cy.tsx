@@ -11,9 +11,9 @@ describe('Alternate InstructionAudio Test 2', () => {
         it('activates audio playback and pauses it after waiting', () => {
             const audioSource = 'https://actions.google.com/sounds/v1/alarms/mechanical_clock_ring.ogg';
             cy.mount(<AudioPlayer audioUrl={audioSource} />);
-            cy.contains('Listen').click();
+            cy.get('.relative').click();
             cy.wait(5000);
-            cy.contains('Pause').click();
+            cy.get('.relative').click();
         });
     });
 });

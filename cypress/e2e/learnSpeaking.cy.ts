@@ -9,7 +9,10 @@ describe('template spec', () => {
     cy.get('#username').type('patoestrada@gmail.com');
     cy.get('#password').type('JRbyuj6Bj:Nugfu');
     cy.get('.cf772ffae > .c89f1057d').click()
-    cy.wait(5000)
+    cy.get('.mb-3').click()
+    cy.wait(2000)
+    cy.get(':nth-child(2) > form > .button').click()
+    cy.wait(2000)
     cy.get('[href="/learn"]').click()
     cy.wait(2000)
     cy.get(':nth-child(1) > .rounded-md > span').click()
@@ -49,7 +52,7 @@ describe('template spec', () => {
     cy.contains('See Your Grades').click();
 
     cy.wait(4000)
-    cy.get('.rounded-md').click()
+  
     
   
   })

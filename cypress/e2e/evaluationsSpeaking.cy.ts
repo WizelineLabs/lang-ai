@@ -9,7 +9,10 @@ describe('template spec', () => {
     cy.get('#username').type('patoestrada@gmail.com');
     cy.get('#password').type('JRbyuj6Bj:Nugfu');
     cy.get('.cf772ffae > .c89f1057d').click()
-    cy.wait(10000)
+    cy.get('.mb-3').click()
+    cy.wait(2000)
+    cy.get(':nth-child(2) > form > .button').click()
+    cy.wait(2000)
     cy.contains('Go to Evaluations').click()
     cy.wait(2000)
     cy.get('.bg-red-600').click()
@@ -47,9 +50,6 @@ describe('template spec', () => {
     cy.get('.rounded-md').click()
     cy.wait(3000)
     cy.contains('See Your Grades').click();
-
-    cy.wait(4000)
-    cy.get('.rounded-md').click()
     
   
   })

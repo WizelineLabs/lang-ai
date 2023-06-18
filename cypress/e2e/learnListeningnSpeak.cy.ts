@@ -15,37 +15,32 @@ describe('template spec', () => {
       cy.wait(2000)
       cy.get('[href="/learn"]').click()
       cy.wait(2000)
-      cy.get(':nth-child(4) > .rounded-md > span').click()
+      cy.get(':nth-child(6) > .rounded-md > span').click()
       cy.wait(2000)
       cy.get('.rounded-md').click()
       cy.wait(2000)
-      cy.get('#message').type('caballo');
+      cy.get('.absolute').click()
+      cy.wait(2000)
+      cy.get('.absolute').click()
       cy.wait(2000)
       cy.get('.rounded-md').click()
       cy.wait(2000)
-      cy.get('#message').type('caballo');
+      cy.get('.absolute').click()
+      cy.wait(2000)
+      cy.get('.absolute').click()
       cy.wait(2000)
       cy.get('.rounded-md').click()
       cy.wait(2000)
-      cy.get('#message').type('caballo');
+      cy.get('.absolute').click()
       cy.wait(2000)
-      cy.get('.rounded-md').click()
-      cy.wait(2000)
-      cy.get('#message').type('caballo');
-      cy.wait(2000)
-      cy.get('.rounded-md').click()
-      cy.wait(2000)
-      cy.get('#message').type('caballo');
-      cy.wait(2000)
-      cy.get('.rounded-md').click()
-      cy.wait(2000)
-      cy.get('#message').type('caballo');
+      cy.get('.absolute').click()
       cy.wait(2000)
       cy.get('.rounded-md').click()
       cy.wait(3000)
       cy.contains('See Your Grades').click();
   
       cy.wait(4000)
+    
       
     
     })
