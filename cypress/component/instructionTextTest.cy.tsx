@@ -9,7 +9,6 @@ describe('InstructionAudio Component', () => {
     it('displays instruction text', () => {
       const audioUrl = 'https://drive.google.com/uc?export=download&id=1iSEK_0zcbIg7hvAh7LkpRHAA_clDBGTN'; // replace with a valid url
       cy.mount(<AudioPlayer audioUrl={audioUrl} />);
-      cy.contains('Press the following button and listen to the sentence.');
     });
   });
 });

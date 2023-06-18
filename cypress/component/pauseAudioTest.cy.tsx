@@ -10,9 +10,9 @@ describe('Alternate InstructionAudio Test 1', () => {
         it('clicks "Listen" button and waits before clicking "Pause"', () => {
             const audioSrc = 'https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg';
             cy.mount(<AudioPlayer audioUrl={audioSrc} />);
-            cy.contains('Listen').click();
+            cy.get('.relative').click();
             cy.wait(5000);
-            cy.contains('Pause').click();
+            cy.get('.relative').click();
         });
     });
 });
