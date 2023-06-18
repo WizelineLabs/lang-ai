@@ -1,4 +1,4 @@
-import InstructionAudio from "~/components/test/InstructionAudio";
+import AudioPlayer from "~/components/AudioPlayer";
 
 describe('InstructionAudio Component', () => {
   context('720p resolution', () => {
@@ -8,7 +8,7 @@ describe('InstructionAudio Component', () => {
 
     it('displays "Listen" button initially', () => {
       const audioUrl = 'https://actions.google.com/sounds/v1/alarms/alarm_clock.ogg';
-      cy.mount(<InstructionAudio audioUrl={audioUrl} />);
+      cy.mount(<AudioPlayer audioUrl={audioUrl} />);
       cy.contains('Listen');
     });
   });

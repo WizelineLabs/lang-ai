@@ -1,4 +1,4 @@
-import InstructionAudio from "~/components/test/InstructionAudio";
+import AudioPlayer from "~/components/AudioPlayer";
 
 describe('InstructionAudio Component', () => {
   context('720p resolution', () => {
@@ -8,7 +8,7 @@ describe('InstructionAudio Component', () => {
 
     it('checks audio setup', () => {
       const audioURL = 'testAudioSource';
-      cy.mount(<InstructionAudio audioUrl={audioURL} />);
+      cy.mount(<AudioPlayer audioUrl={audioURL} />);
       cy.get('audio')
         .should('have.attr', 'src', audioURL);
     });

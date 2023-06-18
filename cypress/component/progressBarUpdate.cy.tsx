@@ -1,4 +1,4 @@
-import InstructionAudio from "~/components/test/InstructionAudio";
+import AudioPlayer from "~/components/AudioPlayer";
 
 describe('InstructionAudio Component', () => {
   context('720p resolution', () => {
@@ -8,7 +8,7 @@ describe('InstructionAudio Component', () => {
 
     it('verifies audio playback progress', () => {
       const testAudioUrl = 'https://drive.google.com/uc?export=download&id=1iSEK_0zcbIg7hvAh7LkpRHAA_clDBGTN';
-      cy.mount(<InstructionAudio audioUrl={testAudioUrl} />);
+      cy.mount(<AudioPlayer audioUrl={testAudioUrl} />);
       
       cy.get('span').click();
       

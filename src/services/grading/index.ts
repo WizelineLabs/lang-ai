@@ -188,7 +188,7 @@ function parseChatGPTResponse(response: CreateChatCompletionResponse): Grade {
     if (response.choices[0]?.message) {
       const message = response.choices[0].message;
       console.log("ChatGPT response:", message.content);
-      return JSON.parse(message.content) as Grade;
+      return JSON.parse(message.content ?? "") as Grade;
     } else {
       throw new Error("JSON.parse failed");
     }

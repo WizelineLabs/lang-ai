@@ -1,4 +1,4 @@
-import InstructionAudio from "~/components/test/InstructionAudio";
+import AudioPlayer from "~/components/AudioPlayer";
 
 describe('InstructionAudio Component', () => {
   context('720p resolution', () => {
@@ -8,7 +8,7 @@ describe('InstructionAudio Component', () => {
 
     it('checks if audio source is set correctly', () => {
       const audioUrl = 'https://www.kozco.com/tech/piano2-CoolEdit.mp3'; // replace with a valid url
-      cy.mount(<InstructionAudio audioUrl={audioUrl} />);
+      cy.mount(<AudioPlayer audioUrl={audioUrl} />);
       
       cy.get('audio').should('have.attr', 'src', audioUrl);
     });

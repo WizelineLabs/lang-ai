@@ -1,4 +1,5 @@
-import InstructionAudio from "~/components/test/InstructionAudio";
+import AudioPlayer from "~/components/AudioPlayer";
+
 
 describe('Alternate InstructionAudio Test 2', () => {
     context('720p resolution', () => {
@@ -9,7 +10,7 @@ describe('Alternate InstructionAudio Test 2', () => {
 
         it('activates audio playback and pauses it after waiting', () => {
             const audioSource = 'https://actions.google.com/sounds/v1/alarms/mechanical_clock_ring.ogg';
-            cy.mount(<InstructionAudio audioUrl={audioSource} />);
+            cy.mount(<AudioPlayer audioUrl={audioSource} />);
             cy.contains('Listen').click();
             cy.wait(5000);
             cy.contains('Pause').click();

@@ -1,4 +1,4 @@
-import InstructionAudio from "~/components/test/InstructionAudio";
+import AudioPlayer from "~/components/AudioPlayer";
 
 describe('Alternate InstructionAudio Test 2', () => {
     context('720p resolution', () => {
@@ -9,7 +9,7 @@ describe('Alternate InstructionAudio Test 2', () => {
 
         it('displays different instruction text', () => {
             const audioUrl = 'https://www.kozco.com/tech/piano2-CoolEdit.mp3';
-            cy.mount(<InstructionAudio audioUrl={audioUrl} />);
+            cy.mount(<AudioPlayer audioUrl={audioUrl} />);
             cy.contains('Press the following button and listen to the sentence.');
         });
     });
