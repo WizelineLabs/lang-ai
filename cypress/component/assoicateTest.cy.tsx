@@ -1,3 +1,4 @@
+import { mount } from "cypress/react18";
 import ResponseText from "~/components/test/ResponseText";
 
 describe('Alternate ResponseText Test 1', () => {
@@ -9,7 +10,7 @@ describe('Alternate ResponseText Test 1', () => {
 
         it('associates label correctly with textarea', () => {
             const testText = 'Different Text';
-            cy.mount(<ResponseText text={testText} didChangeText={() => {}} />);
+            mount(<ResponseText text={testText} didChangeText={() => {}} />);
         });
     });
 });

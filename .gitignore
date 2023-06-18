@@ -47,3 +47,4 @@ temp/
 
 #cypress
 cypress.env.json
+cypress/videos/

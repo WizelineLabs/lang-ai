@@ -10,6 +10,7 @@ export default defineConfig({
   },
 
   component: {
+    //supportFile: false,
     devServer: {
       framework: "next",
       bundler: "webpack",
