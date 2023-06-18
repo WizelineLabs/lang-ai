@@ -34,7 +34,7 @@ export default async function handler(
     console.log(response);
     let data: any;
     if (response.choices[0]?.message) {
-      const text = response.choices[0].message.content;
+      const text = response.choices[0].message.content ?? "";
       try {
         data = JSON.parse(text);
       } catch {
