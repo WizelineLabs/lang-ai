@@ -102,7 +102,7 @@ npm run dev
 # Environments
 
 ### **Main**
-This proyect was created in the `main` branch, which is the local environment.
+This project was created in the `main` branch, which is the local environment.
 
 ### **Tests**
 We created a container in Lightsail AWS, which is already configurated to run our tests. These can be found in the `main` branch in the cypress folder. 
